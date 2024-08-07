@@ -157,7 +157,7 @@ class CaseContact < ApplicationRecord
     where(casa_case_id: case_ids) if case_ids.present?
   }
 
-  scope :no_drafts, ->(checked) { (checked == 1) ? where(status: "active") : all }
+  scope :no_drafts, ->(checked) { (checked == 1) ? active : all }
 
   filterrific(
     default_filter_params: {sorted_by: "occurred_at_desc"},
