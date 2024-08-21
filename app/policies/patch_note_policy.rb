@@ -1,12 +1,15 @@
 class PatchNotePolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
-
     def resolve
-      scope.notes_available_for_user(@user)
+      return scope.none unless user.present?
+
+      return scope.all if user.is_a?(AllCasaAdmin)
+
+      scope.notes_available_for_user(user)
     end
+  end
+
+  def index?
+    user.present?
   end
 end

@@ -1,10 +1,15 @@
 FactoryBot.define do
   factory :patch_note do
-    sequence :note do |n|
-      n.to_s
+    sequence(:note, "a") # "a".next is "b", and so on...
+    patch_note_type
+    patch_note_group
+
+    trait :only_supervisors_and_admins do
+      association :patch_note_group, :only_supervisors_and_admins
     end
 
-    patch_note_type { create(:patch_note_type) }
-    patch_note_group { create(:patch_note_group) }
+    trait :no_user_groups do
+      association :patch_note_group, :no_users
+    end
   end
 end
