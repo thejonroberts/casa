@@ -13,6 +13,7 @@ class AndroidAppAssociationsController < ApplicationController
       }
     ]
 
+    skip_policy_scope
     render json: android_asset_link_data.to_json
   end
 end

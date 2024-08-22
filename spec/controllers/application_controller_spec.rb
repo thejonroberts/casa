@@ -6,6 +6,7 @@ RSpec.describe ApplicationController, type: :controller do
 
   controller do
     def index
+      skip_policy_scope
       render plain: "hello there..."
     end
 

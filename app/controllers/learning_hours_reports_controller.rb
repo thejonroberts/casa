@@ -3,6 +3,7 @@ class LearningHoursReportsController < ApplicationController
 
   def index
     authorize :application, :see_reports_page?
+    skip_policy_scope
     learning_hours_report = LearningHoursReport.new(current_organization.id)
 
     respond_to do |format|

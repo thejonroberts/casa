@@ -4,6 +4,7 @@ class LearningHourPolicy < ApplicationPolicy
   end
 
   def show?
+    # TODO: same_org? & nil user
     record.user_id == @user.id
   end
 
@@ -33,10 +34,8 @@ class LearningHourPolicy < ApplicationPolicy
       when Volunteer
         scope.where(user_id: @user.id)
       else
-        raise "unrecognized role #{@user.type}"
+        scope.none
       end
     end
-
-    alias_method :index?, :resolve
   end
 end

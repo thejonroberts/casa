@@ -3,6 +3,7 @@ class MissingDataReportsController < ApplicationController
 
   def index
     authorize :application, :see_reports_page?
+    skip_policy_scope
     missing_data_report = MissingDataReport.new(current_organization.id)
 
     respond_to do |format|

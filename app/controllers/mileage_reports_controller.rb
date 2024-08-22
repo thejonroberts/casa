@@ -5,6 +5,7 @@ class MileageReportsController < ApplicationController
 
   def index
     authorize :application, :see_reports_page?
+    skip_policy_scope
     mileage_report = MileageReport.new(current_organization.id)
 
     respond_to do |format|

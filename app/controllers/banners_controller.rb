@@ -4,6 +4,7 @@ class BannersController < ApplicationController
 
   def index
     authorize :application, :admin_or_supervisor?
+    skip_policy_scope # TODO: BannerPolicy + policy_scope, remove this
 
     @banners = current_organization.banners.includes(:user)
   end

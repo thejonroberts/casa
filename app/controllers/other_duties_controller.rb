@@ -5,6 +5,8 @@ class OtherDutiesController < ApplicationController
   def index
     authorize OtherDuty
 
+    skip_policy_scope
+    # TODO: OtherDuty::Scope#resolve unimplemented, not sure what's happening here
     @volunteer_duties = if current_user.casa_admin?
       generate_other_duty_list(policy_scope(Volunteer))
     elsif current_user.supervisor?

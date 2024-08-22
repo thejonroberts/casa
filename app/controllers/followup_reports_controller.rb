@@ -3,6 +3,7 @@ class FollowupReportsController < ApplicationController
 
   def index
     authorize :application, :see_reports_page?
+    skip_policy_scope
     followup_report = FollowupExportCsvService.new(current_organization).perform
 
     respond_to do |format|

@@ -4,7 +4,7 @@ class NotificationsController < ApplicationController
 
   def index
     authorize Noticed::Notification, policy_class: NotificationPolicy
-
+    skip_policy_scope
     @deploy_time = Health.instance.latest_deploy_time
     @notifications = current_user.notifications.includes([:event]).newest_first
     @patch_notes = PatchNote.notes_available_for_user(current_user)

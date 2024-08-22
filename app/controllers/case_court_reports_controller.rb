@@ -6,6 +6,7 @@ class CaseCourtReportsController < ApplicationController
 
   def index
     authorize CaseCourtReport
+    skip_policy_scope
     assigned_cases.select(:id, :case_number, :birth_month_year_youth)
   end
 
@@ -67,6 +68,7 @@ class CaseCourtReportsController < ApplicationController
   end
 
   def assigned_cases
+    # TODO: use policy_scope
     @assigned_cases = if current_user.volunteer?
       CasaCase.actively_assigned_to(current_user)
     else

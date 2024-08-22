@@ -6,6 +6,7 @@ class ImportsController < ApplicationController
 
   def index
     authorize :import
+    skip_policy_scope
     @import_type = params.fetch(:import_type, "volunteer")
     @import_error = session[:import_error]
     @sms_opt_in_warning = session[:sms_opt_in_warning]

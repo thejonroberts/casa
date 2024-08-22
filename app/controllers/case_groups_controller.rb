@@ -3,6 +3,7 @@ class CaseGroupsController < ApplicationController
   before_action :authorize_admin_or_supervisor!
 
   def index
+    skip_policy_scope # TODO: CaseGroupPolicy + policy_scope, remove this
     @case_groups = current_organization.case_groups.includes(:casa_cases)
   end
 

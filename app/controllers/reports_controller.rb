@@ -3,6 +3,7 @@ class ReportsController < ApplicationController
 
   def index
     authorize :application, :see_reports_page?
+    skip_policy_scope
   end
 
   def export_emails

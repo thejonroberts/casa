@@ -3,8 +3,7 @@ class LearningHoursController < ApplicationController
   after_action :verify_authorized, except: :index # TODO add this back and fix all tests
 
   def index
-    authorize LearningHour
-    @learning_hours = policy_scope(LearningHour)
+    @learning_hours = policy_scope(LearningHour.all)
   end
 
   def show
@@ -12,8 +11,8 @@ class LearningHoursController < ApplicationController
   end
 
   def new
-    authorize LearningHour
     @learning_hour = LearningHour.new
+    authorize @learning_hour
   end
 
   def create
@@ -54,6 +53,7 @@ class LearningHoursController < ApplicationController
   private
 
   def set_learning_hour
+    # TODO: use policy_scope?
     @learning_hour = LearningHour.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     redirect_to learning_hours_path

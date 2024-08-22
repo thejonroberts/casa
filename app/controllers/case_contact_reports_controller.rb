@@ -6,6 +6,7 @@ class CaseContactReportsController < ApplicationController
   def index
     authorize :application, :see_reports_page?
     case_contact_report = CaseContactReport.new(report_params)
+    skip_policy_scope
 
     respond_to do |format|
       format.csv do

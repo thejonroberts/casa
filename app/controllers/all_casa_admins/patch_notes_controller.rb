@@ -4,6 +4,7 @@ class AllCasaAdmins::PatchNotesController < AllCasaAdminsController
     @patch_note_groups = PatchNoteGroup.all
     @patch_note_types = PatchNoteType.all
     @patch_notes = PatchNote.order(created_at: :desc)
+    skip_policy_scope
   end
 
   # POST /patch_notes or /patch_notes.json

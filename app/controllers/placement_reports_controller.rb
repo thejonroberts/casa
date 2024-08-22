@@ -4,7 +4,7 @@ class PlacementReportsController < ApplicationController
   def index
     authorize :application, :see_reports_page?
     placement_report = PlacementExportCsvService.new(casa_org: current_organization).perform
-
+    skip_policy_scope
     respond_to do |format|
       format.csv do
         send_data placement_report,

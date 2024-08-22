@@ -4,6 +4,7 @@ class MileageRatesController < ApplicationController
 
   def index
     authorize :application, :see_mileage_rate?
+    skip_policy_scope
     @mileage_rates = MileageRate.where(casa_org: current_organization).order(effective_date: :asc)
   end
 

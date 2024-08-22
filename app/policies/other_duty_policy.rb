@@ -6,6 +6,8 @@ class OtherDutyPolicy < UserPolicy
       @user = user
       @scope = scope
     end
+
+    #  TODO: implement resolve or remove this Scope class
   end
 
   def index?

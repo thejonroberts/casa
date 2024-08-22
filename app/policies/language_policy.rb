@@ -1,4 +1,5 @@
 class LanguagePolicy < ApplicationPolicy
+  # TODO: i'm not sure these are used
   alias_method :add_language?, :is_volunteer?
   alias_method :remove_from_volunteer?, :is_volunteer?
 

@@ -9,6 +9,7 @@ class StaticController < ApplicationController
   def index
     redirect_to dashboard_path_from_current_role if current_user
     @casa_logos = CasaOrg.with_logo
+    skip_policy_scope
   end
 
   def register

@@ -3,6 +3,7 @@ class HealthController < ApplicationController
   skip_after_action :verify_authorized
 
   def index
+    skip_policy_scope
     respond_to do |format|
       format.html do
         render :index

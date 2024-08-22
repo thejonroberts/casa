@@ -14,6 +14,7 @@ class CaseContactReport
   private
 
   def filtered_case_contacts(args)
+    # TODO: use policy_scope (in addition to .casa_org?)
     CaseContact
       .supervisors(args[:supervisor_ids])
       .creators(args[:creator_ids])
