@@ -53,6 +53,7 @@ RSpec.describe "view all volunteers", type: :system, js: true do
     end
 
     it "can show/hide columns on volunteers table", js: true do
+      # TODO: figure out why this test is flaky
       sign_in admin
 
       visit volunteers_path
@@ -436,11 +437,7 @@ RSpec.describe "view all volunteers", type: :system, js: true do
         expect(page).to have_text("Case Number(s)")
       end
 
-      sign_out supervisor
-      visit volunteers_path
-
-      sign_in supervisor
-      visit volunteers_path
+      refresh
 
       # Expectations after page reload
       within("#volunteers") do

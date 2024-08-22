@@ -31,7 +31,7 @@ RSpec.describe "casa_cases/show", type: :system do
 
     context "when youth is not in transition age" do
       before do
-        casa_case.update!(birth_month_year_youth: DateTime.current)
+        casa_case.update!(birth_month_year_youth: Time.zone.today)
         visit casa_case_path(casa_case)
       end
 
