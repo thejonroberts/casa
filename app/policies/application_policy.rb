@@ -98,22 +98,27 @@ class ApplicationPolicy
   end
 
   def see_reports_page?
+    # ModelPolicy#view_reports? - currently used for multiple models
     is_supervisor? || is_admin?
   end
 
   def see_emancipation_checklist?
+    # Emancipation Policy?
     is_volunteer?
   end
 
   def see_court_reports_page?
+    # Report Policy?  or ModelPolicy#reports?
     is_volunteer? || is_supervisor? || is_admin?
   end
 
   def see_mileage_rate?
+    # ORG policy? MileageRatePolicy?
     admin? && reimbursement_enabled?
   end
 
   def reimbursement_enabled?
+    # ORG policy? ReimbursementPolicy?
     current_organization&.show_driving_reimbursement
   end
 
