@@ -110,11 +110,7 @@ class ApplicationPolicy
   end
 
   def see_mileage_rate?
-    is_admin? && reimbursement_enabled? # && matches_casa_org? # TODO do this *in* is_admin - what might that break?
-  end
-
-  def matches_casa_org?
-    @record&.casa_org == @user&.casa_org && !@record.casa_org.nil?
+    admin? && reimbursement_enabled?
   end
 
   def reimbursement_enabled?
@@ -129,7 +125,7 @@ class ApplicationPolicy
     user&.casa_org.present?
   end
 
+  # Application Policies (as in layout sidebar)
   alias_method :modify_organization?, :is_admin?
-  alias_method :see_import_page?, :is_admin?
   alias_method :see_banner_page?, :admin_or_supervisor?
 end

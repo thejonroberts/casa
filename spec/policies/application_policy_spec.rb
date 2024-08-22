@@ -22,20 +22,6 @@ RSpec.describe ApplicationPolicy do
     end
   end
 
-  permissions :see_import_page? do
-    it "allows casa_admins" do
-      is_expected.to permit(casa_admin)
-    end
-
-    it "does not allow supervisors" do
-      is_expected.not_to permit(supervisor)
-    end
-
-    it "does not allow volunteers" do
-      is_expected.not_to permit(volunteer)
-    end
-  end
-
   permissions :see_court_reports_page? do
     it "allows volunteers" do
       expect(subject).to permit(create(:volunteer))
