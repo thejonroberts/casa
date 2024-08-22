@@ -24,74 +24,77 @@ class ApplicationPolicy
   end
 
   def show?
-    is_admin?
+    admin_same_org?
   end
 
   def create?
-    is_admin?
+    admin_same_org?
   end
 
   def new?
-    is_admin?
+    is_admin? # same_org?
   end
 
   def update?
-    is_admin?
+    admin_same_org?
   end
 
   def edit?
-    is_admin?
+    admin_same_org?
   end
 
   def destroy?
-    is_admin?
+    admin_same_org?
   end
 
   def is_admin?
-    user.casa_admin?
+    user&.casa_admin?
   end
+  alias_method :admin?, :is_admin?
 
   def same_org?
     user_org? && user.casa_org == record&.casa_org
   end
 
   def is_admin_same_org?
-    # eventually everything should use this
-    user.casa_admin? && same_org?
+    admin? && same_org?
   end
+  alias_method :admin_same_org?, :is_admin_same_org?
 
   def is_supervisor?
-    user.supervisor?
+    user&.supervisor?
   end
+  alias_method :supervisor?, :is_supervisor?
 
   def is_supervisor_same_org?
-    # eventually everything should use this
-    user.supervisor? && same_org?
+    supervisor? && same_org?
   end
+  alias_method :supervisor_same_org?, :is_supervisor_same_org?
 
-  def is_volunteer? # deprecated in favor of is_volunteer_same_org?
-    user.volunteer?
+  def is_volunteer?
+    user&.volunteer?
   end
+  alias_method :volunteer?, :is_volunteer?
 
   def is_volunteer_same_org?
-    user.volunteer? && same_org?
+    volunteer? && same_org?
   end
+  alias_method :volunteer_same_org?, :is_volunteer_same_org?
 
   def admin_or_supervisor?
     is_admin? || is_supervisor?
   end
 
   def admin_or_supervisor_same_org?
-    # eventually everything should use this
-    is_admin_same_org? || is_supervisor_same_org?
+    admin_or_supervisor? && same_org?
   end
 
   def admin_or_supervisor_or_volunteer?
-    admin_or_supervisor? || is_volunteer?
+    admin? || supervisor? || volunteer?
   end
 
   def admin_or_supervisor_or_volunteer_same_org?
-    admin_or_supervisor_same_org? || is_volunteer_same_org?
+    admin_or_supervisor_or_volunteer? && same_org?
   end
 
   def see_reports_page?
