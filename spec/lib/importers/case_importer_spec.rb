@@ -17,7 +17,6 @@ RSpec.describe CaseImporter do
   end
 
   after do
-    travel_back
   end
 
   describe "#import_cases" do

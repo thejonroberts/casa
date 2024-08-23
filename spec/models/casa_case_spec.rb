@@ -300,7 +300,6 @@ RSpec.describe CasaCase, type: :model do
     end
 
     after do
-      travel_back
     end
 
     context "when the case is already submitted" do

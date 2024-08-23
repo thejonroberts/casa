@@ -14,7 +14,6 @@ RSpec.describe "/imports", type: :request do
   end
 
   after do
-    travel_back
   end
 
   describe "GET /index" do

@@ -17,7 +17,6 @@ RSpec.describe Rack::Attack do
   end
 
   after do
-    travel_back
     ActionController::Base.perform_caching = false
   end
 
