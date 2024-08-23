@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Casa widgets</h1>
+
+<div id="casa_widgets">
+  <% @casa_widgets.each do |casa_widget| %>
+    <%= render casa_widget %>
+    <p>
+      <%= link_to "Show this casa widget", casa_widget %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New casa widget", new_casa_widget_path %>
