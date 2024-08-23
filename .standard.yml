@@ -4,3 +4,13 @@ plugins:
 ignore:
   - 'storage/**/*'
   - 'lib/tasks/deployment/20201005203405_populate_case_contact_contact_type.rake'
+  # Legacy migrations
+  - 'db/migrate/2020*.rb'
+  - 'db/migrate/2021*.rb'
+  - 'db/migrate/2022*.rb'
+  - 'db/migrate/2023*.rb'
+  - 'db/migrate/202402*.rb'
+  - 'db/migrate/202404*.rb'
+  - 'db/migrate/202405*.rb'
+  - 'db/migrate/202406*.rb'
+  - 'db/migrate/202407*.rb'
