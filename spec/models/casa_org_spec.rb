@@ -78,10 +78,10 @@ RSpec.describe CasaOrg, type: :model do
       aggregate_failures do
         subject = build(:casa_org, twilio_enabled: false)
 
-        expect(subject.org_logo).to eq(Pathname.new("#{Rails.root}/public/logo.jpeg"))
+        expect(subject.org_logo).to eq(Pathname.new(Rails.public_path.join("logo.jpeg").to_s))
 
         subject.logo.attach(
-          io: File.open("#{Rails.root}/spec/fixtures/company_logo.png"),
+          io: File.open(Rails.root.join("spec/fixtures/company_logo.png").to_s),
           filename: "company_logo.png", content_type: "image/png"
         )
 
@@ -150,7 +150,7 @@ RSpec.describe CasaOrg, type: :model do
       let(:contact_topics) { ContactTopic.where(casa_org: org).map(&:question) }
 
       it "matches default contact topics" do
-        expected = fake_topics.map { |topic| topic["question"] }
+        expected = fake_topics.pluck("question")
         expect(contact_topics).to include(*expected)
       end
     end
@@ -161,7 +161,7 @@ RSpec.describe CasaOrg, type: :model do
 
     describe "with a casa org with no rates" do
       it "is nil" do
-        expect(casa_org.mileage_rate_for_given_date(Date.today)).to be_nil
+        expect(casa_org.mileage_rate_for_given_date(Time.zone.today)).to be_nil
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe CasaOrg, type: :model do
 
       it "is nil" do
         expect(casa_org.mileage_rates.count).to eq 2
-        expect(casa_org.mileage_rate_for_given_date(Date.today)).to be_nil
+        expect(casa_org.mileage_rate_for_given_date(Time.zone.today)).to be_nil
       end
     end
 
@@ -184,7 +184,7 @@ RSpec.describe CasaOrg, type: :model do
 
       it "is nil" do
         expect(casa_org.mileage_rates.count).to eq 1
-        expect(casa_org.mileage_rate_for_given_date(Date.today)).to be_nil
+        expect(casa_org.mileage_rate_for_given_date(Time.zone.today)).to be_nil
       end
     end
 
@@ -200,7 +200,7 @@ RSpec.describe CasaOrg, type: :model do
       it "uses the most recent date" do
         expect(casa_org.mileage_rate_for_given_date(12.days.ago.to_date)).to eq 4.50
         expect(casa_org.mileage_rate_for_given_date(5.days.ago.to_date)).to eq 5.50
-        expect(casa_org.mileage_rate_for_given_date(Date.today)).to eq 6.50
+        expect(casa_org.mileage_rate_for_given_date(Time.zone.today)).to eq 6.50
       end
     end
   end

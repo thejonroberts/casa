@@ -35,7 +35,7 @@ RSpec.describe CaseContact, type: :model do
     end
 
     it "verifies occurred at is not in the future" do
-      case_contact = build_stubbed(:case_contact, occurred_at: Time.now + 1.week)
+      case_contact = build_stubbed(:case_contact, occurred_at: 1.week.from_now)
       expect(case_contact).to_not be_valid
       expect(case_contact.errors[:occurred_at]).to eq(["can't be in the future"])
       expect(case_contact.errors.full_messages).to include("Date can't be in the future")
@@ -73,12 +73,12 @@ RSpec.describe CaseContact, type: :model do
 
     it "can be updated even if it is old" do
       case_contact = build_stubbed(:case_contact)
-      case_contact.occurred_at = Time.zone.now - 1.year
+      case_contact.occurred_at = 1.year.ago
       expect(case_contact).to be_valid
     end
 
     it "can be updated for 30 days after end of quarter" do
-      expect(build_stubbed(:case_contact, occurred_at: Time.zone.now - 4.months + 1.day)).to be_valid
+      expect(build_stubbed(:case_contact, occurred_at: 4.months.ago + 1.day)).to be_valid
     end
   end
 

@@ -15,7 +15,6 @@ RSpec.describe VolunteerBirthdayReminderService do
   end
 
   after do
-    travel_back
     clear_enqueued_jobs
   end
 

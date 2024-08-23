@@ -201,7 +201,7 @@ RSpec.describe "Edit CASA Case", type: :system do
     let!(:contact_type_group) { build(:contact_type_group, casa_org: casa_org) }
     let!(:contact_type_1) { create(:contact_type, name: "Youth", contact_type_group: contact_type_group) }
     let!(:contact_type_2) { build(:contact_type, name: "Supervisor", contact_type_group: contact_type_group) }
-    let!(:next_year) { (Date.today.year + 1).to_s }
+    let!(:next_year) { (Time.zone.today.year + 1).to_s }
 
     before { sign_in supervisor }
 
@@ -287,8 +287,6 @@ RSpec.describe "Edit CASA Case", type: :system do
       before do
         travel_to Time.zone.local(2020, 8, 29, 4, 5, 6)
       end
-
-      after { travel_back }
 
       context "when a volunteer is assigned to a case" do
         it "marks the volunteer as assigned and shows the start date of the assignment", js: true do

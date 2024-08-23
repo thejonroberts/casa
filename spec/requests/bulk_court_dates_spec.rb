@@ -27,7 +27,7 @@ RSpec.describe "BulkCourtDates", type: :request do
         court_date: {
           case_group_id: case_group.id,
           date: Date.tomorrow,
-          court_report_due_date: Date.today,
+          court_report_due_date: Time.zone.today,
           judge_id: judge.id,
           hearing_type_id: hearing_type.id,
           case_court_orders_attributes:

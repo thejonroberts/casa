@@ -320,7 +320,6 @@ RSpec.describe Volunteer, type: :model do
     end
 
     after do
-      travel_back
     end
 
     context "there are volunteers whose birthdays are not next month" do

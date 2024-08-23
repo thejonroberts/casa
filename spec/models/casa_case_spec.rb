@@ -38,7 +38,7 @@ RSpec.describe CasaCase, type: :model do
       end
 
       it "is valid today" do
-        casa_case = CasaCase.new(date_in_care: Time.now)
+        casa_case = CasaCase.new(date_in_care: Time.zone.now)
         casa_case.valid?
         expect(casa_case.errors[:date_in_care]).to eq([])
       end
@@ -66,7 +66,7 @@ RSpec.describe CasaCase, type: :model do
       end
 
       it "is valid today" do
-        casa_case = CasaCase.new(birth_month_year_youth: Time.now)
+        casa_case = CasaCase.new(birth_month_year_youth: Time.zone.now)
         casa_case.valid?
         expect(casa_case.errors[:birth_month_year_youth]).to eq([])
       end
@@ -84,14 +84,14 @@ RSpec.describe CasaCase, type: :model do
       subject { described_class.due_date_passed }
 
       context "when casa_case is present" do
-        let!(:court_date) { create(:court_date, date: Time.current - 3.days) }
+        let!(:court_date) { create(:court_date, date: 3.days.ago) }
         let(:casa_case) { court_date.casa_case }
 
         it { is_expected.to include(casa_case) }
       end
 
       context "when casa_case is not present" do
-        let!(:court_date) { create(:court_date, date: Time.current + 3.days) }
+        let!(:court_date) { create(:court_date, date: 3.days.from_now) }
         let(:casa_case) { court_date.casa_case }
 
         it { is_expected.not_to include(casa_case) }
@@ -293,14 +293,13 @@ RSpec.describe CasaCase, type: :model do
     let(:casa_case) { build(:casa_case) }
     subject { casa_case.court_report_status = court_report_status }
 
-    let(:submitted_time) { Time.parse("Sun Nov 08 11:06:20 2020") }
+    let(:submitted_time) { Time.zone.parse("Sun Nov 08 11:06:20 2020") }
     let(:the_future) { submitted_time + 2.days }
     before do
       travel_to submitted_time
     end
 
     after do
-      travel_back
     end
 
     context "when the case is already submitted" do

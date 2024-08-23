@@ -616,7 +616,7 @@ RSpec.describe "volunteers/edit", type: :system do
       visit edit_volunteer_path(volunteer)
 
       freeze_time do
-        current_date = Date.today
+        current_date = Time.zone.today
         fill_in("note[content]", with: "Great job today.")
         within(".notes") do
           click_on("Save Note")
@@ -664,7 +664,7 @@ RSpec.describe "volunteers/edit", type: :system do
       visit edit_volunteer_path(volunteer)
 
       freeze_time do
-        current_date = Date.today
+        current_date = Time.zone.today
         fill_in("note[content]", with: "Great job today.")
         within(".notes") do
           click_on("Save Note")

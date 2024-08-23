@@ -22,7 +22,7 @@ RSpec.describe "/notifications", type: :request do
 
         context "when there is a deploy date" do
           before do
-            Health.instance.update_attribute(:latest_deploy_time, Date.today)
+            Health.instance.update_attribute(:latest_deploy_time, Time.zone.today)
           end
 
           it "does not show the patch notes section" do

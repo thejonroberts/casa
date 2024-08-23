@@ -8,8 +8,8 @@ RSpec.describe CourtDate, type: :model do
   let!(:case_assignment) { create(:case_assignment, volunteer: volunteer, casa_case: casa_case) }
   let(:this_court_date) { subject.date }
   let(:older_court_date) { subject.date - 6.months }
-  let(:path_to_template) { Rails.root.join("app", "documents", "templates", "default_report_template.docx").to_s }
-  let(:path_to_report) { Rails.root.join("tmp", "test_report.docx").to_s }
+  let(:path_to_template) { Rails.root.join("app/documents/templates/default_report_template.docx").to_s }
+  let(:path_to_report) { Rails.root.join("tmp/test_report.docx").to_s }
 
   it { is_expected.to belong_to(:casa_case) }
   it { is_expected.to validate_presence_of(:date) }

@@ -17,11 +17,11 @@ RSpec.describe LearningHoursMailer, type: :mailer do
 
       expect(mail.to).to eq([user.email])
 
-      end_date = Date.today.end_of_month
+      end_date = Time.zone.today.end_of_month
       expected_subject = "Learning Hours Report for #{end_date.strftime("%B, %Y")}."
       expect(mail.subject).to eq(expected_subject)
 
-      expect(mail.attachments.first.filename).to eq("learning-hours-report-#{Date.today}.csv")
+      expect(mail.attachments.first.filename).to eq("learning-hours-report-#{Time.zone.today}.csv")
       expect(mail.attachments.first.body.raw_source).to eq(csv_data)
     end
   end

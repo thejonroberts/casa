@@ -60,7 +60,6 @@ RSpec.describe "Health", type: :request do
     end
 
     after do
-      travel_back
     end
 
     it "returns case contacts creation times in the last year" do
@@ -120,7 +119,6 @@ RSpec.describe "Health", type: :request do
     end
 
     after do
-      travel_back
     end
 
     it "returns monthly unique users data for volunteers, supervisors, and admins in the last year" do

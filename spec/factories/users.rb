@@ -8,7 +8,7 @@ FactoryBot.define do
     date_of_birth { nil }
     case_assignments { [] }
     phone_number { "" }
-    confirmed_at { Time.now }
+    confirmed_at { Time.zone.now }
     token { "verysecuretoken" }
 
     trait :inactive do

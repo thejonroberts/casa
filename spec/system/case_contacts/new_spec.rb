@@ -59,7 +59,7 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
 
       complete_details_page(
         case_numbers: [case_number], contact_types: %w[School Therapist], contact_made: true,
-        medium: "In Person", occurred_on: Date.today, hours: 1, minutes: 45
+        medium: "In Person", occurred_on: Time.zone.today, hours: 1, minutes: 45
       )
       complete_notes_page(notes: "Hello world")
       fill_in_expenses_page(miles: 50, want_reimbursement: true, address: "123 Example St")
@@ -81,7 +81,7 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
         expect(case_contact.miles_driven).to eq 50
         expect(case_contact.draft_case_ids).to eq [casa_case.id]
         expect(case_contact.volunteer_address).to eq "123 Example St"
-        expect(case_contact.occurred_at).to eq Date.today
+        expect(case_contact.occurred_at).to eq Time.zone.today
         expect(case_contact.notes).to eq "Hello world"
         # other fields
         expect(case_contact.reimbursement_complete).to be false
@@ -242,7 +242,7 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
         subject
         complete_details_page(
           case_numbers: [case_number], contact_types: %w[School Therapist], contact_made: true,
-          medium: "In Person", occurred_on: Date.today, hours: 1, minutes: 45
+          medium: "In Person", occurred_on: Time.zone.today, hours: 1, minutes: 45
         )
         complete_notes_page(notes: "Hello world")
 

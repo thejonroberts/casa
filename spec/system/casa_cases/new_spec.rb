@@ -22,7 +22,7 @@ RSpec.describe "casa_cases/new", type: :system do
 
         travel_to Time.zone.local(2020, 12, 1) do
           court_date = 21.days.from_now
-          fourteen_years = (Date.today.year - 14).to_s
+          fourteen_years = (Time.zone.today.year - 14).to_s
           fill_in "Case number", with: case_number
 
           fill_in "Court Date", with: court_date
@@ -65,7 +65,7 @@ RSpec.describe "casa_cases/new", type: :system do
 
         fill_in "Case number", with: case_number
         fill_in "Next Court Date", with: DateTime.now.next_month
-        five_years = (Date.today.year - 5).to_s
+        five_years = (Time.zone.today.year - 5).to_s
         select "March", from: "casa_case_birth_month_year_youth_2i"
         select five_years, from: "casa_case_birth_month_year_youth_1i"
 
@@ -116,7 +116,7 @@ RSpec.describe "casa_cases/new", type: :system do
           visit new_casa_case_path
 
           fill_in "Case number", with: case_number
-          five_years = (Date.today.year - 5).to_s
+          five_years = (Time.zone.today.year - 5).to_s
           select "March", from: "casa_case_birth_month_year_youth_2i"
           select five_years, from: "casa_case_birth_month_year_youth_1i"
           check "casa_case_empty_court_date"
@@ -148,7 +148,7 @@ RSpec.describe "casa_cases/new", type: :system do
           visit new_casa_case_path
 
           fill_in "Case number", with: case_number
-          five_years = (Date.today.year - 5).to_s
+          five_years = (Time.zone.today.year - 5).to_s
           select "March", from: "casa_case_birth_month_year_youth_2i"
           select five_years, from: "casa_case_birth_month_year_youth_1i"
 

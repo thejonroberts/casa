@@ -116,7 +116,7 @@ RSpec.describe "ReimbursementDatatable" do
           create(
             :case_contact,
             casa_case: casa_case,
-            occurred_at: Time.new - possible_occurred_at_offsets.pop,
+            occurred_at: Time.zone.now - possible_occurred_at_offsets.pop,
             miles_driven: possible_miles_driven_values.pop
           )
         end.reverse
