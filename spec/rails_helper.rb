@@ -52,7 +52,7 @@ RSpec.configure do |config|
   end
 
   # Changes to fix warning of Rails 7.1 has deprecated the singular fixture_path in favour of an array
-  config.fixture_paths = ["#{Rails.root.join("spec/fixtures")}"]
+  config.fixture_paths = [Rails.root.join("spec/fixtures").to_s]
 
   config.use_transactional_fixtures = true
 
@@ -63,7 +63,7 @@ RSpec.configure do |config|
     metadata[:type] = :datatable
   end
 
-  config.example_status_persistence_file_path = "#{Rails.root.join("tmp/persistent_examples.txt")}"
+  config.example_status_persistence_file_path = Rails.root.join("tmp/persistent_examples.txt").to_s
 
   # Filter backtraces to gems that are not under our control.
   # Can override using `--backtrace` option to rspec to see full backtraces.
