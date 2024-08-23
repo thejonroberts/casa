@@ -86,7 +86,7 @@ RSpec.describe "/casa_cases", type: :request do
       context "when exporting a csv" do
         subject(:casa_case_show) { get casa_case_path(casa_case, format: :csv) }
 
-        let(:current_time) { Time.now.strftime("%Y-%m-%d") }
+        let(:current_time) { Time.zone.now.strftime("%Y-%m-%d") }
 
         it "generates a csv" do
           casa_case_show
@@ -111,7 +111,7 @@ RSpec.describe "/casa_cases", type: :request do
       context "when exporting a xlsx" do
         subject(:casa_case_show) { get casa_case_path(casa_case, format: :xlsx) }
 
-        let(:current_time) { Time.now.strftime("%Y-%m-%d") }
+        let(:current_time) { Time.zone.now.strftime("%Y-%m-%d") }
 
         it "generates a xlsx file" do
           casa_case_show

@@ -38,7 +38,7 @@ RSpec.describe CasaCase, type: :model do
       end
 
       it "is valid today" do
-        casa_case = CasaCase.new(date_in_care: Time.now)
+        casa_case = CasaCase.new(date_in_care: Time.zone.now)
         casa_case.valid?
         expect(casa_case.errors[:date_in_care]).to eq([])
       end
@@ -66,7 +66,7 @@ RSpec.describe CasaCase, type: :model do
       end
 
       it "is valid today" do
-        casa_case = CasaCase.new(birth_month_year_youth: Time.now)
+        casa_case = CasaCase.new(birth_month_year_youth: Time.zone.now)
         casa_case.valid?
         expect(casa_case.errors[:birth_month_year_youth]).to eq([])
       end
@@ -293,7 +293,7 @@ RSpec.describe CasaCase, type: :model do
     let(:casa_case) { build(:casa_case) }
     subject { casa_case.court_report_status = court_report_status }
 
-    let(:submitted_time) { Time.parse("Sun Nov 08 11:06:20 2020") }
+    let(:submitted_time) { Time.zone.parse("Sun Nov 08 11:06:20 2020") }
     let(:the_future) { submitted_time + 2.days }
     before do
       travel_to submitted_time

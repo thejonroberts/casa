@@ -9,7 +9,7 @@ RSpec.describe NotificationsHelper do
     let(:notification_created_before_deploy_b) { create(:notification, created_at: 3.days.ago) }
 
     before do
-      travel_to Time.new(2022, 1, 1, 0, 0, 0)
+      travel_to Time.zone.local(2022, 1, 1, 0, 0, 0)
 
       notification_created_after_deploy_a.update_attribute(:created_at, 1.hour.ago)
       notification_created_after_deploy_b.update_attribute(:created_at, 1.day.ago)

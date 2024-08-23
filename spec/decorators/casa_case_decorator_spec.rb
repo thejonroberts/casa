@@ -32,7 +32,7 @@ RSpec.describe CasaCaseDecorator do
 
   describe "#court_report_submission" do
     subject { casa_case.decorate.court_report_submitted_date }
-    let(:submitted_time) { Time.parse("Sun Nov 08 11:06:20 2020") }
+    let(:submitted_time) { Time.zone.parse("Sun Nov 08 11:06:20 2020") }
     let(:casa_case) { build(:casa_case, court_report_submitted_at: submitted_time) }
 
     it { is_expected.to eq "November 8, 2020" }
@@ -46,7 +46,7 @@ RSpec.describe CasaCaseDecorator do
 
   describe "#formatted_updated_at" do
     subject { casa_case.decorate.formatted_updated_at }
-    let(:updated_at_time) { Time.parse("Wed Dec 9 12:51:20 2020") }
+    let(:updated_at_time) { Time.zone.parse("Wed Dec 9 12:51:20 2020") }
     let(:casa_case) { build(:casa_case, updated_at: updated_at_time) }
 
     it { is_expected.to eq "12-09-2020" }
