@@ -29,7 +29,7 @@ module CasaCase::Validations
 
     validates :casa_case_contact_types,
       presence: {message: ": At least one contact type must be selected",
-      if: :validate_contact_type}
+                 if: :validate_contact_type}
 
     # Validation to check timestamp and submission status of a case
     validates_with CourtReportValidator, fields: [:court_report_status, :court_report_submitted_at]
