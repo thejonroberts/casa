@@ -122,7 +122,7 @@ class User < ApplicationRecord
       if volunteer.supervisor.active? &&
           volunteer.case_assignments.any? { |assignment| assignment.active? } &&
           (volunteer.case_contacts.none? ||
-          volunteer.case_contacts.maximum(:created_at) < (Time.zone.now - 14.days))
+          volunteer.case_contacts.maximum(:created_at) < (14.days.ago))
 
         no_attempt_count += 1
       end
