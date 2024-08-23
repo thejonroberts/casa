@@ -1,0 +1,150 @@
+require "<%= File.exist?("spec/rails_helper.rb") ? "rails_helper" : "spec_helper" %>"
+<%##- rspec-rails overrides railties' show_helper, reset until https://github.com/rspec/rspec-rails/pull/2741 merged -%>
+<%- def show_helper(arg = "#{singular_table_name}", type: :url) -%>
+<%-  "#{singular_route_name}_#{type}(#{arg})" -%>
+<%- end -%>
+
+<% module_namespacing do -%>
+RSpec.describe "/<%= name.underscore.pluralize %>", <%= type_metatag(:request) %> do
+  let(:casa_org) { create :casa_org }
+  let(:volunteer) { create :volunteer, casa_org: }
+  let(:supervisor) { create :supervisor, casa_org: }
+  let(:casa_admin) { create :casa_admin, casa_org: }
+  let(:all_casa_admin) { create :all_casa_admin }
+  let(:user) { volunteer } # use 'lowest' user type with access
+
+  let(:<%= file_name %>) { create :<%= file_name %>, casa_org: }
+  let(:valid_attributes) { attributes_for :<%= file_name %>, casa_org: }
+  let(:invalid_attributes) do
+    # must change validated_attribute to attribute with value that will fail validation
+    valid_attributes.merge(validated_attribute: nil)
+  end
+
+  before { sign_in user }
+
+  describe "GET /index" do
+    let!(:<%= plural_name %>) { create_list :<%= file_name %>, 2, casa_org: }
+
+    subject { get <%= index_helper %>_path }
+
+    it "renders a successful response" do
+      subject
+      expect(response).to have_http_status(:success)
+      expect(response).to render_template(:index)
+    end
+
+    it "displays information of the records" do
+      subject
+      pending "specify what information is displayed if applicable"
+      expect(response.body).to include(*<%= plural_name %>.map(&:name))
+    end
+  end
+
+  describe "GET /new" do
+    subject { get <%= new_helper(type: :path) %> }
+
+    it "renders a successful response" do
+      subject
+      expect(response).to have_http_status(:success)
+      expect(response).to render_template(:new)
+    end
+  end
+
+  describe "POST /create" do
+    let(:params) { {<%= singular_table_name %>: valid_attributes} }
+
+    subject { post <%= index_helper %>_path, params: }
+
+    it "creates new record" do
+      expect { subject }.to change(<%= class_name %>, :count).by(1)
+    end
+
+    it "redirects to the created record" do
+      subject
+      expect(response).to redirect_to(<%= show_helper(class_name+".last", type: :path) %>)
+    end
+
+    context "with invalid params" do
+      let(:params) { {<%= file_name %>: invalid_attributes} }
+
+      it "does not create a new record" do
+        expect { subject }.to change(<%= class_name %>, :count).by(0)
+      end
+
+      it "renders new template" do
+        subject
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to render_template(:new)
+      end
+    end
+  end
+
+  describe "GET show" do
+    let(:<%= file_name %>) { create :<%= file_name %>, casa_org: }
+
+    subject { get <%= show_helper(type: :path) %> }
+
+    it "renders a successful response" do
+      subject
+      expect(response).to have_http_status(:success)
+      expect(response).to render_template(:show)
+    end
+  end
+
+  describe "GET edit" do
+    let(:<%= file_name %>) { create :<%= file_name %>, casa_org: }
+
+    subject { get <%= edit_helper(type: :path) %> }
+
+    it "renders a successful response" do
+      subject
+      expect(response).to have_http_status(:success)
+      expect(response).to render_template(:edit)
+    end
+  end
+
+  describe "PATCH /update" do
+    let(:params) { {<%= singular_table_name %>: valid_attributes} }
+
+    subject { patch <%= show_helper(type: :path) %>, params: }
+
+    it "updates the requested record" do
+      pending("Add assertions for attributes that should change")
+      expect(<%= file_name %>.attribute).not_to eq(valid_attributes[:attribute])
+      subject
+      <%= file_name %>.reload
+      expect(<%= file_name %>.attribute).to eq(valid_attributes[:attribute])
+    end
+
+    it "redirects to the updated record" do
+      subject
+      expect(response).to redirect_to(<%= show_helper(type: :path) %>)
+    end
+
+    context "with invalid params" do
+      let(:params) { {<%= file_name %>: invalid_attributes} }
+
+      it "renders edit template" do
+        subject
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to render_template(:edit)
+      end
+    end
+  end
+
+  describe "DELETE destroy" do
+    let!(:<%= file_name %>) { create :<%= file_name %>, casa_org: }
+
+    subject { delete <%= show_helper(type: :path) %> }
+
+    it "destroys the requested record" do
+      expect { subject }.to change(<%= class_name %>, :count).by(-1)
+    end
+
+    it "redirects to the <%= table_name %> index" do
+      subject
+      expect(response).to redirect_to(<%= index_helper %>_path)
+    end
+  end
+end
+<% end -%>
