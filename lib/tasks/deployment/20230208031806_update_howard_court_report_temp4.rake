@@ -5,7 +5,7 @@ namespace :after_party do
 
     casa_org = CasaOrg.find_by(name: "Howard County CASA")
     if casa_org
-      casa_org.court_report_template.attach(io: File.new(Rails.root.join("app", "documents", "templates", "howard_county_report_template.docx")), filename: "howard_county_report_template.docx")
+      casa_org.court_report_template.attach(io: File.new(Rails.root.join("app/documents/templates/howard_county_report_template.docx")), filename: "howard_county_report_template.docx")
     else
       Bugsnag.notify("No Howard County CASA found for rake task update_howard_court_report_template")
     end
