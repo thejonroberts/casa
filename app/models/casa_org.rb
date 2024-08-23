@@ -5,9 +5,9 @@ class CasaOrg < ApplicationRecord
 
   scope :with_logo, -> { joins(:logo_attachment) }
 
+  before_save :normalize_phone_number
   before_create :set_slug
   before_update :sanitize_svg
-  before_save :normalize_phone_number
 
   validates :name, presence: true, uniqueness: true
   validates_with CasaOrgValidator

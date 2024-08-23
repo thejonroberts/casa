@@ -6,9 +6,10 @@ class User < ApplicationRecord
   include ByOrganizationScope
   include DateHelper
 
-  before_update :record_previous_email
-  after_create :skip_email_confirmation_upon_creation
   before_save :normalize_phone_number
+  after_create :skip_email_confirmation_upon_creation
+  after_create :create_preference_set
+  before_update :record_previous_email
   has_secure_token :token, length: 36
 
   validates_with UserValidator
@@ -47,7 +48,6 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :user_sms_notification_events, :address, allow_destroy: true
 
-  after_create :create_preference_set
 
   scope :active, -> { where(active: true) }
 
