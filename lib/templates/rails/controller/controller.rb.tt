@@ -1,0 +1,34 @@
+<% module_namespacing do -%>
+class <%= class_name %>Controller < <%= parent_class_name.classify %>
+  before_action :require_organization!
+  # before_action :set_<%= singular_table_name %>, only: %i[ show edit update destroy ]
+
+<%- if actions.include?('index') || actions.empty? -%>
+  def index
+    # authorize :<%= singular_table_name %> # use if limiting view to admin/supervisor
+    # @case_groups = policy_scope(<%= class_name.singularize %>) # if current_organization not applicable
+    @<%= plural_table_name %> = policy_scope(current_organization.<%= plural_table_name %>)
+      # .includes(:association) # includes to avoid n+1 as needed
+  end
+
+<%- end -%>
+<%- actions.each do |action| -%>
+  <%- next if action == 'index' -%>
+  def <%= action %>
+    # authorize :<%= singular_table_name %> # if action on collection (use policy_scope)
+    authorize @<%= singular_table_name %> # if action on record/instance
+  end
+<%= "\n" unless action == actions.last -%>
+<% end -%>
+  private
+
+  def set_<%= singular_table_name %>
+    @<%= singular_table_name %> = policy_scope(<%= class_name.singularize %>).find(params[:id])
+  end
+
+  def <%= "#{singular_table_name}_params" %>
+    # add allowed attributes
+    params.require(:<%= singular_table_name %>).permit()
+  end
+end
+<% end -%>
