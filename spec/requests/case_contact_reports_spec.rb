@@ -23,12 +23,12 @@ RSpec.describe "/case_contact_reports", type: :request do
         let(:case_contact_report_params) do
           {
             start_date: 1.month.ago,
-            end_date: Date.today
+            end_date: Time.zone.today
           }
         end
 
         it "renders a csv file to download" do
-          get case_contact_reports_url(format: :csv), params: {report: {start_date: 1.month.ago, end_date: Date.today}}
+          get case_contact_reports_url(format: :csv), params: {report: {start_date: 1.month.ago, end_date: Time.zone.today}}
 
           expect(response).to be_successful
           expect(
@@ -136,7 +136,7 @@ RSpec.describe "/case_contact_reports", type: :request do
   def case_contact_report_params
     {
       start_date: 1.month.ago,
-      end_date: Date.today
+      end_date: Time.zone.today
     }
   end
 end

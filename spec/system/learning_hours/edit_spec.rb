@@ -13,7 +13,7 @@ RSpec.describe "learning_hours/edit", type: :system do
 
   it "shows error message when future date entered" do
     datepicker_input = find("#learning_hour_occurred_at")
-    datepicker_input.set((Date.today + 1.month).strftime("%Y-%m-%d"))
+    datepicker_input.set((Time.zone.today + 1.month).strftime("%Y-%m-%d"))
 
     click_on "Update Learning Hours Entry"
 

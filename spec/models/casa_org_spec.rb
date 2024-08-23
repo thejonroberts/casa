@@ -161,7 +161,7 @@ RSpec.describe CasaOrg, type: :model do
 
     describe "with a casa org with no rates" do
       it "is nil" do
-        expect(casa_org.mileage_rate_for_given_date(Date.today)).to be_nil
+        expect(casa_org.mileage_rate_for_given_date(Time.zone.today)).to be_nil
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe CasaOrg, type: :model do
 
       it "is nil" do
         expect(casa_org.mileage_rates.count).to eq 2
-        expect(casa_org.mileage_rate_for_given_date(Date.today)).to be_nil
+        expect(casa_org.mileage_rate_for_given_date(Time.zone.today)).to be_nil
       end
     end
 
@@ -184,7 +184,7 @@ RSpec.describe CasaOrg, type: :model do
 
       it "is nil" do
         expect(casa_org.mileage_rates.count).to eq 1
-        expect(casa_org.mileage_rate_for_given_date(Date.today)).to be_nil
+        expect(casa_org.mileage_rate_for_given_date(Time.zone.today)).to be_nil
       end
     end
 
@@ -200,7 +200,7 @@ RSpec.describe CasaOrg, type: :model do
       it "uses the most recent date" do
         expect(casa_org.mileage_rate_for_given_date(12.days.ago.to_date)).to eq 4.50
         expect(casa_org.mileage_rate_for_given_date(5.days.ago.to_date)).to eq 5.50
-        expect(casa_org.mileage_rate_for_given_date(Date.today)).to eq 6.50
+        expect(casa_org.mileage_rate_for_given_date(Time.zone.today)).to eq 6.50
       end
     end
   end

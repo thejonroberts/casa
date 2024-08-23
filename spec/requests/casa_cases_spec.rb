@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "/casa_cases", type: :request do
-  let(:date_in_care) { Date.today }
+  let(:date_in_care) { Time.zone.today }
   let(:organization) { build(:casa_org) }
   let(:group) { build(:contact_type_group) }
   let(:volunteer) { create(:volunteer) }
