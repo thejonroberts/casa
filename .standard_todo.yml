@@ -1,0 +1,250 @@
+# Auto generated files with errors to ignore.
+# Remove from this list as you refactor files.
+---
+ignore:
+- app/controllers/all_casa_admins/sessions_controller.rb:
+  - Rails/LexicallyScopedActionFilter
+- app/controllers/android_app_associations_controller.rb:
+  - Rails/EnvironmentVariableAccess
+- app/controllers/api/v1/base_controller.rb:
+  - Rails/LexicallyScopedActionFilter
+- app/controllers/casa_cases_controller.rb:
+  - Rails/TimeZone
+- app/controllers/case_contacts_controller.rb:
+  - Rails/LexicallyScopedActionFilter
+- app/controllers/checklist_items_controller.rb:
+  - Rails/TimeZone
+- app/controllers/court_dates_controller.rb:
+  - Rails/TimeZone
+- app/controllers/health_controller.rb:
+  - Rails/WhereRange
+- app/controllers/placements_controller.rb:
+  - Rails/LexicallyScopedActionFilter
+- app/controllers/reimbursements_controller.rb:
+  - Rails/TimeZone
+- app/controllers/users/sessions_controller.rb:
+  - Rails/LexicallyScopedActionFilter
+- app/decorators/casa_case_decorator.rb:
+  - Rails/WhereRange
+  - Rails/Date
+- app/decorators/case_assignment_decorator.rb:
+  - Rails/Date
+- app/helpers/all_casa_admins/casa_orgs_helper.rb:
+  - Rails/HelperInstanceVariable
+- app/helpers/banner_helper.rb:
+  - Rails/HelperInstanceVariable
+  - Rails/TimeZone
+- app/helpers/contact_types_helper.rb:
+  - Rails/HelperInstanceVariable
+- app/helpers/phone_number_helper.rb:
+  - Rails/Blank
+- app/helpers/ui_helper.rb:
+  - Rails/HelperInstanceVariable
+- app/mailers/application_mailer.rb:
+  - Rails/EnvironmentVariableAccess
+- app/mailers/fund_request_mailer.rb:
+  - Rails/EnvironmentVariableAccess
+  - Rails/Date
+- app/mailers/learning_hours_mailer.rb:
+  - Rails/Date
+- app/mailers/supervisor_mailer.rb:
+  - Rails/Date
+- app/models/casa_case.rb:
+  - Rails/IgnoredColumnsAssignment
+  - Rails/HasManyOrHasOneDependent
+  - Rails/InverseOf
+  - Rails/WhereRange
+  - Rails/Date
+  - Rails/PluckInWhere
+- app/models/casa_case_contact_type.rb:
+  - Rails/UniqueValidationWithoutIndex
+- app/models/casa_case_emancipation_category.rb:
+  - Rails/UniqueValidationWithoutIndex
+- app/models/casa_org.rb:
+  - Rails/UniqueValidationWithoutIndex
+  - Rails/HasManyOrHasOneDependent
+- app/models/case_assignment.rb:
+  - Rails/UniqueValidationWithoutIndex
+  - Rails/RedundantPresenceValidationOnBelongsTo
+- app/models/case_contact.rb:
+  - Rails/HasManyOrHasOneDependent
+  - Rails/InverseOf
+  - Rails/WhereRange
+  - Rails/CompactBlank
+  - Rails/FindEach
+- app/models/case_contact_contact_type.rb:
+  - Rails/UniqueValidationWithoutIndex
+- app/models/case_group.rb:
+  - Rails/UniqueValidationWithoutIndex
+- app/models/concerns/CasaCase/validations.rb:
+  - Rails/TimeZone
+- app/models/contact_topic.rb:
+  - Rails/HasManyOrHasOneDependent
+- app/models/contact_type.rb:
+  - Rails/HasManyOrHasOneDependent
+  - Rails/UniqueValidationWithoutIndex
+- app/models/contact_type_group.rb:
+  - Rails/HasManyOrHasOneDependent
+  - Rails/UniqueValidationWithoutIndex
+- app/models/court_date.rb:
+  - Rails/HasManyOrHasOneDependent
+  - Rails/WhereRange
+- app/models/emancipation_category.rb:
+  - Rails/HasManyOrHasOneDependent
+- app/models/hearing_type.rb:
+  - Rails/HasManyOrHasOneDependent
+  - Rails/UniqueValidationWithoutIndex
+- app/models/judge.rb:
+  - Rails/UniqueValidationWithoutIndex
+- app/models/language.rb:
+  - Rails/HasManyOrHasOneDependent
+  - Rails/UniqueValidationWithoutIndex
+- app/models/learning_hour.rb:
+  - Rails/Date
+- app/models/learning_hour_topic.rb:
+  - Rails/UniqueValidationWithoutIndex
+- app/models/learning_hour_type.rb:
+  - Rails/UniqueValidationWithoutIndex
+- app/models/mileage_rate.rb:
+  - Rails/IgnoredColumnsAssignment
+  - Rails/RedundantPresenceValidationOnBelongsTo
+- app/models/patch_note.rb:
+  - Rails/WhereRange
+- app/models/sms_notification_event.rb:
+  - Rails/HasManyOrHasOneDependent
+- app/models/supervisor.rb:
+  - Rails/HasManyOrHasOneDependent
+  - Rails/InverseOf
+- app/models/supervisor_volunteer.rb:
+  - Rails/UniqueValidationWithoutIndex
+- app/models/user.rb:
+  - Rails/InverseOf
+  - Rails/HasManyOrHasOneDependent
+  - Rails/Date
+- app/models/volunteer.rb:
+  - Rails/WhereEquals
+- app/services/casa_case_change_service.rb:
+  - Rails/Pluck
+- app/services/fdf_inputs_service.rb:
+  - Rails/Blank
+  - Rails/RootPathnameMethods
+- app/services/volunteer_birthday_reminder_service.rb:
+  - Rails/Output
+- app/validators/user_validator.rb:
+  - Rails/Blank
+- config/application.rb:
+  - Style/RedundantInterpolation
+- config/initializers/bugsnag.rb:
+  - Rails/EnvironmentVariableAccess
+- config/initializers/devise.rb:
+  - Rails/EnvironmentVariableAccess
+- config/initializers/rack_attack.rb:
+  - Rails/EnvironmentVariableAccess
+- db/seeds.rb:
+  - Rails/Output
+- db/seeds/db_populator.rb:
+  - Rails/TimeZone
+  - Rails/FindEach
+  - Rails/Date
+- lib/mailers/debug_preview_mailer.rb:
+  - Rails/ApplicationMailer
+- lib/mailers/previews/devise_mailer_preview.rb:
+  - Rails/Date
+- lib/mailers/previews/fund_request_mailer_preview.rb:
+  - Rails/EnvironmentVariableAccess
+  - Rails/Date
+- lib/mailers/previews/volunteer_mailer_preview.rb:
+  - Rails/Date
+- lib/tasks/case_contact_types_reminder.rb:
+  - Rails/ActiveRecordAliases
+- lib/tasks/data_post_processors/contact_topic_populator.rb:
+  - Rails/FindEach
+- lib/tasks/data_post_processors/contact_type_populator.rb:
+  - Rails/FindEach
+- lib/tasks/deployment/20211023145114_store_deploy_time.rake:
+  - Rails/TimeZone
+- lib/tasks/deployment/20220902180609_populate_languages.rake:
+  - Rails/FindEach
+- lib/tasks/deployment/20230822145532_populate_api_tokens.rake:
+  - Rails/FindEach
+- lib/tasks/deployment/20231125151610_set_case_contacts_as_active.rake:
+  - Rails/FindEach
+- lib/tasks/deployment/20240604121427_migrate_notifications.rake:
+  - Rails/ApplicationRecord
+- lib/tasks/no_contact_made_reminder.rb:
+  - Rails/ActiveRecordAliases
+- lib/tasks/supervisor_weekly_digest.rb:
+  - Rails/TimeZone
+- spec/datatables/reimbursement_datatable_spec.rb:
+  - Rails/TimeZone
+- spec/datatables/supervisor_datatable_spec.rb:
+  - Rails/Pluck
+- spec/datatables/volunteer_datatable_spec.rb:
+  - Rails/Pluck
+- spec/decorators/casa_case_decorator_spec.rb:
+  - Rails/TimeZone
+- spec/decorators/user_decorator_spec.rb:
+  - Rails/TimeZone
+- spec/factories/healths.rb:
+  - Rails/TimeZone
+- spec/factories/users.rb:
+  - Rails/TimeZone
+- spec/helpers/notifications_helper_spec.rb:
+  - Rails/TimeZone
+- spec/lib/tasks/data_post_processors/contact_topic_populator_spec.rb:
+  - Rails/FindEach
+- spec/lib/tasks/data_post_processors/contact_type_populator_spec.rb:
+  - Rails/FindEach
+- spec/mailers/learning_hours_mailer_spec.rb:
+  - Rails/Date
+- spec/mailers/supervisor_mailer_spec.rb:
+  - Rails/Date
+- spec/models/casa_case_spec.rb:
+  - Rails/TimeZone
+- spec/models/casa_org_spec.rb:
+  - Style/RedundantInterpolation
+  - Rails/Pluck
+  - Rails/Date
+- spec/models/case_contact_spec.rb:
+  - Rails/TimeZone
+- spec/models/contact_topic_spec.rb:
+  - Rails/Pluck
+- spec/rails_helper.rb:
+  - Style/RedundantInterpolation
+- spec/requests/all_casa_admins/casa_orgs_spec.rb:
+  - Rails/Pluck
+- spec/requests/bulk_court_dates_spec.rb:
+  - Rails/Date
+- spec/requests/casa_cases_spec.rb:
+  - Rails/Date
+  - Rails/TimeZone
+- spec/requests/casa_org_spec.rb:
+  - Style/RedundantInterpolation
+- spec/requests/case_contact_reports_spec.rb:
+  - Rails/Date
+- spec/requests/notifications_spec.rb:
+  - Rails/Date
+- spec/system/casa_cases/edit_spec.rb:
+  - Rails/Date
+- spec/system/casa_cases/new_spec.rb:
+  - Rails/Date
+- spec/system/case_contacts/new_spec.rb:
+  - Rails/Date
+- spec/system/checklist_items/destroy_spec.rb:
+  - Rails/TimeZone
+- spec/system/checklist_items/edit_spec.rb:
+  - Rails/TimeZone
+- spec/system/checklist_items/new_spec.rb:
+  - Rails/TimeZone
+- spec/system/learning_hours/edit_spec.rb:
+  - Rails/Date
+- spec/system/other_duties/new_spec.rb:
+  - Rails/Date
+- spec/system/reports/index_spec.rb:
+  - Rails/Date
+- spec/system/volunteers/edit_spec.rb:
+  - Rails/Date
+- spec/views/casa_orgs/edit.html.erb_spec.rb:
+  - Style/RedundantInterpolation
+- spec/views/templates/email_templates_spec.rb:
+  - Rails/RootPathnameMethods
