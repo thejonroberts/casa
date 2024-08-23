@@ -10,6 +10,10 @@
 # end
 
 Rails.application.routes.draw do
+  get 'widget/index'
+  get 'widget/new'
+  get 'widget/create'
+  get 'widget/show'
   resources :casa_widgets
   mount Rswag::Ui::Engine => "/api-docs"
   mount Rswag::Api::Engine => "/api-docs"
