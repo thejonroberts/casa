@@ -1,0 +1,77 @@
+require "<%= File.exist?("spec/rails_helper.rb") ? "rails_helper" : "spec_helper" %>"
+<%##- rspec-rails overrides railties' show_helper, reset until https://github.com/rspec/rspec-rails/pull/2741 merged -%>
+<%- def show_helper(arg = "#{singular_table_name}", type: :url) -%>
+<%-  "#{singular_route_name}_#{type}(#{arg})" -%>
+<%- end -%>
+
+<%- singular_name = file_name.singularize -%>
+RSpec.describe "/<%= class_name.underscore.pluralize %>", <%= type_metatag(:request) %> do
+  let(:casa_org) { create :casa_org }
+  let(:volunteer) { create :volunteer, casa_org: }
+  let(:supervisor) { create :supervisor, casa_org: }
+  let(:casa_admin) { create :casa_admin, casa_org: }
+  let(:all_casa_admin) { create :all_casa_admin }
+  let(:user) { volunteer } # use 'lowest' user type with access
+<%- unless options[:headless] -%>
+
+  let(:<%= singular_name %>) { create :<%= singular_name %>, casa_org: }
+  let(:valid_attributes) { attributes_for :<%= singular_name %>, casa_org: }
+  let(:invalid_attributes) do
+    # must change `validated_attribute` to attribute with value that will fail validation
+    valid_attributes.merge(validated_attribute: nil)
+  end
+<%- end -%>
+
+  before { sign_in user }
+
+  # TODO: change subjects, describe, and expectations as needed! Resourceful examples:
+  # subject { get <%= file_name %>_path } # index
+  # subject { get <%= show_helper(type: :path) %> } # show
+  # subject { get <%= new_helper(type: :path) %> } # new
+  # subject { delete <%= show_helper(type: :path) %> } # destroy
+  # let(:params) { {<%= singular_name %>: valid_attributes} }
+  # subject { post <%= file_name %>_path, params: } # create
+  # subject { patch <%= show_helper(type: :path) %>, params: } # update
+<%- if actions.empty? -%>
+
+  describe "GET /index" do
+  <%- unless options[:headless] -%>
+    let!(:<%= plural_name %>) { create_list :<%= singular_name %>, 2, casa_org: }
+  <%- end -%>
+
+    subject { get <%= file_name %>_path }
+
+    it "renders a successful response" do
+      subject
+      expect(response).to have_http_status(:success)
+      expect(response).to render_template(:index)
+    end
+
+    it "displays information" do
+      subject
+      pending "specify what information is displayed if applicable"
+    <%- unless options[:headless] -%>
+      expect(response.body).to include(*<%= plural_name %>.map(&:name))
+    <%- else -%>
+      expect(response.body).to include(SOME_INFORMATION)
+    <%- end -%>
+    end
+  end
+<%- end -%>
+<%- for action in actions -%>
+
+  describe "GET /<%= action %>" do
+    subject { raise "create a subject for this action" }
+
+    it "renders a successful response" do
+      subject
+      expect(response).to have_http_status :success
+      expect(response).to render_template :<%= action %>
+    end
+
+    pending "it does something else" do
+      subject
+    end
+  end
+<%- end -%>
+end
