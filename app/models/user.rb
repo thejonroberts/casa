@@ -48,7 +48,6 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :user_sms_notification_events, :address, allow_destroy: true
 
-
   scope :active, -> { where(active: true) }
 
   scope :inactive, -> { where(active: false) }
