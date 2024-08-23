@@ -1,0 +1,68 @@
+<% module_namespacing do -%>
+class <%= controller_class_name %>Controller < ApplicationController
+  before_action :require_organization!
+  before_action :set_<%= singular_table_name %>, only: %i[ show edit update destroy ]
+
+  def index
+    # authorize <%= class_name %> # use if limiting view to admin/supervisor
+    # @<%= plural_table_name %> = policy_scope(<%= class_name %>) # if current_organization not applicable (rare)
+    @<%= plural_table_name %> = policy_scope(current_organization.<%= plural_table_name %>)
+      # .includes(:association) # includes to avoid n+1 as needed
+  end
+
+  def show
+    authorize @<%= singular_table_name %>
+  end
+
+  def new
+    @<%= singular_table_name %> = <%= orm_class.build(class_name) %>
+    authorize @<%= singular_table_name %>
+  end
+
+  def edit
+    authorize @<%= singular_table_name %>
+  end
+
+  def create
+    @<%= singular_table_name %> = <%= orm_class.build(class_name, "#{singular_table_name}_params") %>
+    authorize @<%= singular_table_name %>
+
+    if @<%= orm_instance.save %>
+      redirect_to <%= redirect_resource_name %>, notice: <%= %("#{human_name} created!") %>
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    authorize @<%= singular_table_name %>
+
+    if @<%= orm_instance.update("#{singular_table_name}_params") %>
+      redirect_to <%= redirect_resource_name %>, notice: <%= %("#{human_name} updated!") %>, status: :see_other
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    authorize @<%= singular_table_name %>
+
+    @<%= orm_instance.destroy %>
+    redirect_to <%= index_helper %>_url, notice: <%= %("#{human_name} deleted!") %>, status: :see_other
+  end
+
+  private
+
+  def set_<%= singular_table_name %>
+    @<%= singular_table_name %> = policy_scope(<%= class_name %>).find(params[:id])
+  end
+
+  def <%= "#{singular_table_name}_params" %>
+    <%- if attributes_names.empty? -%>
+    params.fetch(:<%= singular_table_name %>, {})
+    <%- else -%>
+    params.require(:<%= singular_table_name %>).permit(<%= permitted_params %>)
+    <%- end -%>
+  end
+end
+<% end -%>
