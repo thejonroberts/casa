@@ -1,0 +1,87 @@
+<%= form_with(model: case_contact) do |form| %>
+  <% if case_contact.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(case_contact.errors.count, "error") %> prohibited this case_contact from being saved:</h2>
+
+      <ul>
+        <% case_contact.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :creator_id, style: "display: block" %>
+    <%= form.text_field :creator_id %>
+  </div>
+
+  <div>
+    <%= form.label :casa_case_id, style: "display: block" %>
+    <%= form.text_field :casa_case_id %>
+  </div>
+
+  <div>
+    <%= form.label :duration_minutes, style: "display: block" %>
+    <%= form.number_field :duration_minutes %>
+  </div>
+
+  <div>
+    <%= form.label :occurred_at, style: "display: block" %>
+    <%= form.date_field :occurred_at %>
+  </div>
+
+  <div>
+    <%= form.label :contact_made, style: "display: block" %>
+    <%= form.check_box :contact_made %>
+  </div>
+
+  <div>
+    <%= form.label :medium_type, style: "display: block" %>
+    <%= form.text_field :medium_type %>
+  </div>
+
+  <div>
+    <%= form.label :miles_driven, style: "display: block" %>
+    <%= form.number_field :miles_driven %>
+  </div>
+
+  <div>
+    <%= form.label :want_driving_reimbursement, style: "display: block" %>
+    <%= form.check_box :want_driving_reimbursement %>
+  </div>
+
+  <div>
+    <%= form.label :notes, style: "display: block" %>
+    <%= form.text_field :notes %>
+  </div>
+
+  <div>
+    <%= form.label :reimbursement_complete, style: "display: block" %>
+    <%= form.check_box :reimbursement_complete %>
+  </div>
+
+  <div>
+    <%= form.label :status, style: "display: block" %>
+    <%= form.text_field :status %>
+  </div>
+
+  <div>
+    <%= form.label :draft_case_ids, style: "display: block" %>
+    <%= form.number_field :draft_case_ids %>
+  </div>
+
+  <div>
+    <%= form.label :volunteer_address, style: "display: block" %>
+    <%= form.text_field :volunteer_address %>
+  </div>
+
+  <div>
+    <%= form.label :metadata, style: "display: block" %>
+    <%= form.text_field :metadata %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
