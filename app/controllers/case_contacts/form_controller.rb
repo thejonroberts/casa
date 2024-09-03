@@ -11,8 +11,6 @@ class CaseContacts::FormController < ApplicationController
   def show
     authorize @case_contact
     get_cases_and_contact_types
-    @page = wizard_steps.index(step) + 1
-    @total_pages = steps.count
 
     render_wizard
     wizard_path

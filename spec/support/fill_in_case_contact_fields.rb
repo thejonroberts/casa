@@ -44,20 +44,20 @@ module FillInCaseContactFields
       check contact_topic
     end
 
-    click_on "Save and Continue"
+    # click_on "Save and Continue"
   end
 
   def choose_medium(medium, click_continue: true)
     choose medium if medium
 
-    click_on "Save and Continue" if click_continue
+    # click_on "Save and Continue" if click_continue
   end
 
   # @param notes [String]
   def complete_notes_page(notes: "", click_continue: true)
     fill_in "Additional notes", with: notes
 
-    click_on "Save and Continue" if click_continue
+    # click_on "Save and Continue" if click_continue
   end
 
   # This intentionally does not submit the form

@@ -7,7 +7,9 @@ class Form::SubmitButtonComponent < ViewComponent::Base
   end
 
   def button_text
-    return "Submit" if @last_step == @current_step
-    "Save and Continue"
+    # return "Submit" if @last_step == @current_step
+
+    # "Save and Continue"
+    "Submit"
   end
 end
