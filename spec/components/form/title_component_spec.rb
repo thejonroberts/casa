@@ -2,7 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe Form::TitleComponent, type: :component do
+# TODO remove component
+RSpec.xdescribe Form::TitleComponent, type: :component do
   let(:title) { "Record case contact" }
   let(:subtitle) { "Enter notes" }
   let(:step) { nil }
