@@ -1,6 +1,8 @@
 
-fieldset {
-    border: 1px double #CCC;
+// TODO: responsive grid
+#form-contact-types-by-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 .slide-container {
@@ -90,7 +92,7 @@ legend {
         }
     }
  }
- 
+
 .other-expenses li {
     margin-bottom: .2rem;
 }
@@ -118,7 +120,7 @@ legend {
     display: flex;
     align-items: center;
   }
-  
+
 .dollar-sign .other-expense-amount {
     position: relative;
     padding-left: 32px;
@@ -135,7 +137,7 @@ legend {
     left: 28px;
     z-index: 100;
 }
-  
+
 .pr-7 {
     padding-right: 1.5rem !important;
     padding-left: 2.5rem !important;
