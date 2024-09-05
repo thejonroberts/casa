@@ -78,12 +78,10 @@ class CaseContacts::FormController < ApplicationController
       .where(contact_type_group: { casa_org: current_organization })
       .order('contact_type_group.name ASC', :name) # template builds grouped type checkboxes
 
-    contact_topics = ContactTopic
+    @contact_topics = ContactTopic
       .where(casa_org: current_organization)
       .active
       .order(:question)
-    # add additional here?
-    @options_for_contact_topics = contact_topics.map { |ct| [ct.question, ct.id] }
 
     @displayed_contact_type_group_ids = [] # initial value, built in template
     @selected_cases = @case_contact.draft_case_ids

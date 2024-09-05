@@ -126,7 +126,7 @@ you are trying to set the address for both of them. This is not currently possib
       complete_details_page(contact_made: true)
       expect(CaseContact.last.notes).not_to eq "Hello world"
 
-      complete_notes_page(notes: "Hello world", click_continue: false)
+      complete_notes_page(notes: "Hello world")
 
       within 'div[data-controller="autosave"]' do
         find('small[data-autosave-target="alert"]', text: "Saved!")
