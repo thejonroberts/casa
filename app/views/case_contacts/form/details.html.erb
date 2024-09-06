@@ -17,7 +17,7 @@
   <%= render "/shared/error_messages", resource: @case_contact %>
 
   <!-- DETAILS -->
-  <div id="contact-details" class="card-style-1 px-4 mb-10">
+  <div id="contact-form-details" class="card-style-1 px-4 mb-10">
     <h2 class="mb-3">Details</h2>
 
     <div class="row">
@@ -117,7 +117,7 @@
 
   <!--NOTES-->
   <%#- https://www.stimulus-components.com/docs/stimulus-rails-nested-form/ -%>
-  <div class="card-style-1 px-4 mb-10" data-controller="nested-form" data-nested_form_wrapper_selector_value=".nested-form-wrapper">
+  <div id="contact-form-notes" class="card-style-1 px-4 mb-10" data-controller="nested-form" data-nested_form_wrapper_selector_value=".nested-form-wrapper">
     <h2 class="mb-4">Notes</h2>
     <!-- what is toolip for? -->
     <%# elsif current_user.casa_admin? %>
@@ -146,7 +146,7 @@
   </div>
 
   <!-- REIMBURSMENT -->
-  <div class="card-style-1 px-4 mb-10">
+  <div id="contact-form-reimbursement" class="card-style-1 px-4 mb-10">
     <h2 class="mb-4">Reimbursement</h2>
     <% if Flipper.enabled?(:reimbursement_warning, current_organization) %>
       <article class="card-style-1 p-3 mb-10" style="background-color: #fcab553d;">
@@ -183,7 +183,7 @@
     <!-- ADDITIONAL EXPENSES -->
     <% if Pundit.policy(current_user, @case_contact).additional_expenses_allowed? %>
       <%#- https://www.stimulus-components.com/docs/stimulus-rails-nested-form/ -%>
-      <div class="other-expenses" data-controller="nested-form" data-nested_form_wrapper_selector_value=".nested-form-wrapper">
+      <div id="contact-form-expenses" class="other-expenses" data-controller="nested-form" data-nested_form_wrapper_selector_value=".nested-form-wrapper">
         <template data-nested-form-target="template">
           <%= form.fields_for :additional_expenses, AdditionalExpense.new, child_index: "NEW_RECORD" do |expense_fields| %>
             <%= render "shared/additional_expense_form", form: expense_fields %>
@@ -205,7 +205,7 @@
     <% end %>
   </div>
 
-  <div class="actions mb-10 case-contacts-form-buttons">
+  <div id="contact-form-action-buttons" class="actions mb-10 case-contacts-form-buttons">
     <div class="checkbox-style pt-1">
       <%= form.fields_for :metadata do |metadata_form| %>
         <%= metadata_form.check_box :create_another, class: "form-check-input" %>
