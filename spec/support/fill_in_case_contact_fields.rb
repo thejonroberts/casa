@@ -1,4 +1,17 @@
 module FillInCaseContactFields
+  REIMBURSEMENT_ID = "#contact-form-reimbursement"
+  EXPENSE_AMOUNT_CLASS = ".expense-amount-input"
+  EXPENSE_DESCRIBE_CLASS = ".expense-describe-input"
+
+  def fill_expense_fields(amount, describe, index: nil)
+    within REIMBURSEMENT_ID do
+      amount_field = index.present? ? all(EXPENSE_AMOUNT_CLASS)[index] : all(EXPENSE_AMOUNT_CLASS).last
+      describe_field = index.present? ? all(EXPENSE_DESCRIBE_CLASS)[index] : all(EXPENSE_DESCRIBE_CLASS).last
+      amount_field.fill_in(with: amount) if amount
+      describe_field.fill_in(with: describe) if describe
+    end
+  end
+
   # @param case_numbers [Array[String]]
   # @param contact_types [Array[String]]
   # @param contact_made [Boolean]
