@@ -1,4 +1,7 @@
 module FillInCaseContactFields
+  NOTES_ID = "#contact-form-notes"
+  TOPIC_VALUE_CLASS = ".contact-topic-answer-input"
+  TOPIC_SELECT_CLASS = ".contact-topic-id-select"
   REIMBURSEMENT_ID = "#contact-form-reimbursement"
   EXPENSE_AMOUNT_CLASS = ".expense-amount-input"
   EXPENSE_DESCRIBE_CLASS = ".expense-describe-input"
@@ -9,6 +12,15 @@ module FillInCaseContactFields
       describe_field = index.present? ? all(EXPENSE_DESCRIBE_CLASS)[index] : all(EXPENSE_DESCRIBE_CLASS).last
       amount_field.fill_in(with: amount) if amount
       describe_field.fill_in(with: describe) if describe
+    end
+  end
+
+  def fill_topic_fields(question, answer, index: nil)
+    within NOTES_ID do
+      topic_select = index.present? ? all(TOPIC_SELECT_CLASS)[index] : all(TOPIC_SELECT_CLASS).last
+      answer_field = index.present? ? all(TOPIC_VALUE_CLASS)[index] : all(TOPIC_VALUE_CLASS).last
+      topic_select.select(question) if question
+      answer_field.fill_in(with: answer) if answer
     end
   end
 
@@ -60,8 +72,10 @@ module FillInCaseContactFields
     fill_in "case_contact_duration_hours", with: hours if hours
     fill_in "case_contact_duration_minutes", with: minutes if minutes
 
-    contact_topics.each do |contact_topic|
-      check contact_topic
+    # previously answered on separate page... consolidate somehow...
+    Array.wrap(contact_topics).each do |topic|
+      click_on "Add Note"
+      fill_topic_fields topic, nil
     end
   end
 
@@ -69,24 +83,18 @@ module FillInCaseContactFields
     choose medium if medium
   end
 
-  # @param notes [String]
   def complete_notes_page(notes: nil, contact_topic_answers: [])
-    if notes.present?
-      click_on "Add Note"
-      select "Additional Notes"
-      fill_in "Discussion Notes", with: notes
+    # needs topics to already be added & selected (commplete_details_page)
+    contact_topic_answers = Array.wrap(contact_topic_answers)
+    if contact_topic_answers.any?
+      contact_topic_answers.each_with_index do |answer, index|
+        fill_topic_fields(nil, answer, index:)
+      end
     end
 
-    # debugger
-
-    if contact_topic_answers.any?
-      contact_topic_answers.each do |answer|
-        click_on "Add Note"
-        # change to contact topic id value selection...
-        select answer[:question]
-
-        fill_in "Discussion Notes", with: answer[:value]
-      end
+    if notes.present?
+      click_on "Add Note"
+      fill_topic_fields("Additional Notes", notes)
     end
   end
 

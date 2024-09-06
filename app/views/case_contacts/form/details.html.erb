@@ -145,65 +145,68 @@
     </button>
   </div>
 
-  <!-- REIMBURSMENT -->
-  <div id="contact-form-reimbursement" class="card-style-1 px-4 mb-10">
-    <h2 class="mb-4">Reimbursement</h2>
-    <% if Flipper.enabled?(:reimbursement_warning, current_organization) %>
-      <article class="card-style-1 p-3 mb-10" style="background-color: #fcab553d;">
-        <h5 class="mb-3"><label>Volunteers are eligible to be reimbursed for case-related travel.</label></h5>
-        <span> Volunteers are reimbursed at the federal mileage rate.</span>
-        <br>
-        <span>Please note that there is a $35.00 per month cap per volunteer for your mileage.</span>
-        <span>We aim to mail your reimbursement to you via check within 14-28 business days of your request for reimbursement.</span>
-      </article>
-    <% end %>
+  <% org_driving_reimbursement = current_organization.show_driving_reimbursement %>
+  <% show_additional_expenses = @case_contact.present? ? Pundit.policy(current_user, @case_contact).additional_expenses_allowed? : current_organization.show_additional_expenses %>
+  <% if org_driving_reimbursement || show_additional_expenses %>
+    <!-- REIMBURSMENT -->
+    <div id="contact-form-reimbursement" class="card-style-1 px-4 mb-10">
+      <h2 class="mb-4">Reimbursement</h2>
+      <% if Flipper.enabled?(:reimbursement_warning, current_organization) %>
+        <article class="card-style-1 p-3 mb-10" style="background-color: #fcab553d;">
+          <h5 class="mb-3"><label>Volunteers are eligible to be reimbursed for case-related travel.</label></h5>
+          <span> Volunteers are reimbursed at the federal mileage rate.</span>
+          <br>
+          <span>Please note that there is a $35.00 per month cap per volunteer for your mileage.</span>
+          <span>We aim to mail your reimbursement to you via check within 14-28 business days of your request for reimbursement.</span>
+        </article>
+      <% end %>
 
-    <!-- TODO: move to controller? -->
-    <% if current_organization.show_driving_reimbursement && show_volunteer_reimbursement(@casa_cases) %>
-      <div class="">
-        <div class="checkbox-style py-1 mb-3">
-          <%= form.check_box :want_driving_reimbursement, class: "form-check-input" %>
-          <%= form.label :want_driving_reimbursement, "Request travel or other reimbursement", class: "form-check-label d-inline align-bottom" %>
-        </div>
-      </div>
-
-      <div class="row py-2">
-        <div class="col-md-4">
-          <%= form.label :miles_driven, "Total miles driven" %>
-          <%= form.number_field :miles_driven, class: "form-control", min: "0", max: 10000, placeholder: "0" %>
+      <% if org_driving_reimbursement && show_volunteer_reimbursement(@casa_cases) %>
+        <div class="">
+          <div class="checkbox-style py-1 mb-3">
+            <%= form.check_box :want_driving_reimbursement, class: "form-check-input" %>
+            <%= form.label :want_driving_reimbursement, "Request travel or other reimbursement", class: "form-check-label d-inline align-bottom" %>
+          </div>
         </div>
 
-        <div class="col">
-          <%= form.label :volunteer_address, "Your current address (for reimbursement check)" %>
-          <%= form.text_area :volunteer_address, value: @case_contact.decorate.address_of_volunteer, disabled: @case_contact.address_field_disabled?, class: "form-control" %>
-        </div>
-      </div>
-    <% end %>
+        <div class="row py-2">
+          <div class="col-md-4">
+            <%= form.label :miles_driven, "Total miles driven" %>
+            <%= form.number_field :miles_driven, class: "form-control", min: "0", max: 10000, placeholder: "0" %>
+          </div>
 
-    <!-- ADDITIONAL EXPENSES -->
-    <% if Pundit.policy(current_user, @case_contact).additional_expenses_allowed? %>
-      <%#- https://www.stimulus-components.com/docs/stimulus-rails-nested-form/ -%>
-      <div id="contact-form-expenses" class="other-expenses" data-controller="nested-form" data-nested_form_wrapper_selector_value=".nested-form-wrapper">
-        <template data-nested-form-target="template">
-          <%= form.fields_for :additional_expenses, AdditionalExpense.new, child_index: "NEW_RECORD" do |expense_fields| %>
-            <%= render "shared/additional_expense_form", form: expense_fields %>
+          <div class="col">
+            <%= form.label :volunteer_address, "Your current address (for reimbursement check)" %>
+            <%= form.text_area :volunteer_address, value: @case_contact.decorate.address_of_volunteer, disabled: @case_contact.address_field_disabled?, class: "form-control" %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if show_additional_expenses %>
+        <!-- ADDITIONAL EXPENSES -->
+        <%#- https://www.stimulus-components.com/docs/stimulus-rails-nested-form/ -%>
+        <div id="contact-form-expenses" class="other-expenses" data-controller="nested-form" data-nested_form_wrapper_selector_value=".nested-form-wrapper">
+          <template data-nested-form-target="template">
+            <%= form.fields_for :additional_expenses, AdditionalExpense.new, child_index: "NEW_RECORD" do |expense_fields| %>
+              <%= render "shared/additional_expense_form", form: expense_fields %>
+            <% end %>
+          </template>
+
+          <% if form.object.additional_expenses.any? %>
+            <%= form.fields_for :additional_expenses do |expense_fields| %>
+              <%= render "shared/additional_expense_form", form: expense_fields, new_record: false %>
+            <% end %>
           <% end %>
-        </template>
 
-        <% if form.object.additional_expenses.any? %>
-          <%= form.fields_for :additional_expenses do |expense_fields| %>
-            <%= render "shared/additional_expense_form", form: expense_fields, new_record: false %>
-          <% end %>
-        <% end %>
+          <div data-nested-form-target="target"></div>
 
-        <div data-nested-form-target="target"></div>
-
-        <button type="button" class="btn btn-link" data-action="nested-form#add">
-          + Add Expense
-        </button>
-      </div>
-    <% end %>
-  </div>
+          <button type="button" class="btn btn-link" data-action="nested-form#add">
+            + Add Expense
+          </button>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 
   <div id="contact-form-action-buttons" class="actions mb-10 case-contacts-form-buttons">
     <div class="checkbox-style pt-1">

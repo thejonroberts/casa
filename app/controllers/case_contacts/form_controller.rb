@@ -12,8 +12,6 @@ class CaseContacts::FormController < ApplicationController
     authorize @case_contact
     if @case_contact.started?
       @case_contact.contact_made = true
-      # @case_contact.contact_topic_answers.build()
-      # @case_contact.additional_expenses.build()
     end
 
     get_cases_and_contact_types
