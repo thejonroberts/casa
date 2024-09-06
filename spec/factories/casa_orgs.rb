@@ -13,6 +13,19 @@ FactoryBot.define do
       logo { Rack::Test::UploadedFile.new(Rails.root.join("spec", "fixtures", "org_logo.jpeg")) }
     end
 
+    trait :additional_expenses_true do
+      additional_expenses_enabled { true }
+    end
+
+    trait :driving_reimbursement_true do
+      show_driving_reimbursement { true }
+    end
+
+    trait :all_reimbursements_enabled do
+      additional_expenses_true
+      driving_reimbursement_true
+    end
+
     trait :with_placement_types do
       transient { placement_names { ["Reunification", "Adoption", "Foster Care", "Kinship"] } }
 
