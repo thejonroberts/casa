@@ -61,12 +61,19 @@ class CaseContactParameters < SimpleDelegator
   end
 
   def normalize_topic_answers_and_notes(params)
-    # allows contact.notes to be submitted as a topic-less answer & maintain compatibility...
+    # Should never be used after params.require/permit - uses `to_unsafe_h`
+    # allows form submission of contact.notes as a 'topic-less' topic answer (contact_topic_id: "")
+    return params unless params[:case_contact][:contact_topic_answers_attributes]
+
     notes = ""
     notes << params[:case_contact][:notes] if params[:case_contact][:notes]
 
-    answers_attributes = params[:case_contact][:contact_topic_answers_attributes]&.to_unsafe_h
-    no_topic_answers = answers_attributes&.filter { |_k, v| v[:contact_topic_id].blank? }
+    answers_attributes = params[:case_contact][:contact_topic_answers_attributes].to_unsafe_h
+    no_topic_answers = answers_attributes&.filter do |_k, v|
+      # may be sent as id vs. contact_topic_id somewhere
+      # ! may be both missing due to accepts_nest_attributes, update_only: true
+      v[:contact_topic_id].blank? && v[:id].blank?
+    end
     no_topic_answers&.each do |k, v|
       notes << v["value"]
       params[:case_contact][:contact_topic_answers_attributes].delete(k)

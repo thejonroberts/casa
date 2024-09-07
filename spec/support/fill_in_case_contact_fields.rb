@@ -1,4 +1,5 @@
 module FillInCaseContactFields
+  DETAILS_ID = "#contact-form-details"
   NOTES_ID = "#contact-form-notes"
   TOPIC_VALUE_CLASS = ".contact-topic-answer-input"
   TOPIC_SELECT_CLASS = ".contact-topic-id-select"
@@ -35,42 +36,44 @@ module FillInCaseContactFields
     contact_made: true, medium: "In Person", occurred_on: Time.zone.today, hours: nil, minutes: nil,
     case_numbers: [], contact_types: [], contact_topics: []
   )
-    within find("#draft-case-id-selector") do
-      find(".ts-control").click
-    end
-
-    Array.wrap(case_numbers).each do |case_number|
-      checkbox_for_case_number = find("span", text: case_number).sibling("input")
-      checkbox_for_case_number.click unless checkbox_for_case_number.checked?
-    end
-
-    within find("#draft-case-id-selector") do
-      find(".ts-control").click
-    end
-
-    Array.wrap(case_numbers).each do |case_number|
-      # check case_numbers have been selected
-      expect(page).to have_text case_number
-    end
-
-    fill_in "case_contact_occurred_at", with: occurred_on if occurred_on
-
-    contact_types.each do |contact_type|
-      check contact_type
-    end
-
-    choose medium if medium
-
-    within "#enter-contact-details" do
-      if contact_made
-        check "Contact was made"
-      else
-        uncheck "Contact was made"
+    within DETAILS_ID do
+      within find("#draft-case-id-selector") do
+        find(".ts-control").click
       end
-    end
 
-    fill_in "case_contact_duration_hours", with: hours if hours
-    fill_in "case_contact_duration_minutes", with: minutes if minutes
+      Array.wrap(case_numbers).each do |case_number|
+        checkbox_for_case_number = find("span", text: case_number).sibling("input")
+        checkbox_for_case_number.click unless checkbox_for_case_number.checked?
+      end
+
+      within find("#draft-case-id-selector") do
+        find(".ts-control").click
+      end
+
+      Array.wrap(case_numbers).each do |case_number|
+        # check case_numbers have been selected
+        expect(page).to have_text case_number
+      end
+
+      fill_in "case_contact_occurred_at", with: occurred_on if occurred_on
+
+      contact_types.each do |contact_type|
+        check contact_type
+      end
+
+      choose medium if medium
+
+      within "#enter-contact-details" do
+        if contact_made
+          check "Contact was made"
+        else
+          uncheck "Contact was made"
+        end
+      end
+
+      fill_in "case_contact_duration_hours", with: hours if hours
+      fill_in "case_contact_duration_minutes", with: minutes if minutes
+    end
 
     # previously answered on separate page... consolidate somehow...
     Array.wrap(contact_topics).each do |topic|
@@ -78,6 +81,7 @@ module FillInCaseContactFields
       fill_topic_fields topic, nil
     end
   end
+  alias_method :fill_in_contact_details, :complete_details_page
 
   def choose_medium(medium)
     choose medium if medium
@@ -98,20 +102,20 @@ module FillInCaseContactFields
     end
   end
 
-  # This intentionally does not submit the form
   # @param miles [Integer]
   # @param want_reimbursement [Boolean]
   # @param address [String]
   def fill_in_expenses_page(miles: 0, want_reimbursement: false, address: nil)
-    fill_in "case_contact_miles_driven", with: miles
+    within REIMBURSEMENT_ID do
+      if want_reimbursement
+        check "Request travel or other reimbursement"
+      else
+        uncheck "Request travel or other reimbursement"
+      end
 
-    if want_reimbursement
-      check "Request travel or other reimbursement"
-    else
-      uncheck "Request travel or other reimbursement"
+      fill_in "case_contact_miles_driven", with: miles
+      fill_in "case_contact_volunteer_address", with: address if address
     end
-
-    fill_in "case_contact_volunteer_address", with: address if address
   end
 end
 

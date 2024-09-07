@@ -2,19 +2,18 @@ require "rails_helper"
 require "action_view"
 
 RSpec.describe "additional_expenses", type: :system, flipper: true, js: true do
-  let(:organization) { build(:casa_org, additional_expenses_enabled: true) }
-  let(:volunteer) { create(:volunteer, casa_org: organization) }
-  let(:casa_case) { create(:casa_case, casa_org: organization) }
+  let(:casa_org) { build :casa_org, :all_reimbursements_enabled }
+  let(:volunteer) { create :volunteer, :with_single_case, casa_org: }
+  let(:casa_case) { volunteer.casa_cases.first }
 
   subject do
     sign_in volunteer
     visit new_case_contact_path(casa_case)
-    complete_details_page
+    fill_in_contact_details
   end
 
   before do
     allow(Flipper).to receive(:enabled?).with(:show_additional_expenses).and_return(true)
-    create(:case_assignment, casa_case: casa_case, volunteer: volunteer)
   end
 
   it "additional expenses and notices can be set per organization" do
@@ -223,6 +222,29 @@ RSpec.describe "additional_expenses", type: :system, flipper: true, js: true do
         .and change(AdditionalExpense, :count).by(1)
 
       expect(page).not_to have_text("error")
+    end
+
+    it "can remove an expense" do
+      subject
+      fill_in_contact_details
+
+      click_on "Add Expense"
+      fill_expense_fields 1.50, "1st meal"
+      click_on "Add Expense"
+      fill_expense_fields 2.50, "2nd meal"
+      click_on "Add Expense"
+      fill_expense_fields 2.00, "3rd meal"
+
+      page.all(".remove-expense-button")[1].click
+      expect(page).to have_field(class: "expense-amount-input", count: 2)
+
+      expect { click_on "Submit" }
+        .to change(CaseContact.active, :count).by(1)
+        .and change(AdditionalExpense, :count).by(2)
+
+      case_contact = CaseContact.active.last
+      expect(case_contact.additional_expenses.map(&:other_expense_amount)).to match_array([1.50, 2.00])
+      expect(case_contact.additional_expenses.map(&:other_expenses_describe)).to match_array(["1st meal", "3rd meal"])
     end
   end
 end
