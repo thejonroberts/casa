@@ -116,7 +116,7 @@ RSpec.describe "CaseContacts::Forms", type: :request do
     let!(:case_contact) { create(:case_contact, :details_status, casa_case:) }
     let(:advance_form) { true }
     let(:attributes) { valid_attributes }
-    let(:params) { { case_contact: attributes } }
+    let(:params) { {case_contact: attributes} }
 
     subject(:request) do
       patch "/case_contacts/#{case_contact.id}/form/#{step}", params: params
@@ -209,7 +209,7 @@ RSpec.describe "CaseContacts::Forms", type: :request do
         end
       end
 
-      context "with invlaid attribute" do
+      context "with invalid attributes" do
         let(:attributes) do
           valid_attributes.merge({
             occurred_at: 3.days.from_now,

@@ -106,7 +106,6 @@ RSpec.describe "additional_expenses", type: :system, flipper: true, js: true do
       expect(describe_fields[0].value).to eq("Breakfast")
       expect(amount_fields[1].value).to eq("7.23")
 
-
       expect(amount_fields.size).to eq(3)
       expect(describe_fields.size).to eq(3)
 

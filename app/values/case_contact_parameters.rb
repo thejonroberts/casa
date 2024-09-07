@@ -17,7 +17,7 @@ class CaseContactParameters < SimpleDelegator
         draft_case_ids: [],
         metadata: %i[create_another],
         additional_expenses_attributes: %i[id other_expense_amount other_expenses_describe _destroy],
-        contact_topic_answers_attributes: %i[id contact_topic_id value selected]
+        contact_topic_answers_attributes: %i[id contact_topic_id value selected _destroy]
       )
 
     super(new_params)
@@ -36,9 +36,7 @@ class CaseContactParameters < SimpleDelegator
       params[:case_contact][:miles_driven] = convert_miles_driven(params)
     end
 
-    params = normalize_topic_answers_and_notes(params)
-
-    params
+    normalize_topic_answers_and_notes(params)
   end
 
   def convert_metadata(metadata)

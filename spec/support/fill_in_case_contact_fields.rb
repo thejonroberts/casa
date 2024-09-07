@@ -113,7 +113,7 @@ module FillInCaseContactFields
         uncheck "Request travel or other reimbursement"
       end
 
-      fill_in "case_contact_miles_driven", with: miles
+      fill_in "case_contact_miles_driven", with: miles if miles.present?
       fill_in "case_contact_volunteer_address", with: address if address
     end
   end

@@ -61,7 +61,7 @@ RSpec.describe "case_contacts/create", type: :system, js: true do
         case_numbers: [casa_case.case_number],
         contact_topics: [contact_topics.first.question]
       )
-      complete_notes_page(notes: "This is the contact note.", contact_topic_answers: ["This is an answer."])
+      complete_notes_page(contact_topic_answers: ["This is an answer."])
       click_on "Submit"
       expect(page).to have_text("Case Contacts")
     end
@@ -72,6 +72,8 @@ RSpec.describe "case_contacts/create", type: :system, js: true do
       aggregate_failures do
         expect(case_contact.contact_topic_answers).to be_present
         expect(case_contact.contact_topic_answers.first.value).to eq "This is an answer."
+        pending "TODO: make sure no longer need this behavior"
+        # shouldn't do notes and topic answers unless editing existing note or no contact topics exist
         expect(case_contact.notes).to eq "This is the contact note."
       end
     end

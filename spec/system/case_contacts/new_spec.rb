@@ -10,8 +10,9 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
   let(:contact_type_group) { build :contact_type_group, casa_org: }
   let!(:school_contact_type) { create :contact_type, contact_type_group:, name: "School" }
   let!(:therapist_contact_type) { create :contact_type, contact_type_group:, name: "Therapist" }
-  # todo: don't need this for every spec.
-  let!(:contact_topic) { create :contact_topic, casa_org: }
+  # todo: don't need this for every spec; if contact topic exists, no 'additional notes' option
+  # complete_notes_page needs a topic to select...
+  # let!(:contact_topic) { create :contact_topic, casa_org: }
 
   before { sign_in user }
 
@@ -240,14 +241,13 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
         fill_in volunteer_address_input, with: "123 Example St"
         uncheck reimbursement_checkbox
 
-        expect { click_on "Submit"}.to change(CaseContact.active, :count).by(1)
+        expect { click_on "Submit" }.to change(CaseContact.active, :count).by(1)
         case_contact = CaseContact.active.last
 
         expect(case_contact.want_driving_reimbursement).to be false
         expect(case_contact.volunteer_address).to be_blank
         expect(case_contact.miles_driven).to be_zero
       end
-
 
       it "saves mileage and address information" do
         subject
@@ -418,7 +418,7 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
           check "Create Another"
 
           # one 'active' contact per 'extra' case selected, plus one for the new contact draft that is 'started'
-          expect { click_on "Submit"  }.to change(CaseContact, :count)
+          expect { click_on "Submit" }.to change(CaseContact, :count)
           # expect { click_on "Submit"  }.to change(CaseContact.started, :count).by(1) # actually 0 - why?
 
           next_case_contact = CaseContact.started.last
