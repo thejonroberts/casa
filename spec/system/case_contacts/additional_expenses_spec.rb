@@ -1,5 +1,4 @@
 require "rails_helper"
-require "action_view"
 
 RSpec.describe "additional_expenses", type: :system, flipper: true, js: true do
   let(:casa_org) { build :casa_org, :all_reimbursements_enabled }

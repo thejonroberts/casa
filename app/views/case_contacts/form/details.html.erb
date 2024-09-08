@@ -135,18 +135,15 @@
       <% end %>
 
       <% select_options = @contact_topics.map { |topic| [topic.question, topic.id] } %>
-      <% notes_option = ["Additional Notes", ""] %>
-
-      <% if @contact_topics.empty? %>
-        <%#- Fake a topic for case_contact.notes only if no topics -%>
-        <% select_options << notes_option %>
-      <% end %>
+      <% notes_option = ["Additional Notes", ""] # Fake topic question for contact.notes %>
 
       <% if form.object.notes.present? %>
-        <%#- fake notes as answer to allow changing to a topic -%>
+        <%#- Present contact.notes as a contact_topic_answer to enable edit and/or assigning to a ContactTopic -%>
+        <%#- ! Empty contact_topic_id ("") indicates this is a notes answer in params -%>
         <% form.object.contact_topic_answers.build(value: form.object.notes, contact_topic_id: "") %>
-        <% select_options << notes_option unless @contact_topics.empty? # don't do this twice! %>
-        <%#- TODO: 'erase' notes if submitted in this category - edited the note! %>
+        <% select_options << notes_option %>
+      <% elsif @contact_topics.empty? %>
+        <% select_options << notes_option # no selectable topics to answer, allow notes %>
       <% end %>
 
       <!--template to add new topic answer-->
