@@ -62,8 +62,9 @@
 
       <!--CONTACT TYPE-->
       <h5><label>Contact Type(s)<span class="red-letter">*</span></label></h5>
-      <%# move to partial if confirm we want in other views %>
-      <!--TODO this is gross, build grouped types in controller instead? -->
+      <%# TODO this is a gross workaround for using collection_check_boxes grouped by parent group name %>
+      <%# use current output as a reference (need to include the hidden field) %>
+      <%# - contact_type_groups.each -> fieldset, legend + group.contact_types.each -> field/label; /fieldset %>
       <div id="form-contact-types-by-group" class="">
         <%= form.collection_check_boxes(:contact_type_ids, @contact_types, :id, :name) do |b| %>
           <% if @displayed_contact_type_group_ids.exclude?(b.object.contact_type_group.id) %>
