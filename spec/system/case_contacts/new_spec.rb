@@ -193,7 +193,8 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
 
       before { casa_case.update!(contact_types: [school_contact_type, therapist_contact_type]) }
 
-      it "only renders contact types that are allowed for the volunteer's cases", pending: "TODO: form controller proper scope" do
+      it "only renders contact types that are allowed for the volunteer's cases" do
+        # can be view spec
         expect(casa_org.contact_types.map(&:name)).to include("Attorney")
         subject
 

@@ -49,14 +49,11 @@ class CaseContacts::FormController < ApplicationController
     else
       respond_to do |format|
         format.html {
-          # ? redirect to show instead of this for consistency? lose info?
-          # ? shared setup method at least? # different behavior from show...
+          # ? shared setup method at least? # ? different behavior from show...
           get_cases_and_contact_types
           render step
         }
-        # ? why?
-        # autosave form action is /case_contacts/1074/form/details
-        # TODO: save only one answer per contact topic.
+        # ? any error message to send
         format.json { head :internal_server_error }
       end
     end
@@ -65,37 +62,37 @@ class CaseContacts::FormController < ApplicationController
   private
 
   def set_case_contact
-    @case_contact = CaseContact.includes(:creator, contact_topic_answers: :contact_topic)
+    # @case_contact = CaseContact.includes(:creator, contact_topic_answers: :contact_topic)
+    # ? includes additional_expenses
+
+    @case_contact = CaseContact.includes(:creator)
       .find(params[:case_contact_id])
   end
 
   def get_cases_and_contact_types
     @casa_cases = policy_scope(current_organization.casa_cases).includes([:volunteers])
-    # why not just disable input instead of this? - check edit view when done
+    # ? also disable input if this happens?
     @casa_cases = @casa_cases.where(id: @case_contact.casa_case_id) if @case_contact.active?
 
-    # @contact_types = ContactType.includes(:contact_type_group)
-    #   .joins(:casa_case_contact_types)
-    #   .where(casa_case_contact_types: {casa_case_id: @casa_cases.pluck(:id)})
+    @case_contact_types = ContactType.includes(:contact_type_group)
+      .joins(:casa_case_contact_types)
+      .where(casa_case_contact_types: {casa_case_id: @casa_cases.pluck(:id)})
 
-    # includes
-    # additional_expenses
-    # contact_topic_answers
-
-    # TODO: can we loop over contact type groups for form instead?
-    # is there an active scope for either of these?
-    # policy_scope?
-    @contact_types = ContactType
-      .joins(:contact_type_group)
-      .where(contact_type_group: {casa_org: current_organization})
-      .order("contact_type_group.name ASC", :name) # template builds grouped type checkboxes
+    @contact_types = if @case_contact_types.present?
+      @case_contact_types
+    else
+      ContactType
+        # .includes(:contact_type_group)
+        .joins(:contact_type_group)
+        .where(contact_type_group: {casa_org: current_organization})
+        .order("contact_type_group.name ASC", :name) # template builds grouped type checkboxes
+    end
 
     @contact_topics = ContactTopic
       .where(casa_org: current_organization)
       .active
       .order(:question)
 
-    @displayed_contact_type_group_ids = [] # initial value, built in template
     @selected_cases = @case_contact.draft_case_ids
     @selected_contact_type_ids = @case_contact.contact_type_ids
   end
