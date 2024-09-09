@@ -79,7 +79,7 @@ RSpec.describe "CaseContact form ContactTopicAnswers and notes", type: :system, 
   end
 
   it "prevents adding more answers than topics",
-   pending: "TODO: use stimulus controller to filter select options on selection" do
+    pending: "TODO: use stimulus controller to filter select options on selection" do
     subject
 
     contact_topics.size.times do

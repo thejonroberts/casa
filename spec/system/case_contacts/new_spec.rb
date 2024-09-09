@@ -80,6 +80,18 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
       end
     end
 
+    it "requires at lease one contact type",
+      pending: "TODO: (I think) this is a new feature/validation to implement" do
+      subject
+
+      fill_in_contact_details(contact_types: [])
+
+      expect{ click_on "Submit" }.to change(CaseContact, :count).by(0)
+
+      expect(page).to have_no_text("created")
+      expect(page).to have_text("You must select at least one contact type")
+    end
+
     it "does not display empty contact groups or hidden contact types" do
       # could be view spec!
       create(:contact_type_group, name: "Empty", casa_org:)
