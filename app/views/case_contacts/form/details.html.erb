@@ -66,8 +66,10 @@
       <%# use current output as a reference (need to include the hidden field) %>
       <%# - contact_type_groups.each -> fieldset, legend + group.contact_types.each -> field/label; /fieldset %>
       <div id="form-contact-types-by-group" class="">
+        <% @displayed_contact_type_group_ids = [] %>
         <%= form.collection_check_boxes(:contact_type_ids, @contact_types, :id, :name) do |b| %>
-          <% if @displayed_contact_type_group_ids.exclude?(b.object.contact_type_group.id) %>
+          <% next unless b.object.active %>
+          <% if @displayed_contact_type_group_ids.exclude?(b.object.contact_type_group&.id) %>
             <%#- Have not started this contact type group yet -%>
             <% unless @displayed_contact_type_group_ids.size == 0 %>
               <%#- Close previous group's fieldset unless this is the first group -%>

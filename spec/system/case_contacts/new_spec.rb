@@ -21,20 +21,9 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
   context "when admin" do
     let(:user) { create :casa_admin, casa_org: }
 
-    it "does not display empty or hidden contact type groups; can create CaseContact" do
-      build(:contact_type_group, name: "Empty", casa_org:)
-      grp_with_hidden = build(:contact_type_group, name: "OnlyHiddenTypes", casa_org:)
-      create(:contact_type, name: "Hidden", active: false, contact_type_group: grp_with_hidden)
+    it "can create CaseContact" do
+      subject
 
-      visit casa_case_path(casa_case)
-      # assert to wait for page loading, to reduce flakiness
-      expect(page).to have_text("CASA Case Details")
-      # does not show empty contact type groups
-      expect(page).to_not have_text("Empty")
-      # does not show contact type groups with only hidden contact types
-      expect(page).to_not have_text("Hidden")
-
-      click_on "New Case Contact"
       complete_details_page(
         case_numbers: [], contact_types: %w[School Therapist], contact_made: true,
         medium: "Video", occurred_on: Date.new(2020, 4, 5), hours: 1, minutes: 45
@@ -89,6 +78,18 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
         expect(case_contact.status).to eq "active"
         expect(case_contact.metadata).to be_present
       end
+    end
+
+    it "does not display empty contact groups or hidden contact types" do
+      # could be view spec!
+      create(:contact_type_group, name: "Empty", casa_org:)
+      grp_with_hidden = build(:contact_type_group, name: "OnlyHiddenTypes", casa_org:)
+      create(:contact_type, name: "Hidden", active: false, contact_type_group: grp_with_hidden)
+
+      subject
+
+      expect(page).to have_no_text("Empty")
+      expect(page).to have_no_text("Hidden")
     end
 
     it "is successful without 'miles_driven' or 'want_driving_reimbursement'" do
