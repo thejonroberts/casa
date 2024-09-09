@@ -43,6 +43,7 @@ class CaseContact < ApplicationRecord
 
   has_many :additional_expenses
   has_many :contact_topic_answers, dependent: :destroy
+  has_many :contact_topics, through: :contact_topic_answers
 
   after_save_commit ::CaseContactMetadataCallback.new
 
