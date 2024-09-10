@@ -79,12 +79,13 @@ class CaseContacts::FormController < ApplicationController
       .where(casa_case_contact_types: {casa_case_id: @casa_cases.pluck(:id)})
 
     @contact_types = if @case_contact_types.present?
-      @case_contact_types
+      @case_contact_types.active
     else
       ContactType
-        # .includes(:contact_type_group)
+        .includes(:contact_type_group)
         .joins(:contact_type_group)
         .where(contact_type_group: {casa_org: current_organization})
+        .active
         .order("contact_type_group.name ASC", :name) # template builds grouped type checkboxes
     end
 
