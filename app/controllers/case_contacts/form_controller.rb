@@ -18,13 +18,6 @@ class CaseContacts::FormController < ApplicationController
       @case_contact.contact_made = true
     end
 
-    # TODO: don't love this... build separate 'add note' for notes if exist?
-    # or build options for select here?
-    # if @case_contact.notes.present?
-    #   @case_contact.contact_topic_answers.build(contact_topic_id: "", value: "Additional Notes", value: @case_contact.notes)
-    #   @contact_topics = @contact_topics.to_a << ContactTopic.new(question: "Additional Notes")
-    # end
-
     render_wizard
     wizard_path
   end
@@ -76,6 +69,7 @@ class CaseContacts::FormController < ApplicationController
 
     @case_contact_types = ContactType.includes(:contact_type_group)
       .joins(:casa_case_contact_types)
+      .active
       .where(casa_case_contact_types: {casa_case_id: @casa_cases.pluck(:id)})
 
     @contact_types = if @case_contact_types.present?
@@ -84,14 +78,14 @@ class CaseContacts::FormController < ApplicationController
       ContactType
         .includes(:contact_type_group)
         .joins(:contact_type_group)
-        .where(contact_type_group: {casa_org: current_organization})
         .active
+        .where(contact_type_group: {casa_org: current_organization})
         .order("contact_type_group.name ASC", :name) # template builds grouped type checkboxes
     end
 
     @contact_topics = ContactTopic
-      .where(casa_org: current_organization)
       .active
+      .where(casa_org: current_organization)
       .order(:question)
 
     @selected_cases = @case_contact.draft_case_ids
@@ -177,14 +171,6 @@ class CaseContacts::FormController < ApplicationController
 
   def remove_nil_draft_ids
     params[:case_contact][:draft_case_ids] -= [""] if params.dig(:case_contact, :draft_case_ids)
-  end
-
-  def set_progress
-    @progress = if wizard_steps.any? && wizard_steps.index(step).present?
-      ((wizard_steps.index(step) + 1).to_d / wizard_steps.count.to_d) * 100
-    else
-      0
-    end
   end
 
   def set_steps

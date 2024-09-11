@@ -8,7 +8,7 @@ RSpec.describe "case_contacts/edit", type: :system do
   context "when admin" do
     let(:admin) { create(:casa_admin, casa_org: organization) }
 
-    it "admin successfully edits case contact", js: true do
+    it "admin successfully edits case contact", :js do
       sign_in admin
 
       visit edit_case_contact_path(case_contact)
@@ -24,10 +24,10 @@ RSpec.describe "case_contacts/edit", type: :system do
       expect(case_contact.casa_case_id).to eq casa_case.id
       expect(case_contact.duration_minutes).to eq 105
       expect(case_contact.medium_type).to eq "letter"
-      expect(case_contact.contact_made).to eq true
+      expect(case_contact.contact_made).to be true
     end
 
-    it "admin successfully edits case contact with mileage reimbursement", js: true do
+    it "admin successfully edits case contact with mileage reimbursement", :js do
       casa_case = create(:casa_case, :with_one_case_assignment, casa_org: organization)
       case_contact = create(:case_contact, duration_minutes: 105, casa_case: casa_case)
       sign_in admin
@@ -45,10 +45,10 @@ RSpec.describe "case_contacts/edit", type: :system do
       expect(case_contact.casa_case_id).to eq casa_case.id
       expect(case_contact.duration_minutes).to eq 105
       expect(case_contact.medium_type).to eq "in-person"
-      expect(case_contact.contact_made).to eq true
+      expect(case_contact.contact_made).to be true
     end
 
-    it "admin fails to edit volunteer address for case contact with mileage reimbursement", js: true do
+    it "admin fails to edit volunteer address for case contact with mileage reimbursement", :js do
       sign_in admin
 
       visit edit_case_contact_path(case_contact)
@@ -56,12 +56,12 @@ RSpec.describe "case_contacts/edit", type: :system do
       complete_details_page(case_numbers: [], contact_types: [], contact_made: true, medium: "In Person", hours: 1, minutes: 45, occurred_on: "04/04/2020")
       complete_notes_page
 
-      expect(find("#case_contact_volunteer_address").value)
+      expect(find_by_id("case_contact_volunteer_address").value)
         .to eq("There are two or more volunteers assigned to this case and \
 you are trying to set the address for both of them. This is not currently possible.")
     end
 
-    context "is part of a different organization" do
+    context "when user is part of a different organization" do
       let(:other_organization) { build(:casa_org) }
       let(:admin) { create(:casa_admin, casa_org: other_organization) }
 
@@ -69,7 +69,7 @@ you are trying to set the address for both of them. This is not currently possib
         sign_in admin
 
         visit edit_case_contact_path(case_contact)
-        expect(current_path).to eq supervisors_path
+        expect(page).to have_current_path supervisors_path, ignore_query: true
       end
     end
   end
@@ -78,7 +78,7 @@ you are trying to set the address for both of them. This is not currently possib
     let(:volunteer) { create(:volunteer, casa_org: organization) }
     let!(:case_assignment) { create(:case_assignment, volunteer: volunteer, casa_case: casa_case) }
 
-    it "is successful", js: true do
+    it "is successful", :js do
       case_contact = create(:case_contact, duration_minutes: 105, casa_case: casa_case, creator: volunteer)
       sign_in volunteer
       visit edit_case_contact_path(case_contact)
@@ -94,10 +94,10 @@ you are trying to set the address for both of them. This is not currently possib
       expect(case_contact.casa_case_id).to eq casa_case.id
       expect(case_contact.duration_minutes).to eq 105
       expect(case_contact.medium_type).to eq "letter"
-      expect(case_contact.contact_made).to eq true
+      expect(case_contact.contact_made).to be true
     end
 
-    it "is successful with mileage reimbursement on", js: true do
+    it "is successful with mileage reimbursement on", :js do
       case_contact = create(:case_contact, duration_minutes: 105, casa_case: casa_case, creator: volunteer)
       sign_in volunteer
       visit edit_case_contact_path(case_contact)
@@ -115,10 +115,10 @@ you are trying to set the address for both of them. This is not currently possib
       expect(case_contact.casa_case_id).to eq casa_case.id
       expect(case_contact.duration_minutes).to eq 105
       expect(case_contact.medium_type).to eq "in-person"
-      expect(case_contact.contact_made).to eq true
+      expect(case_contact.contact_made).to be true
     end
 
-    it "autosaves notes", pending: "is autosave applicable?", js: true do
+    it "autosaves notes", :js, pending: "is autosave applicable?" do
       case_contact = create(:case_contact, duration_minutes: 105, casa_case: casa_case, creator: volunteer, notes: "Hello from the other side")
       sign_in volunteer
       visit edit_case_contact_path(case_contact)
@@ -136,17 +136,28 @@ you are trying to set the address for both of them. This is not currently possib
     end
 
     context "when 'Create Another' option is checked" do
-      it "redirects to new contact with the same draft_case_ids", js: true do
+      it "creates a duplicate case contact for the second case" do
         case_contact = create(:case_contact, duration_minutes: 105, casa_case: casa_case, creator: volunteer)
         sign_in volunteer
         visit edit_case_contact_path(case_contact)
 
-        complete_details_page(contact_made: true, medium: "Letter")
-        complete_notes_page
-        fill_in_expenses_page
+        complete_details_page
 
         check "Create Another"
-        expect { click_on "Submit" }.to change { CaseContact.count }.by(1)
+
+        expect { click_on "Submit" }.to change(CaseContact, :count).by(1)
+      end
+
+      # request spec?
+      it "redirects to new contact with the same draft_case_ids", :js do
+        case_contact = create(:case_contact, duration_minutes: 105, casa_case: casa_case, creator: volunteer)
+        sign_in volunteer
+        visit edit_case_contact_path(case_contact)
+
+        complete_details_page
+
+        check "Create Another"
+        expect { click_on "Submit" }.to change(CaseContact.active, :count).by(1)
 
         expect(page).to have_text casa_case.case_number
       end

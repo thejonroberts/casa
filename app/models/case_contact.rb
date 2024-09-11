@@ -73,11 +73,15 @@ class CaseContact < ApplicationRecord
     notes? || active?
   end
 
+  # has_many :todos
+  # accepts_nested_attributes_for :todos, reject_if: :all_blank, allow_destroy: true
+  # # belongs_to :user
+
   accepts_nested_attributes_for :additional_expenses, reject_if: :all_blank, allow_destroy: true
   validates_associated :additional_expenses
 
   accepts_nested_attributes_for :casa_case
-  accepts_nested_attributes_for :contact_topic_answers, update_only: true
+  accepts_nested_attributes_for :contact_topic_answers, reject_if: :all_blank, allow_destroy: true
 
   scope :supervisors, ->(supervisor_ids = nil) {
     joins(:supervisor_volunteer).where(supervisor_volunteers: {supervisor_id: supervisor_ids}) if supervisor_ids.present?
@@ -276,11 +280,10 @@ class CaseContact < ApplicationRecord
   end
 
   def volunteer
-    if creator.is_a?(Volunteer)
-      creator
-    elsif CasaCase.find(draft_case_ids.first).volunteers.count == 1
-      CasaCase.find(draft_case_ids.first).volunteers.first
-    end
+    return creator if creator&.is_a?(Volunteer)
+
+    first_draft_case = CasaCase.where(id: draft_case_ids).first
+    draft_case&.volunteers&.first if first_draft_case&.volunteers&.count == 1
   end
 
   def self.create_with_answers(casa_org, **kwargs)
