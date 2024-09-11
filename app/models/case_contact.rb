@@ -16,7 +16,7 @@ class CaseContact < ApplicationRecord
     allow_nil: true
   }
   validates :occurred_at, comparison: {
-    less_than: Date.tomorrow,
+    less_than: Time.zone.tomorrow,
     message: :cant_be_future,
     allow_nil: true
   }
@@ -36,7 +36,7 @@ class CaseContact < ApplicationRecord
   belongs_to :casa_case, optional: true
   has_one :casa_org, through: :casa_case
   validates :casa_case_id, presence: true, if: :active?
-  validate :draft_case_ids_not_empty, unless: :started?
+  validate :draft_case_ids_not_empty, if: :active_or_details?
 
   has_many :case_contact_contact_types
   has_many :contact_types, through: :case_contact_contact_types
@@ -77,7 +77,7 @@ class CaseContact < ApplicationRecord
   validates_associated :additional_expenses
 
   accepts_nested_attributes_for :casa_case
-  accepts_nested_attributes_for :contact_topic_answers, update_only: true
+  accepts_nested_attributes_for :contact_topic_answers, reject_if: :all_blank, allow_destroy: true
 
   scope :supervisors, ->(supervisor_ids = nil) {
     joins(:supervisor_volunteer).where(supervisor_volunteers: {supervisor_id: supervisor_ids}) if supervisor_ids.present?

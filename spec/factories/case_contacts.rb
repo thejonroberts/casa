@@ -44,6 +44,7 @@ FactoryBot.define do
       started # enum trait
 
       casa_case { nil }
+      contact_types { [] }
       draft_case_ids { [] }
       medium_type { nil }
       occurred_at { nil }
