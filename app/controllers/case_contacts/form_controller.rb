@@ -8,10 +8,8 @@ class CaseContacts::FormController < ApplicationController
 
   # wizard_path
   def show
-    # ? error if not details step?
     authorize @case_contact
 
-    # ? Do I need to add selected in the params for other views...
     get_cases_and_contact_types
 
     if @case_contact.started?
@@ -42,11 +40,9 @@ class CaseContacts::FormController < ApplicationController
     else
       respond_to do |format|
         format.html {
-          # ? shared setup method at least? # ? different behavior from show...
           get_cases_and_contact_types
           render step
         }
-        # ? any error message to send
         format.json { head :internal_server_error }
       end
     end
@@ -57,6 +53,7 @@ class CaseContacts::FormController < ApplicationController
   def set_case_contact
     # @case_contact = CaseContact.includes(:creator, contact_topic_answers: :contact_topic)
     # ? includes additional_expenses
+    # ? includes contact_topic_answers: :contact_topic
 
     @case_contact = CaseContact.includes(:creator)
       .find(params[:case_contact_id])
@@ -142,7 +139,6 @@ class CaseContacts::FormController < ApplicationController
       case_contact.case_contact_contact_types.each do |ccct|
         new_case_contact.case_contact_contact_types.new(contact_type_id: ccct.contact_type_id)
       end
-      # ? potential problem accounting for duplicated expenses?
       case_contact.additional_expenses.each do |ae|
         new_case_contact.additional_expenses.new(
           other_expense_amount: ae.other_expense_amount,
@@ -164,8 +160,6 @@ class CaseContacts::FormController < ApplicationController
   # Deletes the current associations (from the join table) only if the submitted form body has the parameters for
   # the contact_type ids.
   def remove_unwanted_contact_types
-    # ? bc we want case_contact_types i think?
-    # puts "REMOVE_UNWANTED_CONTACT_TYPES #{params.dig(:case_contact, :contact_type_ids).present?}"
     @case_contact.contact_types.clear if params.dig(:case_contact, :contact_type_ids)
   end
 

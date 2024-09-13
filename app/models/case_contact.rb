@@ -16,7 +16,7 @@ class CaseContact < ApplicationRecord
     allow_nil: true
   }
   validates :occurred_at, comparison: {
-    less_than: Date.tomorrow,
+    less_than: Time.zone.tomorrow,
     message: :cant_be_future,
     allow_nil: true
   }
@@ -280,10 +280,11 @@ class CaseContact < ApplicationRecord
   end
 
   def volunteer
-    return creator if creator&.is_a?(Volunteer)
-
-    first_draft_case = CasaCase.where(id: draft_case_ids).first
-    draft_case&.volunteers&.first if first_draft_case&.volunteers&.count == 1
+    if creator.is_a?(Volunteer)
+      creator
+    elsif CasaCase.find(draft_case_ids.first).volunteers.count == 1
+      CasaCase.find(draft_case_ids.first).volunteers.first
+    end
   end
 
   def self.create_with_answers(casa_org, **kwargs)
