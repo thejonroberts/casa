@@ -36,7 +36,7 @@ class CaseContact < ApplicationRecord
   belongs_to :casa_case, optional: true
   has_one :casa_org, through: :casa_case
   validates :casa_case_id, presence: true, if: :active?
-  validate :draft_case_ids_not_empty, unless: :started?
+  validate :draft_case_ids_not_empty, if: :active_or_details?
 
   has_many :case_contact_contact_types
   has_many :contact_types, through: :case_contact_contact_types
@@ -72,10 +72,6 @@ class CaseContact < ApplicationRecord
   def active_or_notes?
     notes? || active?
   end
-
-  # has_many :todos
-  # accepts_nested_attributes_for :todos, reject_if: :all_blank, allow_destroy: true
-  # # belongs_to :user
 
   accepts_nested_attributes_for :additional_expenses, reject_if: :all_blank, allow_destroy: true
   validates_associated :additional_expenses

@@ -48,7 +48,7 @@ RSpec.describe "CaseContacts::Forms", type: :request do
       expect(response).to render_template(:details)
     end
 
-    it "does not change contact status" do
+    it "does not change status from 'started'" do
       expect(case_contact.status).to eq "started"
       request
 
@@ -106,7 +106,7 @@ RSpec.describe "CaseContacts::Forms", type: :request do
   end
 
   describe "PATCH /update" do
-    let(:case_contact) { create(:case_contact, :details_status, creator: volunteer) }
+    let(:case_contact) { create(:case_contact, :started_status, creator: volunteer) }
     let(:contact_type_group) { create(:contact_type_group, casa_org:) }
     let!(:contact_types) { create_list(:contact_type, 2, contact_type_group:) }
     let(:medium_type) { CaseContact::CONTACT_MEDIUMS.second }
@@ -160,12 +160,18 @@ RSpec.describe "CaseContacts::Forms", type: :request do
 
     it "sets the case_contact's casa_case_id and status: 'active'" do
       expect(case_contact.casa_case_id).to be_nil
-      expect(case_contact.status).not_to eq "active"
+      expect(case_contact.status).to eq "started"
       request
 
       case_contact.reload
       expect(case_contact.status).to eq "active"
       expect(case_contact.casa_case_id).to eq casa_case.id
+    end
+
+    it "changes status to 'active' if it was 'started'" do
+      case_contact.update!(status: "started")
+      request
+      expect(case_contact.reload.status).to eq "active"
     end
 
     it "raises RoutingError if no step in url" do
@@ -197,6 +203,12 @@ RSpec.describe "CaseContacts::Forms", type: :request do
         # this should be a different status, but wicked wizard's 'render' method is a bit different?
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:details)
+      end
+
+      it "does not change the contact status from 'started'" do
+        case_contact.started!
+        expect { request }.not_to change(case_contact, :status)
+        expect(case_contact.reload.status).to eq "started"
       end
     end
 
@@ -430,8 +442,8 @@ RSpec.describe "CaseContacts::Forms", type: :request do
         expect(case_contact.contact_made).to be true
       end
 
-      it "does not change from details status" do
-        expect(case_contact.status).to eq "details"
+      it "changes status from 'started' to 'details'" do
+        expect(case_contact.status).to eq "started"
         request
 
         expect(case_contact.reload.status).to eq "details"
@@ -470,6 +482,10 @@ RSpec.describe "CaseContacts::Forms", type: :request do
           request
 
           expect(response).to have_http_status(:internal_server_error)
+        end
+
+        it "does not change the contact status" do
+          expect { request }.not_to change(case_contact, :status)
         end
       end
     end

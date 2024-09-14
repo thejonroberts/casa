@@ -3,8 +3,9 @@ class CaseContacts::FormController < ApplicationController
 
   before_action :require_organization!
   before_action :set_case_contact, only: [:show, :update]
-  prepend_before_action :set_steps, only: [:show, :update]
   after_action :verify_authorized
+
+  steps :details
 
   # wizard_path
   def show
@@ -51,17 +52,16 @@ class CaseContacts::FormController < ApplicationController
   private
 
   def set_case_contact
-    # @case_contact = CaseContact.includes(:creator, contact_topic_answers: :contact_topic)
     # ? includes additional_expenses
     # ? includes contact_topic_answers: :contact_topic
-
-    @case_contact = CaseContact.includes(:creator)
+    @case_contact = CaseContact
+      .includes(:creator)
       .find(params[:case_contact_id])
   end
 
   def get_cases_and_contact_types
     @casa_cases = policy_scope(current_organization.casa_cases).includes([:volunteers])
-    # ? also disable input if this happens?
+    # ? limiting to one case.. also disable input if this happens?
     @casa_cases = @casa_cases.where(id: @case_contact.casa_case_id) if @case_contact.active?
 
     @case_contact_types = ContactType.includes(:contact_type_group)
@@ -70,7 +70,7 @@ class CaseContacts::FormController < ApplicationController
       .where(casa_case_contact_types: {casa_case_id: @casa_cases.pluck(:id)})
 
     @contact_types = if @case_contact_types.present?
-      @case_contact_types.active
+      @case_contact_types
     else
       ContactType
         .includes(:contact_type_group)
@@ -84,9 +84,6 @@ class CaseContacts::FormController < ApplicationController
       .active
       .where(casa_org: current_organization)
       .order(:question)
-
-    @selected_cases = @case_contact.draft_case_ids
-    @selected_contact_type_ids = @case_contact.contact_type_ids
   end
 
   def finish_editing
@@ -98,8 +95,8 @@ class CaseContacts::FormController < ApplicationController
     else
       message = "Case #{"contact".pluralize(draft_case_ids.count)} successfully created."
       create_additional_case_contacts(@case_contact)
+      # save all draft case ids in metadata?
       first_casa_case_id = draft_case_ids.first
-      # why remove draft case ids? seems useful to keep around?
       @case_contact.update(status: "active", draft_case_ids: [first_casa_case_id], casa_case_id: first_casa_case_id)
     end
     update_volunteer_address(@case_contact)
@@ -165,9 +162,5 @@ class CaseContacts::FormController < ApplicationController
 
   def remove_nil_draft_ids
     params[:case_contact][:draft_case_ids] -= [""] if params.dig(:case_contact, :draft_case_ids)
-  end
-
-  def set_steps
-    self.steps = CaseContact.find(params[:case_contact_id]).form_steps
   end
 end
