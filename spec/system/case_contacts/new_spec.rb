@@ -246,8 +246,7 @@ RSpec.describe "case_contacts/new", :js, type: :system do
       allow(Flipper).to receive(:enabled?).with(:reimbursement_warning, casa_org).and_call_original
     end
 
-    it "is not shown until 'Request travel or other reimbursement' is checked",
-      pending: "TODO: implement stimulus controller" do
+    it "is not shown until 'Request travel or other reimbursement' is checked" do
       subject
 
       expect(page).to have_no_field(miles_driven_input)
@@ -261,8 +260,7 @@ RSpec.describe "case_contacts/new", :js, type: :system do
       expect(page).to have_button(add_expense_button_text)
     end
 
-    it "clears mileage info if reimbursement unchecked",
-      pending: "TODO: implement stimulus controller" do
+    it "clears mileage info if reimbursement unchecked" do
       subject
       fill_in_contact_details
 

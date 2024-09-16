@@ -55,9 +55,11 @@ module FillInCaseContactFields
     end
 
     within NOTES_ID do
-      # previously answered on separate page... consolidate somehow...
       Array.wrap(contact_topics).each do |topic|
         click_on "Add Note"
+        # topic only, answer done in fill_in_notes
+        # artifact of wizard form steps
+        # consolidate somehow?
         answer_topic_unscoped topic, nil
       end
     end
