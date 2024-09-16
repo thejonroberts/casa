@@ -12,8 +12,8 @@ FactoryBot.define do
     active # use the `:active` enum trait
     association :creator, factory: :user
     casa_case
+    contact_types { [association(:contact_type)] }
 
-    contact_types { [create(:contact_type)] }
     duration_minutes { 60 }
     occurred_at { Time.zone.today }
     contact_made { false }
