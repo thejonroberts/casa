@@ -3,6 +3,10 @@ import { Controller } from '@hotwired/stimulus'
 // Connects to data-controller="case-contact-form"
 export default class extends Controller {
   static targets = [
+    'expenseAmount',
+    'expenseDescribe',
+    'milesDriven',
+    'volunteerAddress',
     'reimbursementForm',
     'wantDrivingReimbursement'
   ]
@@ -12,14 +16,14 @@ export default class extends Controller {
   }
 
   clearExpenses = () => {
-    this.element.querySelectorAll('.expense-amount-input').forEach(el => (el.value = ''))
-    this.element.querySelectorAll('.expense-describe-input').forEach(el => (el.value = ''))
-    this.element.querySelector('#case_contact_miles_driven').value = 0
+    this.expenseDescribeTargets.forEach(el => (el.value = ''))
+    this.expenseAmountTargets.forEach(el => (el.value = ''))
   }
 
   clearMileage = () => {
-    this.element.querySelector('#case_contact_miles_driven').value = 0
-    this.element.querySelector('#case_contact_volunteer_address').value = ''
+    this.milesDrivenTarget.value = 0
+    // don't want to clear address on page load: should not matter if submitted without reimbursement & mileage.
+    // this.volunteerAddressTarget.value = ''
   }
 
   setReimbursementFormVisibility = () => {

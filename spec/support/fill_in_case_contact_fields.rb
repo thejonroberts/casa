@@ -14,10 +14,8 @@ module FillInCaseContactFields
   # @param occurred_on [String], date in the format MM/dd/YYYY
   # @param hours [Integer]
   # @param minutes [Integer]
-  def fill_in_contact_details(
-    contact_made: true, medium: "In Person", occurred_on: Time.zone.today, hours: nil, minutes: nil,
-    case_numbers: [], contact_types: [], contact_topics: []
-  )
+  def fill_in_contact_details(contact_made: true, medium: "In Person", occurred_on: Time.zone.today, hours: nil, minutes: nil,
+    case_numbers: [], contact_types: [], contact_topics: [])
     within DETAILS_ID do
       within "#draft-case-id-selector" do
         if !case_numbers.empty?
@@ -58,8 +56,8 @@ module FillInCaseContactFields
       Array.wrap(contact_topics).each do |topic|
         click_on "Add Note"
         # topic only, answer done in fill_in_notes
-        # artifact of wizard form steps
-        # consolidate somehow?
+        # artifact of wizard form steps -
+        # TODO: consolidate topic/answer and fix what fails
         answer_topic_unscoped topic, nil
       end
     end

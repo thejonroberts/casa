@@ -198,12 +198,26 @@
           <div class="row py-2">
             <div class="col-md-4">
               <%= form.label :miles_driven, "Total miles driven" %>
-              <%= form.number_field :miles_driven, class: "form-control", min: "0", max: 10000, placeholder: "0" %>
+              <%= form.number_field(:miles_driven,
+                min: "0", max: 10000, placeholder: "0",
+                class: "form-control",
+                data: { case_contact_form_target: "milesDriven" },
+              ) %>
             </div>
 
             <div class="col">
               <%= form.label :volunteer_address, "Your current address (for reimbursement check)" %>
-              <%= form.text_area :volunteer_address, value: @case_contact.decorate.address_of_volunteer, disabled: @case_contact.address_field_disabled?, class: "form-control" %>
+              <%= form.text_area(:volunteer_address,
+                value: @case_contact.decorate.address_of_volunteer,
+                disabled: @case_contact.address_field_disabled?,
+                class: "form-control",
+                data: { case_contact_form_target: "volunteerAddress" },
+              ) %>
+              <% if @case_contact.address_field_disabled? %>
+                <small class="text-danger">
+                  <%= @case_contact.decorate.ambiguous_volunteer_address_message %>
+                </small>
+              <% end %>
             </div>
           </div>
 

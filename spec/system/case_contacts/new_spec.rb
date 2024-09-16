@@ -7,7 +7,6 @@ RSpec.describe "case_contacts/new", :js, type: :system do
   let!(:school_contact_type) { create :contact_type, contact_type_group:, name: "School" }
 
   let(:volunteer) { create :volunteer, :with_single_case, casa_org: }
-  let(:supervisor) { create :supervisor, casa_org:, volunteers: [volunteer] }
   let(:casa_admin) { create :casa_admin, casa_org: }
   let(:casa_case) { volunteer.casa_cases.first }
   let(:case_number) { casa_case.case_number }
@@ -218,6 +217,7 @@ RSpec.describe "case_contacts/new", :js, type: :system do
       end
 
       context "with supervisor user" do
+        let(:supervisor) { create :supervisor, casa_org: }
         let(:user) { supervisor }
 
         it "guides supervisor to contact admin" do
