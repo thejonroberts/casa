@@ -38,6 +38,7 @@ FactoryBot.define do
     trait :wants_reimbursement do
       miles_driven { 456 }
       want_driving_reimbursement { true }
+      volunteer_address { "123 Contact Factory St" }
     end
 
     trait :started_status do
