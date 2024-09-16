@@ -39,7 +39,7 @@ class CaseContact < ApplicationRecord
 
   has_many :case_contact_contact_types
   has_many :contact_types, through: :case_contact_contact_types
-  validates :contact_types, presence: {message: :must_be_selected}, if: :active_or_details?
+  validates :case_contact_contact_types, presence: {message: :must_be_selected}, if: :active_or_details?
 
   has_many :additional_expenses
   has_many :contact_topic_answers, dependent: :destroy

@@ -35,6 +35,7 @@ en:
       case_contact:
         occurred_at: Date
         contact_types: Contact Type(s)
+        case_contact_contact_types: Contact Type(s)
     errors:
       messages:
         cant_be_future: can't be in the future

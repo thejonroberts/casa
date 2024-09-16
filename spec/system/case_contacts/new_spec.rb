@@ -439,8 +439,7 @@ RSpec.describe "case_contacts/new", :js, type: :system do
       let(:draft_case_ids) { [casa_case.id, casa_case_two.id] }
 
       it "redirects to the new CaseContact form with the same cases selected",
-        pending: "TODO: passes when run alone, fails when run with rest of file (ordered)" do
-        # flipper related?
+        pending: "passes when run spec alone, fail when run with rest of file/suite" do
         expect { subject }.to change(CaseContact.started, :count).by(1)
         this_case_contact = CaseContact.started.last
 
@@ -461,7 +460,6 @@ RSpec.describe "case_contacts/new", :js, type: :system do
 
         expect(next_case_contact.status).to eq "started"
         expect(page).to have_text case_number
-
         expect(page).to have_text case_number_two
         expect(next_case_contact.draft_case_ids).to match_array draft_case_ids
       end
