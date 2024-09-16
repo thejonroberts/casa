@@ -34,9 +34,11 @@ en:
     attributes:
       case_contact:
         occurred_at: Date
+        contact_types: Contact Type(s)
     errors:
       messages:
         cant_be_future: can't be in the future
+        must_be_selected: must be selected
   time:
     formats:
       day_and_date: "%A, %b %d, %Y"

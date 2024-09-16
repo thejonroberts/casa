@@ -22,8 +22,7 @@ export default class extends Controller {
 
   clearMileage = () => {
     this.milesDrivenTarget.value = 0
-    // don't want to clear address on page load: should not matter if submitted without reimbursement & mileage.
-    // this.volunteerAddressTarget.value = ''
+    this.volunteerAddressTarget.value = ''
   }
 
   setReimbursementFormVisibility = () => {
