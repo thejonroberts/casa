@@ -2,6 +2,7 @@
 class CaseContactParameters < SimpleDelegator
   def initialize(params)
     params = normalize_params(params)
+    params = normalize_topic_answers_and_notes(params)
     new_params =
       params.require(:case_contact).permit(
         :duration_minutes,
@@ -36,7 +37,7 @@ class CaseContactParameters < SimpleDelegator
       params[:case_contact][:miles_driven] = convert_miles_driven(params)
     end
 
-    normalize_topic_answers_and_notes(params)
+    params
   end
 
   def convert_metadata(metadata)
