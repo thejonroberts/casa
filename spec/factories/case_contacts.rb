@@ -12,10 +12,7 @@ FactoryBot.define do
     active # use the `:active` enum trait
     association :creator, factory: :user
     casa_case
-    contact_types do
-      casa_org = instance.casa_case&.casa_org || instance.creator&.casa_org || build(:casa_org)
-      [association(:contact_type, casa_org:)]
-    end
+    contact_types { [association(:contact_type)] }
 
     duration_minutes { 60 }
     occurred_at { Time.zone.today }

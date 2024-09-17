@@ -83,15 +83,12 @@ RSpec.describe "case_contacts/new", :js, type: :system do
   end
 
   describe "contact types" do
-    it "requires at lease one contact type" do
+    it "does not require a contact type" do
       subject
 
       fill_in_contact_details(contact_types: [])
 
-      expect { click_on "Submit" }.not_to change(CaseContact, :count)
-
-      expect(page).to have_text "New Case Contact"
-      expect(page).to have_text("Contact Type(s) must be selected")
+      expect { click_on "Submit" }.to change(CaseContact.active, :count)
     end
 
     it "does not display empty contact groups or hidden contact types" do

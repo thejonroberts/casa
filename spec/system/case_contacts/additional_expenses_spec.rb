@@ -118,7 +118,7 @@ RSpec.describe "CaseContact AdditionalExpenses Form", :flipper, :js, type: :syst
   end
 
   context "when editing existing case contact expenses" do
-    let(:case_contact) { create :case_contact, :wants_reimbursement, casa_case:, creator: volunteer }
+    let(:case_contact) { create :case_contact, :wants_reimbursement, casa_case:, creator: volunteer, contact_types: [contact_type] }
     let!(:additional_expenses) do
       [
         create(:additional_expense, case_contact:, other_expense_amount: 1.11, other_expenses_describe: "First Expense"),
