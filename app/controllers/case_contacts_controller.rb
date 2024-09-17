@@ -33,7 +33,6 @@ class CaseContactsController < ApplicationController
 
   def new
     store_referring_location
-    # authorize @case_contact
     authorize CaseContact
 
     casa_cases = policy_scope(current_organization.casa_cases)

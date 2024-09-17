@@ -102,7 +102,6 @@ class CaseContacts::FormController < ApplicationController
     else
       message = "Case #{"contact".pluralize(draft_case_ids.count)} successfully created."
       create_additional_case_contacts(@case_contact)
-      # save all draft case ids in metadata?
       first_casa_case_id = draft_case_ids.first
       @case_contact.update(status: "active", draft_case_ids: [first_casa_case_id], casa_case_id: first_casa_case_id)
     end

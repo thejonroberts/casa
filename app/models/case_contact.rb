@@ -20,9 +20,9 @@ class CaseContact < ApplicationRecord
     message: :cant_be_future,
     allow_nil: true
   }
-  validate :reimbursement_only_when_miles_driven, unless: :started?
-  validate :volunteer_address_when_reimbursement_wanted, unless: :started?
-  validate :volunteer_address_is_valid, unless: :started?
+  validate :reimbursement_only_when_miles_driven, if: :active_or_details?
+  validate :volunteer_address_when_reimbursement_wanted, if: :active_or_details?
+  validate :volunteer_address_is_valid, if: :active_or_details?
 
   belongs_to :creator, class_name: "User"
   has_one :supervisor_volunteer, -> {
@@ -48,9 +48,9 @@ class CaseContact < ApplicationRecord
 
   after_save_commit ::CaseContactMetadataCallback.new
 
-  # NOTE: notes, expenses status should no longer be here
+  # NOTE: 'notes' & 'expenses' status are no longer used.
   # migrate any legacy notes/expenses 'back' to started/details status (draft) & remove notes/expenses from enum
-  # note: enum defines methods (active?) and scopes (.active, .not_active) for each member
+  # NOTE: enum defines methods (active?) and scopes (.active, .not_active) for each member
   enum :status, {
     started: "started",
     active: "active",
@@ -278,16 +278,6 @@ class CaseContact < ApplicationRecord
       creator
     elsif CasaCase.find(draft_case_ids.first).volunteers.count == 1
       CasaCase.find(draft_case_ids.first).volunteers.first
-    end
-  end
-
-  def self.create_with_answers(casa_org, **kwargs)
-    create(kwargs).tap do |case_contact|
-      casa_org.contact_topics.active.each do |topic|
-        unless case_contact.contact_topic_answers << ContactTopicAnswer.new(contact_topic: topic)
-          case_contact.errors.add(:contact_topic_answers, "could not create topic #{topic&.question.inspect}")
-        end
-      end
     end
   end
 
