@@ -11,10 +11,8 @@ class CaseContacts::FormController < ApplicationController
     authorize @case_contact
 
     @case_contact.contact_made = true if @case_contact.started?
-
     prepare_form
     render_wizard
-    wizard_path
   end
 
   def update
@@ -25,8 +23,8 @@ class CaseContacts::FormController < ApplicationController
 
     respond_to do |format|
       format.html do
+        # only update status during form submission, not json/autosave requests
         params[:case_contact][:status] = CaseContact.statuses[step] if !@case_contact.active?
-
         if @case_contact.update(case_contact_params)
           finish_editing
         else

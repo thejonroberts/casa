@@ -439,9 +439,7 @@ RSpec.describe "case_contacts/new", :js, type: :system do
         expect { subject }.to change(CaseContact.started, :count).by(1)
         this_case_contact = CaseContact.started.last
 
-        complete_details_page(
-          case_numbers: [case_number, case_number_two], contact_types: %w[School]
-        )
+        complete_details_page(case_numbers: [case_number, case_number_two], contact_types: %w[School])
 
         check "Create Another"
 
