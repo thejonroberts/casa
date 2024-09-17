@@ -1,4 +1,4 @@
-
+// This is unscoped, if re-implemented, add scope for elements.
 // fieldset {
 //     border: 1px double #CCC;
 // }
@@ -91,9 +91,9 @@ legend {
     }
  }
 
-// .other-expenses li {
-//     margin-bottom: .2rem;
-// }
+.other-expenses li {
+    margin-bottom: .2rem;
+}
 
 .other-expense-amount {
     width: 20%;

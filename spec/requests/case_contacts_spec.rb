@@ -46,7 +46,7 @@ RSpec.describe "/case_contacts", type: :request do
 
     it { is_expected.to have_http_status(:redirect) }
 
-    it "creates a 'started' status case contact and redirects its form" do
+    it "creates a 'started' status case contact and redirects to the form" do
       expect { request }.to change(CaseContact, :count).by(1)
       new_case_contact = CaseContact.last
       expect(new_case_contact.status).to eq "started"
