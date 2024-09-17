@@ -33,11 +33,7 @@ class CaseContacts::FormController < ApplicationController
         params[:case_contact][:status] = CaseContact.statuses[step] if !@case_contact.active?
 
         if @case_contact.update(case_contact_params)
-          if step == steps.last
-            finish_editing
-          else
-            render_wizard @case_contact, {}, {case_contact_id: @case_contact.id}
-          end
+          finish_editing
         else
           get_cases_and_contact_types
           render step

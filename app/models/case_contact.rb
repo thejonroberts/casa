@@ -48,12 +48,9 @@ class CaseContact < ApplicationRecord
 
   after_save_commit ::CaseContactMetadataCallback.new
 
-  # Corresponds to the steps in the controller, so validations for certain columns can happen at those steps.
-  # These steps must be listed in order, have an html template in case_contacts/form, & be listed in the status enum
-  FORM_STEPS = %i[details].freeze
+  # NOTE: notes, expenses status should no longer be here
+  # migrate any legacy notes/expenses 'back' to started/details status (draft) & remove notes/expenses from enum
   # note: enum defines methods (active?) and scopes (.active, .not_active) for each member
-  # string values for wizard form steps, integer column would make db queries faster
-  # migrate any legacy notes/expenses 'back' to details status (draft)
   enum :status, {
     started: "started",
     active: "active",
@@ -303,12 +300,6 @@ class CaseContact < ApplicationRecord
     casa_case_ids.each_with_object({}) do |casa_case_id, hash|
       hash[casa_case_id] = cases.select { |c| c.casa_case_id == casa_case_id || c.draft_case_ids.include?(casa_case_id) }
     end
-  end
-
-  def form_steps
-    steps = FORM_STEPS.dup
-    steps.delete(:expenses) unless casa_org_any_expenses_enabled?
-    steps.freeze
   end
 
   def casa_org_any_expenses_enabled?
