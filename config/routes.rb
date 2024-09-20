@@ -96,6 +96,9 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :contact_topic_answers, only: %i[create destroy],
+    constraints: lambda { |req| req.format == :json }
+
   resources :reports, only: %i[index]
   get :export_emails, to: "reports#export_emails"
 
