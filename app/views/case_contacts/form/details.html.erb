@@ -224,7 +224,11 @@
             <!-- ADDITIONAL EXPENSES -->
             <div id="contact-form-expenses"
               class="other-expenses"
-              data-controller="casa-nested-form">
+              data-controller="casa-nested-form"
+              data-casa-nested-form-route-value="/additional_expenses"
+              data-casa-nested-form-parent-name-value="case_contact"
+              data-casa-nested-form-parent-id-value="<%= @case_contact.id %>"
+              data-casa-nested-form-model-name-value="additional_expense">
 
               <template data-casa-nested-form-target="template">
                 <%= form.fields_for :additional_expenses, AdditionalExpense.new, child_index: "NEW_RECORD" do |expense_fields| %>
@@ -240,7 +244,9 @@
 
               <div data-casa-nested-form-target="target"></div>
 
-              <button type="button" class="btn btn-link" data-action="casa-nested-form#add">
+              <!--<button type="button" class="btn btn-link" data-action="casa-nested-form#add">-->
+              <button type="button" class="btn btn-link"
+                data-action="casa-nested-form#addAndCreate">
                 + Add Expense
               </button>
             </div>

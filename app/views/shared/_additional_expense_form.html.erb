@@ -1,4 +1,7 @@
-<div class="nested-form-wrapper" data-new-record="<%= form.object.new_record? %>">
+<div class="nested-form-wrapper"
+  data-new-record="<%= form.object.new_record? %>"
+  data-casa-nested-form-target="wrapper"
+  data-child-index="<%= form.options[:child_index] %>">
   <div class="d-flex gap-1">
     <div class="col-md-4">
       <%= form.label :other_expense_amount, "Expense amount" %>
@@ -25,11 +28,13 @@
     <div class="flex-shrink-1">
       <button type="button"
         class="remove-expense-button mt-4 btn btn-sm danger-btn-outline btn-hover"
-        data-action="casa-nested-form#remove">
+        data-action="casa-nested-form#destroyAndRemove">
+        <!--data-action="casa-nested-form#remove">-->
         Remove
       </button>
     </div>
 
-    <%= form.hidden_field :_destroy %>
+    <%= form.hidden_field :id, value: form.object.id %>
+    <%= form.hidden_field :_destroy, data: {case_contact_form_target: "expenseDestroy"} %>
   </div>
 </div>
