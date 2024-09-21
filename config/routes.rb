@@ -194,6 +194,9 @@ Rails.application.routes.draw do
   end
   resources :case_court_orders, only: %i[destroy]
 
+  resources :additional_expenses, only: %i[create destroy],
+    constraints: lambda { |req| req.format == :json }
+
   namespace :all_casa_admins do
     resources :casa_orgs, only: [:new, :create, :show] do
       resources :casa_admins, only: [:new, :create, :edit, :update] do
