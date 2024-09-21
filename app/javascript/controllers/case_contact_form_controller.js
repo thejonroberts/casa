@@ -3,8 +3,6 @@ import { Controller } from '@hotwired/stimulus'
 // Connects to data-controller="case-contact-form"
 export default class extends Controller {
   static targets = [
-    'expenseAmount',
-    'expenseDescribe',
     'expenseDestroy',
     'milesDriven',
     'volunteerAddress',
@@ -17,8 +15,9 @@ export default class extends Controller {
   }
 
   clearExpenses = () => {
-    // mark for destruction. autosave has already created the record.
-    // if submitted, it will be destroyed. if autosaved, it will be removed by nested form controller.
+    // mark for destruction. autosave has already created the records.
+    // if autosaved, nested form controller will remove destroy: true items
+    // if form submitted, it will be destroyed.
     this.expenseDestroyTargets.forEach(el => (el.value = '1'))
   }
 

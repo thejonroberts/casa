@@ -23,7 +23,6 @@ RSpec.describe "/additional_expenses", type: :request do
     subject { post additional_expenses_path, params:, as: :json }
 
     it "creates a new AdditionalExpense and responds created" do
-      puts params
       expect { subject }.to change(AdditionalExpense, :count).by(1)
       expect(response).to have_http_status(:created)
     end

@@ -62,12 +62,12 @@ export default class extends NestedForm {
   }
 
   /* Adds item to the form. Item will not be created until form submission. */
-  add = (e) => {
+  add (e) {
     super.add(e)
   }
 
   /* Creates a new record for the added item (before submission). */
-  addAndCreate = (e) => {
+  addAndCreate (e) {
     this.add(e)
     const items = this.element.querySelectorAll(this.wrapperSelectorValue)
     const addedItem = items[items.length - 1]
@@ -128,7 +128,7 @@ export default class extends NestedForm {
   }
 
   /* Destroys a record when removing the item (before submission). */
-  destroyAndRemove = (e) => {
+  destroyAndRemove (e) {
     const wrapper = e.target.closest(this.wrapperSelectorValue)
     const recordId = this.getRecordId(wrapper)
     if (wrapper.dataset.newRecord === 'false' && (recordId.length > 0)) {
