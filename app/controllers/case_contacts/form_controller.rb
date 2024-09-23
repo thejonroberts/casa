@@ -10,7 +10,6 @@ class CaseContacts::FormController < ApplicationController
   def show
     authorize @case_contact
 
-    @case_contact.contact_made = true if @case_contact.started?
     prepare_form
     render_wizard
   end
