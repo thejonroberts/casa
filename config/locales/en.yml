@@ -32,20 +32,22 @@
 en:
   activerecord:
     attributes:
-      case_contact:
-        occurred_at: Date
-        contact_types: Contact Type(s)
-        case_contact_contact_types: Contact Type(s)
-      case_contact/additional_expenses:
-        other_expenses_describe: Expense description
-        other_expenses_amount: Expense amount
       additional_expense:
-        other_expenses_describe: Description
         other_expenses_amount: Amount
+        other_expenses_describe: Description
+      case_contact:
+        case_contact_contact_types: Contact Type(s)
+        contact_types: Contact Type(s)
+        draft_case_ids: CASA Case(s)
+        occurred_at: Date
+      case_contact/additional_expenses:
+        other_expenses_amount: Expense amount
+        other_expenses_describe: Expense description
     errors:
       messages:
         cant_be_future: can't be in the future
         must_be_selected: must be selected
+        must_be_true_or_false: must be true or false
   time:
     formats:
       day_and_date: "%A, %b %d, %Y"

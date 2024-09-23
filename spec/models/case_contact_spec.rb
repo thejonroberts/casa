@@ -68,7 +68,7 @@ RSpec.describe CaseContact, type: :model do
     it "validates that contact_made cannot be null" do
       case_contact = build_stubbed(:case_contact, contact_made: nil)
       expect(case_contact).not_to be_valid
-      expect(case_contact.errors[:base]).to eq(["Must enter whether the contact was made."])
+      expect(case_contact.errors.full_messages).to include("Contact made must be true or false")
     end
 
     it "can be updated even if it is old" do
@@ -111,7 +111,7 @@ RSpec.describe CaseContact, type: :model do
     it "requires a case to be selected" do
       case_contact = build_stubbed(:case_contact, :details_status, draft_case_ids: [])
       expect(case_contact).not_to be_valid
-      expect(case_contact.errors.full_messages).to include("You must select at least one casa case.")
+      expect(case_contact.errors.full_messages).to include("CASA Case(s) must be selected")
     end
 
     it "requires occurred at" do
