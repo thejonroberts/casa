@@ -23,14 +23,5 @@ class ContactTopicAnswerPolicy < ApplicationPolicy
     end
   end
 
-  def destroy?
-    case user
-    when Volunteer
-      user.case_contacts.include?(record.case_contact)
-    when CasaAdmin, Supervisor
-      same_org?
-    else
-      false
-    end
-  end
+  alias_method :destroy?, :create?
 end
