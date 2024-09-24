@@ -53,6 +53,11 @@ class CaseContacts::FormController < ApplicationController
     @casa_cases = get_casa_cases
     @grouped_contact_types = group_contact_types_by_name(get_contact_types)
     @contact_topics = get_contact_topics
+
+    # org_driving_reimbursement = current_organization.show_driving_reimbursement
+    # show_driving_reimbursement = org_driving_reimbursement && show_volunteer_reimbursement(@casa_cases)
+    # org_additional_expenses = current_organization.additional_expenses_enabled
+    # show_additional_expenses = org_additional_expenses && Pundit.policy(current_user, @case_contact).additional_expenses_allowed?
   end
 
   def get_casa_cases

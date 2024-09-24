@@ -1,7 +1,9 @@
 /* global window */
 import './jQueryGlobalizer.js'
 import '@hotwired/turbo-rails'
-import 'bootstrap'
+// import 'bootstrap'
+import * as bootstrap from 'bootstrap'
+window.bootstrap = bootstrap
 import 'bootstrap-select'
 import './sweet-alert-confirm.js'
 import './controllers'

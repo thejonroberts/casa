@@ -129,8 +129,9 @@
         </small></p>
       <% end %>
 
-      <% select_options = @contact_topics.map { |topic| [topic.question, topic.id] } %>
-      <% notes_option = ["Additional Notes", ""] # Fake topic question for contact.notes %>
+      <% select_options = @contact_topics.map { |topic| [topic.question, topic.id, data: {details: topic.details}] } %>
+      <%# # Fake topic question for contact.notes %>
+      <% notes_option = ["Additional Notes", "", data: {details: "Notes on information discussed during the contact"}] %>
 
       <% if form.object.notes.present? %>
         <%#- Present contact.notes as a contact_topic_answer to enable edit and/or assigning to a ContactTopic -%>
@@ -140,6 +141,14 @@
       <% elsif @contact_topics.empty? %>
         <% select_options << notes_option # no selectable topics to answer, allow notes %>
       <% end %>
+
+      <template data-case-contact-form-target="topicDetailsTemplate">
+        <i class="lni lni-question-circle .details-tooltip"
+          data-bs-title="<%%= details %>" <%# %% - template literal bc this is for js templating %>
+          data-bs-toggle="tooltip"
+          data-bs-placement="left">
+        </i>
+      </template>
 
       <template data-casa-nested-form-target="template">
         <%= form.fields_for :contact_topic_answers, ContactTopicAnswer.new, child_index: "NEW_RECORD" do |topic_fields| %>
@@ -257,7 +266,10 @@
           <%= metadata_form.check_box :create_another, class: "form-check-input" %>
           <%= metadata_form.label :create_another, class: "form-check-label d-inline align-bottom" do %>
             Create Another
-            <i class="lni lni-question-circle" data-toggle="tooltip" data-placement="top" title="Start a new contact for the same case(s) after submitting.">
+            <i class="lni lni-question-circle"
+              title="Start a new contact for the same case(s) after submitting."
+              data-toggle="tooltip"
+              data-placement="top">
             </i>
           <% end %>
         <% end %>

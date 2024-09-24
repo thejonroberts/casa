@@ -3,9 +3,21 @@
   data-casa-nested-form-target="wrapper"
   data-child-index="<%= form.options[:child_index] %>">
   <div class="d-flex gap-1 flex-wrap">
-    <div class="col-md-4">
+    <div class="col-md-4 d-flex flex-column align-items-left">
       <%= form.label :contact_topic_id, "Discussion Topic" %>
-      <%= form.select :contact_topic_id, select_options, {include_blank: false}, class: ["form-select", "contact-topic-id-select"] %>
+      <%= form.select(:contact_topic_id, select_options, {include_blank: false},
+        data: {
+          case_contact_form_target: "topicSelect",
+          action: "change->case-contact-form#onTopicSelect",
+        },
+        class: ["form-select", "contact-topic-id-select"]) %>
+      <div class="contact-topic-details p-2 align-self-end">
+        <i class="lni lni-question-circle details-tooltip"
+          data-bs-title=" placeholder title "
+          data-bs-toggle="tooltip"
+          data-bs-placement="left">
+        </i>
+      </div>
     </div>
     <div class="flex-grow-1">
       <%= form.label :value, "Discussion Notes" %>
