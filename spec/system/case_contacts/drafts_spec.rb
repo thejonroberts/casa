@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "case_contacts/drafts", js: true, type: :system do
+RSpec.describe "case_contacts/drafts", :js, type: :system do
   let(:organization) { create(:casa_org) }
   let(:admin) { create(:casa_admin, casa_org: organization) }
 

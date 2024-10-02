@@ -366,6 +366,7 @@ RSpec.describe "/supervisors", type: :request do
 
   describe "PATCH /resend_invitation" do
     before { sign_in admin }
+
     it "resends an invitation email" do
       expect(supervisor.invitation_created_at.present?).to eq(false)
 

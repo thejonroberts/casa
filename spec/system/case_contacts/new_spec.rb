@@ -1,8 +1,10 @@
 require "rails_helper"
 require "action_view"
 
-RSpec.describe "case_contacts/new", type: :system, js: true do
+RSpec.describe "case_contacts/new", :js, type: :system do
   include ActionView::Helpers::SanitizeHelper
+
+  subject { visit new_case_contact_path casa_case }
 
   let(:casa_org) { build :casa_org }
   let(:casa_case) { create :casa_case, :with_case_assignments, casa_org: }
@@ -12,8 +14,6 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
   let!(:therapist_contact_type) { create :contact_type, contact_type_group:, name: "Therapist" }
 
   before { sign_in user }
-
-  subject { visit new_case_contact_path casa_case }
 
   context "when admin" do
     let(:user) { create :casa_admin, casa_org: }
@@ -302,7 +302,7 @@ RSpec.describe "case_contacts/new", type: :system, js: true do
           click_on "Submit"
           expect(page).to have_text "Step 1 of 3"
           next_case_contact = CaseContact.last
-          expect(next_case_contact.draft_case_ids).to match_array [casa_case.id, casa_case_two.id]
+          expect(next_case_contact.draft_case_ids).to contain_exactly(casa_case.id, casa_case_two.id)
           expect(page).to have_text case_number
           expect(page).to have_text case_number_two
         end

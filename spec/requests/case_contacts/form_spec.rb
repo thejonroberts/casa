@@ -9,6 +9,12 @@ RSpec.describe "CaseContacts::Forms", type: :request do
   let!(:casa_case) { create(:casa_case, casa_org: organization) }
 
   describe "GET /show" do
+    subject(:request) do
+      get case_contact_form_path(:details, case_contact_id: case_contact.id)
+
+      response
+    end
+
     let!(:case_contact) { create(:case_contact, :details_status, casa_case: casa_case) }
     let!(:contact_type_group_b) { create(:contact_type_group, casa_org: organization, name: "B") }
     let!(:contact_types_b) do
@@ -24,11 +30,6 @@ RSpec.describe "CaseContacts::Forms", type: :request do
         create(:contact_type, name: "Sibling", contact_type_group: contact_type_group_a),
         create(:contact_type, name: "Parent", contact_type_group: contact_type_group_a)
       ]
-    end
-    subject(:request) do
-      get case_contact_form_path(:details, case_contact_id: case_contact.id)
-
-      response
     end
 
     describe "admin view" do
@@ -51,15 +52,17 @@ RSpec.describe "CaseContacts::Forms", type: :request do
             expect(page).not_to include(*contact_types_b.pluck(:name))
           end
         end
+
         context "when an org has no topics" do
           let(:organization) { create(:casa_org) }
           let!(:case_contact) { create(:case_contact, :details_status, casa_case: casa_case) }
 
-          it "it shows the admin the contact topics link" do
+          it "shows the admin the contact topics link" do
             page = request.parsed_body.to_html
             expect(page).to include("Manage Case Contact Topics</a> to set your organization Court report topics.")
           end
         end
+
         context "when the org has topics assigned" do
           let(:contact_topics) {
             [
@@ -82,6 +85,7 @@ RSpec.describe "CaseContacts::Forms", type: :request do
         end
       end
     end
+
     describe "volunteer view" do
       before { sign_in volunteer }
 
@@ -95,6 +99,7 @@ RSpec.describe "CaseContacts::Forms", type: :request do
         end
       end
     end
+
     describe "supervisor view" do
       before { sign_in supervisor }
 
@@ -111,17 +116,18 @@ RSpec.describe "CaseContacts::Forms", type: :request do
   end
 
   describe "PATCH /update" do
-    before { sign_in admin }
-    let!(:casa_case) { create(:casa_case, casa_org: organization) }
-    let!(:case_contact) { create(:case_contact, :details_status, casa_case:) }
-    let(:advance_form) { true }
-    let(:params) { {case_contact: attributes} }
-
     subject(:request) do
       patch "/case_contacts/#{case_contact.id}/form/#{step}", params: params
 
       response
     end
+
+    before { sign_in admin }
+
+    let!(:casa_case) { create(:casa_case, casa_org: organization) }
+    let!(:case_contact) { create(:case_contact, :details_status, casa_case:) }
+    let(:advance_form) { true }
+    let(:params) { {case_contact: attributes} }
 
     context "submitting details step" do
       let!(:case_contact) { create(:case_contact, :started_status, creator: creator, contact_topic_answers: topic_answers) }

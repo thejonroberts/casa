@@ -7,7 +7,7 @@ RSpec.describe Followup, type: :model do
   it { is_expected.to belong_to(:creator).class_name("User") }
   it { is_expected.to belong_to(:followupable).optional }
 
-  it "should have polymorphic fields" do
+  it "has polymorphic fields" do
     expect(Followup.new).to respond_to(:followupable_id)
     expect(Followup.new).to respond_to(:followupable_type)
   end
@@ -39,6 +39,8 @@ RSpec.describe Followup, type: :model do
 
   describe ".in_organization" do
     # this needs to run first so it is generated using a new "default" organization
+    subject { described_class.in_organization(second_org) }
+
     let!(:followup_first_org) { create(:followup) }
 
     # then these lets are generated for the org_to_search organization
@@ -50,13 +52,11 @@ RSpec.describe Followup, type: :model do
     let!(:followup_second_org) { create(:followup, case_contact: case_contact) }
     let!(:followup_second_org_another) { create(:followup, case_contact: case_contact_another) }
 
-    subject { described_class.in_organization(second_org) }
-
-    it "should include followups from same organization" do
+    it "includes followups from same organization" do
       expect(subject).to contain_exactly(followup_second_org, followup_second_org_another)
     end
 
-    it "should exclude followups from other organizations" do
+    it "excludes followups from other organizations" do
       expect(subject).to_not include(followup_first_org)
     end
   end

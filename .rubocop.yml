@@ -9,7 +9,7 @@ require:
   # - rubocop-capybara # TODO
   - rubocop-performance
   - rubocop-rails
-  # - rubocop-rspec # TODO
+  - rubocop-rspec
 
 inherit_gem:
   standard: config/ruby-3.2.yml
@@ -66,11 +66,30 @@ Rails/UniqBeforePluck: # uniq.pluck and not pluck.uniq
   Enabled: true
   Exclude: []
 
-# RSpec/Focus: # run ALL tests on CI
-#   Enabled: true
-#   Exclude: []
+RSpec/Focus: # run ALL tests on CI
+  Enabled: true
+  Exclude: []
 
 # Custom Rules:
+RSpec/ExampleLength:
+  CountAsOne: ['array', 'hash', 'heredoc', 'method_call']
+  Max: 15 # could be lower; default is 5
+  Exclude:
+    - 'spec/system/**/*'
+RSpec/LetSetup:
+  Enabled: false # 154 occurrences
+RSpec/MultipleExpectations:
+  Max: 10 # default is 1; failures are aggregated by default (spec_helper.rb)
+  Exclude:
+    - 'spec/system/**/*'
+RSpec/MultipleMemoizedHelpers:
+  Max: 20 # could be lower; default is 5
+RSpec/NamedSubject:
+  Enabled: false # over 500 occurrences
+RSpec/NestedGroups:
+  Max: 5 # could be lower; default is 3
+RSpec/NotToNot:
+  Enabled: false # to_not vs. not_to no difference in meaning, only for consistency
 
 # TODO: I think this was causing issues but I may be wrong
 Rails/RedundantTravelBack:

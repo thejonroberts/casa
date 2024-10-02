@@ -65,6 +65,7 @@ RSpec.describe "layout/sidebar", type: :view do
         sign_in user
         render partial: "layouts/sidebar"
       end
+
       it "renders Other Duties" do
         expect(rendered).to have_link("Other Duties", href: "/other_duties")
       end
@@ -77,6 +78,7 @@ RSpec.describe "layout/sidebar", type: :view do
         sign_in user
         render partial: "layouts/sidebar"
       end
+
       it "does not renders Other Duties" do
         expect(rendered).to_not have_link("Other Duties", href: "/other_duties")
       end
@@ -121,6 +123,7 @@ RSpec.describe "layout/sidebar", type: :view do
         sign_in user
         render partial: "layouts/sidebar"
       end
+
       it "renders Other Duties" do
         expect(rendered).to have_link("Other Duties", href: "/other_duties")
       end
@@ -133,6 +136,7 @@ RSpec.describe "layout/sidebar", type: :view do
         sign_in user
         render partial: "layouts/sidebar"
       end
+
       it "does not renders Other Duties" do
         expect(rendered).to_not have_link("Other Duties", href: "/other_duties")
       end
@@ -214,6 +218,7 @@ RSpec.describe "layout/sidebar", type: :view do
         sign_in user
         render partial: "layouts/sidebar"
       end
+
       it "renders Other Duties" do
         expect(rendered).to have_link("Other Duties", href: "/other_duties")
       end
@@ -226,6 +231,7 @@ RSpec.describe "layout/sidebar", type: :view do
         sign_in user
         render partial: "layouts/sidebar"
       end
+
       it "does not renders Other Duties" do
         expect(rendered).to_not have_link("Other Duties", href: "/other_duties")
       end

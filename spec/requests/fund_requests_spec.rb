@@ -134,7 +134,7 @@ RSpec.describe FundRequestsController, type: :request do
             mail = ActionMailer::Base.deliveries.last
             aggregate_failures do
               expect(mail.subject).to eq("Fund request from submitter@example.com")
-              expect(mail.to).to match_array(["recipient@example.com", "submitter@example.com"])
+              expect(mail.to).to contain_exactly("recipient@example.com", "submitter@example.com")
               expect(mail.body.encoded).to include("Youth name")
               expect(mail.body.encoded).to include("CINA-123")
               expect(mail.body.encoded).to include("Payment amount")

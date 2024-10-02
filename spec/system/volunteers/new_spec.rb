@@ -51,7 +51,7 @@ RSpec.describe "volunteers/new", type: :system do
     end
   end
 
-  it "displays learning hour topic for volunteers when enabled", js: true do
+  it "displays learning hour topic for volunteers when enabled", :js do
     organization = create(:casa_org, learning_topic_active: true)
     volunteer = create(:volunteer, casa_org: organization)
 
@@ -60,7 +60,7 @@ RSpec.describe "volunteers/new", type: :system do
     expect(page).to have_text("Learning Topic")
   end
 
-  it "learning hour topic hidden when disabled", js: true do
+  it "learning hour topic hidden when disabled", :js do
     organization = create(:casa_org)
     volunteer = create(:volunteer, casa_org: organization)
 

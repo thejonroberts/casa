@@ -26,6 +26,7 @@ RSpec.describe "/volunteers", type: :request do
 
     context "with admin from different organization" do
       let(:other_org_admin) { build(:casa_admin, casa_org: create(:casa_org)) }
+
       it "does not show" do
         sign_in other_org_admin
         get volunteer_path(volunteer.id)
@@ -358,6 +359,7 @@ RSpec.describe "/volunteers", type: :request do
 
   describe "PATCH /resend_invitation" do
     before { sign_in admin }
+
     it "resends an invitation email" do
       expect(volunteer.invitation_created_at.present?).to eq(false)
 

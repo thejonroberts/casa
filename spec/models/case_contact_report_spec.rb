@@ -31,10 +31,10 @@ RSpec.describe CaseContactReport, type: :model do
   end
 
   describe "CSV body serialization" do
+    subject { CaseContactReport.new(casa_org_id: long_case_contact.casa_case.casa_org.id).to_csv }
+
     let!(:long_case_contact) { create(:case_contact, :long_note) }
     let!(:multi_line_case_contact) { create(:case_contact, :multi_line_note, casa_case: long_case_contact.casa_case) }
-
-    subject { CaseContactReport.new(casa_org_id: long_case_contact.casa_case.casa_org.id).to_csv }
 
     it "includes entire note" do
       expect(subject).to include(long_case_contact.notes)
@@ -147,7 +147,7 @@ RSpec.describe CaseContactReport, type: :model do
     end
 
     describe "case contact behavior" do
-      before(:each) do
+      before do
         create(:case_contact, {contact_made: true})
         create(:case_contact, {contact_made: false})
       end
@@ -175,7 +175,7 @@ RSpec.describe CaseContactReport, type: :model do
       let(:case_case_1) { create(:casa_case, birth_month_year_youth: 15.years.ago) }
       let(:case_case_2) { create(:casa_case, birth_month_year_youth: 10.years.ago) }
 
-      before(:each) do
+      before do
         create(:case_contact, {casa_case: case_case_1})
         create(:case_contact, {casa_case: case_case_2})
       end
@@ -200,7 +200,7 @@ RSpec.describe CaseContactReport, type: :model do
     end
 
     describe "wanting driving reimbursement functionality" do
-      before(:each) do
+      before do
         create(:case_contact, {miles_driven: 50, want_driving_reimbursement: true})
         create(:case_contact, {miles_driven: 50, want_driving_reimbursement: false})
       end

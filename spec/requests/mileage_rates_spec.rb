@@ -5,6 +5,12 @@ RSpec.describe "/mileage_rates", type: :request do
   let(:admin) { create(:casa_admin, casa_org: casa_org) }
 
   describe "GET /index" do
+    subject(:request) do
+      get mileage_rates_path
+
+      response
+    end
+
     let!(:mileage_rate) { create(:mileage_rate, effective_date: Date.new(2023, 1, 1), casa_org: casa_org) }
     let!(:other_mileage_rate) do
       create(:mileage_rate, effective_date: Date.new(2023, 2, 1), casa_org: casa_org)
@@ -15,13 +21,8 @@ RSpec.describe "/mileage_rates", type: :request do
 
     before { sign_in admin }
 
-    subject(:request) do
-      get mileage_rates_path
-
-      response
-    end
-
     it { is_expected.to be_successful }
+
     it "shows mileage rates correctly", :aggregate_failures do
       page = request.body
       expect(page).to match(/#{mileage_rate_path(mileage_rate)}.*#{mileage_rate_path(other_mileage_rate)}/m)
@@ -40,6 +41,7 @@ RSpec.describe "/mileage_rates", type: :request do
 
   describe "POST /create" do
     let(:mileage_rate) { MileageRate.last }
+
     before do
       sign_in admin
     end

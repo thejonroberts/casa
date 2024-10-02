@@ -68,6 +68,7 @@ RSpec.describe SupervisorMailer, type: :mailer do
 
     context "when a supervisor has pending volunteer to accepts invitation" do
       let(:volunteer2) { create(:volunteer) }
+
       before do
         volunteer2.invite!(supervisor)
       end

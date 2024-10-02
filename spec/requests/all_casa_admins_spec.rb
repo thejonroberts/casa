@@ -3,10 +3,10 @@ require "rails_helper"
 RSpec.describe "/all_casa_admins", type: :request do
   let(:admin) { create(:all_casa_admin) }
 
-  before(:each) { sign_in admin }
+  before { sign_in admin }
 
   describe "GET /new" do
-    it "should authenticate the user" do
+    it "authenticates the user" do
       sign_out admin
       get new_all_casa_admin_path
 
@@ -30,7 +30,7 @@ RSpec.describe "/all_casa_admins", type: :request do
       end
     end
 
-    it "should authenticate the user" do
+    it "authenticates the user" do
       sign_out :admin
       get new_all_casa_admin_path
 

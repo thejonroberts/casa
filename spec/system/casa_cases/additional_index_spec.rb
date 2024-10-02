@@ -26,7 +26,7 @@ RSpec.describe "casa_cases/index", type: :system do
       expect(page).to have_selector("th", text: "Assigned To")
     end
 
-    it "filters active/inactive", js: true do
+    it "filters active/inactive", :js do
       active_case = build(:casa_case, active: true, casa_org: organization)
       active_case1 = build(:casa_case, active: true, casa_org: organization)
       inactive_case = build(:casa_case, active: false, casa_org: organization)

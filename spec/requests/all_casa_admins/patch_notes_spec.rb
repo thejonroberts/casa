@@ -36,7 +36,7 @@ RSpec.describe "/all_casa_admins/patch_notes", type: :request do
     }
   end
 
-  before(:each) { sign_in all_casa_admin }
+  before { sign_in all_casa_admin }
 
   describe "GET /index" do
     it "renders a successful response" do
@@ -66,7 +66,7 @@ RSpec.describe "/all_casa_admins/patch_notes", type: :request do
       it "does not create a new PatchNote" do
         expect {
           post all_casa_admins_patch_notes_path, params: invalid_attributes
-        }.to change(PatchNote, :count).by(0)
+        }.not_to change(PatchNote, :count)
       end
 
       it "shows json indicating the patch note could not be created" do

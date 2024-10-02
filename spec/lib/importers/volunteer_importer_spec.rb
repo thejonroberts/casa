@@ -23,7 +23,7 @@ RSpec.describe VolunteerImporter do
     before { volunteer_importer.call }
 
     it "does not import duplicate volunteers from csv files" do
-      expect { volunteer_importer.call }.to change(User, :count).by(0)
+      expect { volunteer_importer.call }.not_to change(User, :count)
     end
 
     specify "static and instance methods have identical results" do

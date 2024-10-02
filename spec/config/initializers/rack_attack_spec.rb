@@ -6,6 +6,9 @@ RSpec.describe Rack::Attack do
   # https://makandracards.com/makandra/46189-how-to-rails-cache-for-individual-rspec-tests
   # memory store is per process and therefore no conflicts in parallel tests
   let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) }
+  let(:header) { {"REMOTE_ADDR" => remote_ip} }
+  let(:params) { {} }
+  let(:limit) { 5 }
   let(:cache) { Rails.cache }
 
   before do
@@ -24,10 +27,6 @@ RSpec.describe Rack::Attack do
   def app
     Rails.application
   end
-
-  let(:header) { {"REMOTE_ADDR" => remote_ip} }
-  let(:params) { {} }
-  let(:limit) { 5 }
 
   describe "throttle excessive requests by single IP address" do
     shared_examples "correctly throttles" do

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "case_contacts/index", js: true, type: :system do
+RSpec.describe "case_contacts/index", :js, type: :system do
   let(:volunteer) { build(:volunteer, display_name: "Bob Loblaw", casa_org: organization) }
   let(:organization) { create(:casa_org) }
 
@@ -238,10 +238,11 @@ RSpec.describe "case_contacts/index", js: true, type: :system do
   end
 
   context "without case contacts" do
-    before(:each) do
+    before do
       sign_in volunteer
       visit case_contacts_path
     end
+
     it "shows helper text" do
       expect(page).to have_text("You have no case contacts for this case. Please click New Case Contact button above to create a case contact for your youth!")
     end

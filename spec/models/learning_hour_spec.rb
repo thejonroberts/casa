@@ -61,6 +61,15 @@ RSpec.describe LearningHour, type: :model do
 
   describe "scopes" do
     let(:casa_org_1) { build(:casa_org) }
+    let!(:learning_hours) do
+      [
+        create(:learning_hour, user: volunteer1, duration_hours: 1, duration_minutes: 0),
+        create(:learning_hour, user: volunteer1, duration_hours: 2, duration_minutes: 0),
+        create(:learning_hour, user: volunteer2, duration_hours: 1, duration_minutes: 0),
+        create(:learning_hour, user: volunteer2, duration_hours: 3, duration_minutes: 0),
+        create(:learning_hour, user: volunteer3, duration_hours: 1, duration_minutes: 0)
+      ]
+    end
     let(:casa_org_2) { build(:casa_org) }
 
     let(:casa_admin) { create(:casa_admin, display_name: "Supervisor", casa_org: casa_org_1) }
@@ -73,18 +82,9 @@ RSpec.describe LearningHour, type: :model do
       supervisor.volunteers << volunteer1
     end
 
-    let!(:learning_hours) do
-      [
-        create(:learning_hour, user: volunteer1, duration_hours: 1, duration_minutes: 0),
-        create(:learning_hour, user: volunteer1, duration_hours: 2, duration_minutes: 0),
-        create(:learning_hour, user: volunteer2, duration_hours: 1, duration_minutes: 0),
-        create(:learning_hour, user: volunteer2, duration_hours: 3, duration_minutes: 0),
-        create(:learning_hour, user: volunteer3, duration_hours: 1, duration_minutes: 0)
-      ]
-    end
-
     describe ".supervisor_volunteers_learning_hours" do
       subject(:supervisor_volunteers_learning_hours) { described_class.supervisor_volunteers_learning_hours(supervisor.id) }
+
       context "with specified supervisor" do
         it "returns the total time spent for supervisor's volunteers" do
           expect(supervisor_volunteers_learning_hours.length).to eq(1)

@@ -86,7 +86,7 @@ RSpec.describe CaseImporter do
       before { case_importer.import_cases }
 
       it "does not duplicate casa case files from csv files" do
-        expect { case_importer.import_cases }.to change(CasaCase, :count).by(0)
+        expect { case_importer.import_cases }.not_to change(CasaCase, :count)
       end
     end
 

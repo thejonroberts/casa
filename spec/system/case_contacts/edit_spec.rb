@@ -8,7 +8,7 @@ RSpec.describe "case_contacts/edit", type: :system do
   context "when admin" do
     let(:admin) { create(:casa_admin, casa_org: organization) }
 
-    it "admin successfully edits case contact", js: true do
+    it "admin successfully edits case contact", :js do
       sign_in admin
 
       visit edit_case_contact_path(case_contact)
@@ -27,7 +27,7 @@ RSpec.describe "case_contacts/edit", type: :system do
       expect(case_contact.contact_made).to eq true
     end
 
-    it "admin successfully edits case contact with mileage reimbursement", js: true do
+    it "admin successfully edits case contact with mileage reimbursement", :js do
       casa_case = create(:casa_case, :with_one_case_assignment, casa_org: organization)
       case_contact = create(:case_contact, duration_minutes: 105, casa_case: casa_case)
       sign_in admin
@@ -48,7 +48,7 @@ RSpec.describe "case_contacts/edit", type: :system do
       expect(case_contact.contact_made).to eq true
     end
 
-    it "admin fails to edit volunteer address for case contact with mileage reimbursement", js: true do
+    it "admin fails to edit volunteer address for case contact with mileage reimbursement", :js do
       sign_in admin
 
       visit edit_case_contact_path(case_contact)
@@ -78,7 +78,7 @@ you are trying to set the address for both of them. This is not currently possib
     let(:volunteer) { create(:volunteer, casa_org: organization) }
     let!(:case_assignment) { create(:case_assignment, volunteer: volunteer, casa_case: casa_case) }
 
-    it "is successful", js: true do
+    it "is successful", :js do
       case_contact = create(:case_contact, duration_minutes: 105, casa_case: casa_case, creator: volunteer)
       sign_in volunteer
       visit edit_case_contact_path(case_contact)
@@ -97,7 +97,7 @@ you are trying to set the address for both of them. This is not currently possib
       expect(case_contact.contact_made).to eq true
     end
 
-    it "is successful with mileage reimbursement on", js: true do
+    it "is successful with mileage reimbursement on", :js do
       case_contact = create(:case_contact, duration_minutes: 105, casa_case: casa_case, creator: volunteer)
       sign_in volunteer
       visit edit_case_contact_path(case_contact)
@@ -118,7 +118,7 @@ you are trying to set the address for both of them. This is not currently possib
       expect(case_contact.contact_made).to eq true
     end
 
-    it "autosaves notes", js: true do
+    it "autosaves notes", :js do
       case_contact = create(:case_contact, duration_minutes: 105, casa_case: casa_case, creator: volunteer, notes: "Hello from the other side")
       sign_in volunteer
       visit edit_case_contact_path(case_contact)
@@ -136,7 +136,7 @@ you are trying to set the address for both of them. This is not currently possib
     end
 
     context "when 'Create Another' option is checked" do
-      it "redirects to new contact with the same draft_case_ids", js: true do
+      it "redirects to new contact with the same draft_case_ids", :js do
         case_contact = create(:case_contact, duration_minutes: 105, casa_case: casa_case, creator: volunteer)
         sign_in volunteer
         visit edit_case_contact_path(case_contact)

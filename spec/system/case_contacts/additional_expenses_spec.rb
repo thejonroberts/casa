@@ -1,7 +1,7 @@
 require "rails_helper"
 require "action_view"
 
-RSpec.describe "additional_expenses", type: :system, flipper: true do
+RSpec.describe "additional_expenses", :flipper, type: :system do
   let(:organization) { build(:casa_org, additional_expenses_enabled: true) }
   let(:volunteer) { create(:volunteer, casa_org: organization) }
   let(:casa_case) { create(:casa_case, casa_org: organization) }
@@ -11,7 +11,7 @@ RSpec.describe "additional_expenses", type: :system, flipper: true do
     create(:case_assignment, casa_case: casa_case, volunteer: volunteer)
   end
 
-  it "additional expenses and notices can be set per organization", js: true do
+  it "additional expenses and notices can be set per organization", :js do
     other_organization = build(:casa_org)
     other_volunteer = create(:volunteer, casa_org: other_organization)
     other_casa_case = create(:casa_case, casa_org: other_organization)
@@ -48,7 +48,7 @@ RSpec.describe "additional_expenses", type: :system, flipper: true do
       create(:contact_type, name: "School", contact_type_group: contact_type_group)
     end
 
-    it "additional expenses fields appearance", js: true do
+    it "additional expenses fields appearance", :js do
       sign_in volunteer
 
       visit casa_case_path(casa_case.id)
@@ -79,7 +79,7 @@ RSpec.describe "additional_expenses", type: :system, flipper: true do
       expect(page).to have_text("Add Another Expense")
     end
 
-    it "additional expenses for multiple entries", js: true do
+    it "additional expenses for multiple entries", :js do
       sign_in volunteer
 
       visit casa_case_path(casa_case.id)
@@ -152,7 +152,7 @@ RSpec.describe "additional_expenses", type: :system, flipper: true do
       expect(page).to have_selector("input[name*='[additional_expenses_attributes]'][name$='[other_expense_amount]']", count: 4)
     end
 
-    it "additional expenses for more than ten entries", js: true do
+    it "additional expenses for more than ten entries", :js do
       sign_in volunteer
 
       visit casa_case_path(casa_case.id)
@@ -205,7 +205,7 @@ RSpec.describe "additional_expenses", type: :system, flipper: true do
       expect(page).to have_text("Add Another Expense")
     end
 
-    it "additional expenses can be deleted", js: true do
+    it "additional expenses can be deleted", :js do
       sign_in volunteer
       visit casa_case_path(casa_case.id)
       click_on "New Case Contact"
@@ -243,7 +243,7 @@ RSpec.describe "additional_expenses", type: :system, flipper: true do
       }.to change(CaseContact.active, :count).by(0).and change(AdditionalExpense, :count).by(-1)
     end
 
-    it "verifies that an additional expense without a description will cause an error", js: true do
+    it "verifies that an additional expense without a description will cause an error", :js do
       sign_in volunteer
 
       visit casa_case_path(casa_case.id)

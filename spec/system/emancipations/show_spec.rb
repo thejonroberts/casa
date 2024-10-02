@@ -14,7 +14,7 @@ RSpec.describe "emancipations/show", type: :system do
     expect(page).to have_link "Download Checklist", href: casa_case_emancipation_path(casa_case, format: :docx)
   end
 
-  it "expands the emancipation checklist options", js: true do
+  it "expands the emancipation checklist options", :js do
     emancipation_category = create(:emancipation_category)
     emancipation_option = create(:emancipation_option, emancipation_category: emancipation_category)
 

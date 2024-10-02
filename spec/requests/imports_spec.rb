@@ -170,7 +170,7 @@ RSpec.describe "/imports", type: :request do
             import_type: "casa_case",
             file: upload_file(existing_case_file)
           }
-      }.to change(CasaCase, :count).by(0)
+      }.not_to change(CasaCase, :count)
 
       expect(request.session[:import_error]).to include("Not all rows were imported.")
       expect(request.session[:exported_rows]).to include("Case CINA-00-0000 already exists, but is inactive. Reactivate the CASA case instead.")

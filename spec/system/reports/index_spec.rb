@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "reports", type: :system, js: true do
+RSpec.describe "reports", :js, type: :system do
   context "volunteer user" do
     it "redirects to root" do
       user = create(:volunteer)
@@ -14,7 +14,7 @@ RSpec.describe "reports", type: :system, js: true do
   end
 
   context "supervisor user" do
-    it "renders form elements", js: true do
+    it "renders form elements", :js do
       user = create(:supervisor)
 
       sign_in user
@@ -35,7 +35,7 @@ RSpec.describe "reports", type: :system, js: true do
       expect(page).to have_field("No", count: 3)
     end
 
-    it "downloads report", js: true do
+    it "downloads report", :js do
       user = create(:supervisor)
 
       sign_in user
@@ -47,7 +47,7 @@ RSpec.describe "reports", type: :system, js: true do
   end
 
   context "casa_admin user" do
-    it "renders form elements", js: true do
+    it "renders form elements", :js do
       user = create(:casa_admin)
 
       sign_in user
@@ -68,7 +68,7 @@ RSpec.describe "reports", type: :system, js: true do
       expect(page).to have_field("No", count: 3)
     end
 
-    it "downloads report", js: true do
+    it "downloads report", :js do
       user = create(:casa_admin)
 
       sign_in user

@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe CasaAdminMailer, type: :mailer do
   let(:casa_admin) { create(:casa_admin) }
 
-  describe ".account_setup for an admin " do
+  describe ".account_setup for an admin" do
     let(:mail) { CasaAdminMailer.account_setup(casa_admin) }
 
     it "sends an email saying the account has been created" do

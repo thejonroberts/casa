@@ -20,7 +20,7 @@ RSpec.describe MileageRate, type: :model do
     end
   end
 
-  context "#effective_date" do
+  describe "#effective_date" do
     it "cannot be before 1/1/1989" do
       mileage_rate = build_stubbed(:mileage_rate, effective_date: "1984-01-01".to_date)
       expect(mileage_rate).to_not be_valid

@@ -11,29 +11,29 @@ RSpec.describe ApplicationPolicy do
 
   permissions :see_reports_page? do
     it "allows casa_admins" do
-      is_expected.to permit(casa_admin)
+      expect(subject).to permit(casa_admin)
     end
 
     it "allows supervisors" do
-      is_expected.to permit(supervisor)
+      expect(subject).to permit(supervisor)
     end
 
     it "does not allow volunteers" do
-      is_expected.not_to permit(volunteer)
+      expect(subject).not_to permit(volunteer)
     end
   end
 
   permissions :see_import_page? do
     it "allows casa_admins" do
-      is_expected.to permit(casa_admin)
+      expect(subject).to permit(casa_admin)
     end
 
     it "does not allow supervisors" do
-      is_expected.not_to permit(supervisor)
+      expect(subject).not_to permit(supervisor)
     end
 
     it "does not allow volunteers" do
-      is_expected.not_to permit(volunteer)
+      expect(subject).not_to permit(volunteer)
     end
   end
 
@@ -67,15 +67,15 @@ RSpec.describe ApplicationPolicy do
 
   permissions :see_mileage_rate? do
     it "does not allow volunters" do
-      is_expected.not_to permit(volunteer)
+      expect(subject).not_to permit(volunteer)
     end
 
     it "does not allow supervisors" do
-      is_expected.not_to permit(supervisor)
+      expect(subject).not_to permit(supervisor)
     end
 
     it "allow casa_admins for same org" do
-      is_expected.to permit(casa_admin)
+      expect(subject).to permit(casa_admin)
     end
 
     context "when org reimbursement is disabled" do
@@ -84,7 +84,7 @@ RSpec.describe ApplicationPolicy do
       end
 
       it "does not allow casa_admins" do
-        is_expected.not_to permit(casa_admin)
+        expect(subject).not_to permit(casa_admin)
       end
     end
   end
@@ -106,6 +106,7 @@ RSpec.describe ApplicationPolicy do
 
     context "record with different casa_org" do
       let(:other_org_record) { double }
+
       before { expect(other_org_record).to receive(:casa_org).and_return(build_stubbed(:casa_org)) }
 
       permissions :same_org? do

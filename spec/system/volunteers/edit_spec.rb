@@ -175,7 +175,7 @@ RSpec.describe "volunteers/edit", type: :system do
     end
   end
 
-  it "saves the user as inactive, but only if the admin confirms", js: true do
+  it "saves the user as inactive, but only if the admin confirms", :js do
     organization = create(:casa_org)
     admin = create(:casa_admin, casa_org: organization)
     volunteer = create(:volunteer, :with_assigned_supervisor, casa_org: organization)
@@ -452,7 +452,7 @@ RSpec.describe "volunteers/edit", type: :system do
       expect(page).to have_selector("#twilio_enabled")
     end
 
-    context " admin's organization does not have twilio enabled" do
+    context "admin's organization does not have twilio enabled" do
       it "displays a disabed (SMS) button with appropriate message" do
         org_twilio = create(:casa_org, twilio_enabled: false)
         admin_twilio = create(:casa_admin, casa_org: org_twilio)

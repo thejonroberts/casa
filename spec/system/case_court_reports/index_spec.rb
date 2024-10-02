@@ -13,9 +13,10 @@ RSpec.describe "case_court_reports/index", type: :system do
     sign_in volunteer
     visit case_court_reports_path
   end
+
   after { travel_back }
 
-  context "when first arriving to 'Generate Court Report' page", js: true do
+  context "when first arriving to 'Generate Court Report' page", :js do
     it "generation modal hidden" do
       expect(page).to have_selector "#btnGenerateReport", text: "Generate Report", visible: false
       expect(page).to have_selector "#case-selection", visible: false
@@ -23,7 +24,7 @@ RSpec.describe "case_court_reports/index", type: :system do
     end
   end
 
-  context "after opening 'Download Court Report' modal", js: true do
+  context "after opening 'Download Court Report' modal", :js do
     before do
       page.find(modal_selector).click
     end
@@ -75,7 +76,7 @@ RSpec.describe "case_court_reports/index", type: :system do
     end
   end
 
-  describe "'Case Number' dropdown list", js: true do
+  describe "'Case Number' dropdown list", :js do
     let(:transitioned_case_number) { casa_cases.find(&:in_transition_age?).case_number.to_s }
     let(:transitioned_option_text) { "#{transitioned_case_number} - transition(assigned to Name Last)" }
     let(:non_transitioned_case_number) { casa_cases.reject(&:in_transition_age?).first.case_number.to_s }
@@ -100,7 +101,7 @@ RSpec.describe "case_court_reports/index", type: :system do
     end
   end
 
-  context "when selecting a case, volunteer can generate and download a report", js: true do
+  context "when selecting a case, volunteer can generate and download a report", :js do
     let(:casa_case) { casa_cases.find(&:in_transition_age?) }
     let(:option_text) { "#{casa_case.case_number} - transition" }
 
@@ -186,7 +187,7 @@ RSpec.describe "case_court_reports/index", type: :system do
       let(:casa_case) { volunteer.casa_cases.first }
       let(:search_term) { casa_case.case_number[-3..] }
 
-      it "selects the correct case", js: true do
+      it "selects the correct case", :js do
         find(modal_selector).click
 
         find("#case_select_body .selection").click

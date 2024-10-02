@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe CaseGroup, type: :model do
   describe "validations" do
-    it { should validate_presence_of(:case_group_memberships) }
+    it { is_expected.to validate_presence_of(:case_group_memberships) }
 
     it "validates uniqueness of name scoped to casa_org" do
       casa_org = create(:casa_org)
@@ -21,8 +21,8 @@ RSpec.describe CaseGroup, type: :model do
   end
 
   describe "relationships" do
-    it { should have_many(:case_group_memberships) }
-    it { should have_many(:casa_cases).through(:case_group_memberships) }
+    it { is_expected.to have_many(:case_group_memberships) }
+    it { is_expected.to have_many(:casa_cases).through(:case_group_memberships) }
   end
 
   it "has a valid factory" do
