@@ -18,13 +18,13 @@ inherit_gem:
   standard-rails: config/base.yml
 
 inherit_from:
-  # - .rubocop_todo.yml
+  - .rubocop_todo.yml
 
 AllCops:
-  NewCops: disable # todo
+  NewCops: enable
   SuggestExtensions: false
   TargetRubyVersion: 3.2
-  # TargetRailsVersion: 7.2
+  TargetRailsVersion: 7.2
   Exclude:
     - 'bin/**/*' # todo
     - 'storage/**/*'
@@ -75,4 +75,3 @@ Rails/UniqBeforePluck: # uniq.pluck and not pluck.uniq
 # TODO: I think this was causing issues but I may be wrong
 Rails/RedundantTravelBack:
   Enabled: false
-
