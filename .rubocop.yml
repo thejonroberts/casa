@@ -1,0 +1,53 @@
+inherit_mode:
+  merge:
+    - Exclude
+
+require:
+  - standard
+  - standard-custom
+  - standard-performance
+  # - rubocop-capybara
+  - rubocop-performance
+  # - rubocop-rails
+  # - rubocop-rspec
+
+inherit_gem:
+  standard: config/ruby-3.2.yml
+  standard-performance: config/base.yml
+  standard-custom: config/base.yml
+  # standard-rails: config/base.yml
+
+inherit_from:
+  # - .rubocop_todo.yml
+
+AllCops:
+  NewCops: disable # todo
+  SuggestExtensions: false
+  TargetRubyVersion: 3.2
+  # TargetRailsVersion: 7.2
+  Exclude:
+    - 'bin/**/*' # todo
+    - 'storage/**/*'
+
+# Override Todos for these rules:
+Lint/Debugger: # don't leave binding.pry or debugger
+  Enabled: true
+  Exclude: []
+
+# Rails/Output: # Don't leave puts-debugging
+#   Enabled: true
+#   Exclude: []
+
+# Rails/FindEach: # each could severely affect the performance, use find_each
+#   Enabled: true
+#   Exclude: []
+
+# Rails/UniqBeforePluck: # uniq.pluck and not pluck.uniq
+#   Enabled: true
+#   Exclude: []
+
+# RSpec/Focus: # run ALL tests on CI
+#   Enabled: true
+#   Exclude: []
+
+# Custom Rules:
