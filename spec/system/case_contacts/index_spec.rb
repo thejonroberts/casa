@@ -50,7 +50,7 @@ RSpec.describe "case_contacts/index", :js, type: :system do
           click_link "Delete"
         end
 
-        expect(page).to_not have_css(".container-fluid.mb-1", text: "DRAFT Case Contact")
+        expect(page).to have_no_css(".container-fluid.mb-1", text: "DRAFT Case Contact")
       end
 
       it "displays the contact type groups" do
@@ -79,7 +79,7 @@ RSpec.describe "case_contacts/index", :js, type: :system do
 
             click_button "Filter"
 
-            expect(page).not_to have_content "December 31, 2020"
+            expect(page).to have_no_content "December 31, 2020"
             expect(page).to have_content "January 1, 2021"
             expect(page).to have_content "January 2, 2021"
           end
@@ -94,7 +94,7 @@ RSpec.describe "case_contacts/index", :js, type: :system do
           sign_in volunteer
           visit case_contacts_path(casa_case_id: casa_case.id)
 
-          expect(page).not_to have_content "You have no case contacts for this case."
+          expect(page).to have_no_content "You have no case contacts for this case."
           expect(page).to have_content "Draft"
         end
 
@@ -102,7 +102,7 @@ RSpec.describe "case_contacts/index", :js, type: :system do
           sign_in volunteer
           visit case_contacts_path(casa_case_id: casa_case.id)
 
-          expect(page).not_to have_content other_casa_case.case_number
+          expect(page).to have_no_content other_casa_case.case_number
           expect(page).to have_content casa_case.case_number
         end
       end
@@ -119,7 +119,7 @@ RSpec.describe "case_contacts/index", :js, type: :system do
 
           click_button "Filter"
 
-          expect(page).not_to have_content "Draft"
+          expect(page).to have_no_content "Draft"
         end
       end
 
@@ -139,7 +139,7 @@ RSpec.describe "case_contacts/index", :js, type: :system do
           click_button "Filter"
 
           expect(page).to have_field "Hide drafts", type: :checkbox
-          expect(page).not_to have_content "Other filters"
+          expect(page).to have_no_content "Other filters"
         end
 
         it "displays other filters when expanded" do
@@ -206,7 +206,7 @@ RSpec.describe "case_contacts/index", :js, type: :system do
           click_on case_number
         end
         expect(page).to have_text("Case 1 Notes")
-        expect(page).to_not have_text("Case 2 Notes")
+        expect(page).to have_no_text("Case 2 Notes")
 
         # showing case 2
         visit root_path
@@ -215,7 +215,7 @@ RSpec.describe "case_contacts/index", :js, type: :system do
           click_on another_case_number
         end
         expect(page).to have_text("Case 2 Notes")
-        expect(page).to_not have_text("Case 1 Notes")
+        expect(page).to have_no_text("Case 1 Notes")
 
         # filtering to only show case 2
         click_button "Expand / Hide"
@@ -223,7 +223,7 @@ RSpec.describe "case_contacts/index", :js, type: :system do
         fill_in "filterrific_occurred_ending_at", with: Time.zone.tomorrow
         click_button "Filter"
         expect(page).to have_text("Case 2 Notes")
-        expect(page).to_not have_text("Case 1 Notes")
+        expect(page).to have_no_text("Case 1 Notes")
 
         # no contacts because we're only showing case 1 and that occurred before the filter dates
         visit root_path
@@ -231,8 +231,8 @@ RSpec.describe "case_contacts/index", :js, type: :system do
         within "#ddmenu_case-contacts" do
           click_on case_number
         end
-        expect(page).to_not have_text("Case 1 Notes")
-        expect(page).to_not have_text("Case 2 Notes")
+        expect(page).to have_no_text("Case 1 Notes")
+        expect(page).to have_no_text("Case 2 Notes")
       end
     end
   end

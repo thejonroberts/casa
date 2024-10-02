@@ -17,6 +17,6 @@ RSpec.describe "reimbursements/index", type: :view do
     assign :volunteers_for_filter, []
     render template: "reimbursements/index"
 
-    expect(rendered).not_to have_css("span.translation_missing")
+    expect(rendered).to have_no_css("span.translation_missing")
   end
 end

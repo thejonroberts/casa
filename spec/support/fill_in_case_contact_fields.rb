@@ -7,7 +7,7 @@ module FillInCaseContactFields
   # @param hours [Integer]
   # @param minutes [Integer]
   def complete_details_page(contact_made:, medium: nil, occurred_on: nil, hours: nil, minutes: nil, case_numbers: [], contact_types: [], contact_topics: [])
-    within find("#draft-case-id-selector") do
+    within "#draft-case-id-selector" do
       find(".ts-control").click
     end
 
@@ -16,11 +16,11 @@ module FillInCaseContactFields
       checkbox_for_case_number.click unless checkbox_for_case_number.checked?
     end
 
-    within find("#draft-case-id-selector") do
+    within "#draft-case-id-selector" do
       find(".ts-control").click
     end
 
-    within find("#contact-type-id-selector") do
+    within "#contact-type-id-selector" do
       find(".ts-control").click
     end
 
@@ -28,7 +28,7 @@ module FillInCaseContactFields
       find("span", text: contact_type).click
     end
 
-    within find("#contact-type-id-selector") do
+    within "#contact-type-id-selector" do
       find(".ts-control").click
     end
 

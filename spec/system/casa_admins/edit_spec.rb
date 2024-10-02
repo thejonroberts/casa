@@ -99,7 +99,7 @@ RSpec.describe "casa_admins/edit", type: :system do
       click_on "Deactivate"
     end
 
-    expect(page).not_to have_text("Admin was deactivated.")
+    expect(page).to have_no_text("Admin was deactivated.")
 
     accept_confirm do
       click_on "Deactivate"

@@ -8,7 +8,7 @@ RSpec.describe "reports", :js, type: :system do
       sign_in user
       visit reports_path
 
-      expect(page).to_not have_text "Case Contacts Report"
+      expect(page).to have_no_text "Case Contacts Report"
       expect(page).to have_text "Sorry, you are not authorized to perform this action."
     end
   end

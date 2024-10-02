@@ -43,12 +43,12 @@ RSpec.describe "Learning Hours Index", type: :system do
 
     shared_examples_for "functioning sort buttons" do
       it "sorts table columns" do
-        expect(page).to have_selector("tr:nth-child(1)", text: expected_first_ordered_value)
+        expect(page).to have_css("tr:nth-child(1)", text: expected_first_ordered_value)
 
         find("th", text: column_to_sort).click
 
-        expect(page).to have_selector("th.sorting_asc", text: column_to_sort)
-        expect(page).to have_selector("tr:nth-child(1)", text: expected_last_ordered_value)
+        expect(page).to have_css("th.sorting_asc", text: column_to_sort)
+        expect(page).to have_css("tr:nth-child(1)", text: expected_last_ordered_value)
       end
     end
 

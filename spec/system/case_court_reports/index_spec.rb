@@ -18,9 +18,9 @@ RSpec.describe "case_court_reports/index", type: :system do
 
   context "when first arriving to 'Generate Court Report' page", :js do
     it "generation modal hidden" do
-      expect(page).to have_selector "#btnGenerateReport", text: "Generate Report", visible: false
-      expect(page).to have_selector "#case-selection", visible: false
-      expect(page).not_to have_selector ".select2"
+      expect(page).to have_css "#btnGenerateReport", text: "Generate Report", visible: false
+      expect(page).to have_css "#case-selection", visible: false
+      expect(page).to have_no_css ".select2"
     end
   end
 
@@ -31,38 +31,38 @@ RSpec.describe "case_court_reports/index", type: :system do
 
     # putting all this in the same system test shaves 3 seconds off the test suite
     it "modal has correct contents" do
-      start_date = page.find("#start_date").value
+      start_date = page.find_by_id("start_date").value
       expect(start_date).to eq("January 01, 2021") # default date
 
-      end_date = page.find("#end_date").value
+      end_date = page.find_by_id("end_date").value
       expect(end_date).to eq("January 01, 2021") # default date
 
-      expect(page).to have_selector "#btnGenerateReport", text: "Generate Report", visible: true
-      expect(page).to_not have_selector ".select2"
+      expect(page).to have_css "#btnGenerateReport", text: "Generate Report", visible: true
+      expect(page).to have_no_css ".select2"
 
       # shows n+1 options in total, e.g 3 options <- 2 assigned cases + 1 prompt text
       expected_number_of_options = casa_cases.size + 1
-      expect(page).to have_selector "#case-selection option", count: expected_number_of_options
+      expect(page).to have_css "#case-selection option", count: expected_number_of_options
 
       # shows transition stamp for transitioned case
       expected_text = "#{at_least_transition_age.case_number} - transition"
-      expect(page).to have_selector "#case-selection option", text: expected_text
+      expect(page).to have_css "#case-selection option", text: expected_text
 
       # adds data-lookup attribute for searching by volunteer name
       casa_cases.each do |casa_case|
         lookup = casa_case.assigned_volunteers.map(&:display_name).join(",")
-        expect(page).to have_selector "#case-selection option[data-lookup='#{lookup}']"
+        expect(page).to have_css "#case-selection option[data-lookup='#{lookup}']"
       end
 
       # shows non-transition stamp for non-transitioned case
       expected_text = "#{younger_than_transition_age.case_number} - non-transition"
-      expect(page).to have_selector "#case-selection option", text: expected_text
+      expect(page).to have_css "#case-selection option", text: expected_text
 
       # shows a select element with default selection 'Select case number'
       expected_text = "Select case number"
-      find("#case-selection").click.first("option", text: expected_text).select_option
+      find_by_id("case-selection").click.first("option", text: expected_text).select_option
 
-      expect(page).to have_selector "#case-selection option:first-of-type", text: expected_text
+      expect(page).to have_css "#case-selection option:first-of-type", text: expected_text
       expect(page).to have_select "case-selection", selected: expected_text
 
       # when choosing the prompt option (value is empty) and click on 'Generate Report' button, nothing should happen"
@@ -70,9 +70,9 @@ RSpec.describe "case_court_reports/index", type: :system do
       page.select "Select case number", from: "case-selection"
       click_button "Generate Report"
 
-      expect(page).to have_selector("#btnGenerateReport .lni-download", visible: true)
-      expect(page).to_not have_selector("#btnGenerateReport[disabled]")
-      expect(page).to have_selector("#spinner", visible: :hidden)
+      expect(page).to have_css("#btnGenerateReport .lni-download", visible: true)
+      expect(page).to have_no_css("#btnGenerateReport[disabled]")
+      expect(page).to have_css("#spinner", visible: :hidden)
     end
   end
 
@@ -129,7 +129,7 @@ RSpec.describe "case_court_reports/index", type: :system do
 
         visit casa_case_path(casa_case.id)
 
-        expect(page).not_to have_link("Click to download")
+        expect(page).to have_no_link("Click to download")
       end
 
       it "does not allow admins to download already generated report from case details page" do
@@ -140,7 +140,7 @@ RSpec.describe "case_court_reports/index", type: :system do
 
         visit casa_case_path(casa_case.id)
 
-        expect(page).not_to have_link("Click to download")
+        expect(page).to have_no_link("Click to download")
       end
     end
 
@@ -180,7 +180,7 @@ RSpec.describe "case_court_reports/index", type: :system do
       visit case_court_reports_path
     end
 
-    it { expect(page).to have_selector ".select2" }
+    it { expect(page).to have_css ".select2" }
     it { expect(page).to have_text "Search by volunteer name or case number" }
 
     context "when searching for cases" do

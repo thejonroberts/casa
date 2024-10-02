@@ -8,7 +8,7 @@ RSpec.describe "imports/index", type: :system do
       sign_in volunteer
       visit imports_path
 
-      expect(page).to have_selector(".alert", text: "Sorry, you are not authorized to perform this action.")
+      expect(page).to have_css(".alert", text: "Sorry, you are not authorized to perform this action.")
     end
   end
 

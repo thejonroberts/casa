@@ -24,6 +24,6 @@ RSpec.describe "emancipations/show", type: :system do
     find(".category-collapse-icon").click
     expect(page).to have_content(emancipation_option.name)
     find(".category-collapse-icon").click
-    expect(page).to_not have_content(emancipation_option.name)
+    expect(page).to have_no_content(emancipation_option.name)
   end
 end

@@ -31,7 +31,7 @@ RSpec.describe "supervisor_mailer/weekly_digest", type: :view do
     it { expect(rendered).to have_text("Here's a summary of what happened with your volunteers this last week.") }
     it { expect(rendered).to have_link(volunteer.display_name) }
     it { expect(rendered).to have_link(casa_case.case_number) }
-    it { expect(rendered).not_to have_text(inactive_volunteer.display_name) }
+    it { expect(rendered).to have_no_text(inactive_volunteer.display_name) }
     it { expect(rendered).to have_text("Number of unsuccessful case contacts made this week: 2") }
     it { expect(rendered).to have_text("Number of successful case contacts made this week: 1") }
     it { expect(rendered).to have_text("- Date: #{I18n.l(@case_contact.occurred_at, format: :full, default: nil)}") }
@@ -42,7 +42,7 @@ RSpec.describe "supervisor_mailer/weekly_digest", type: :view do
     it { expect(rendered).to have_text("- Notes: #{@case_contact.notes}") }
     it { expect(rendered).to have_text("Contact Topic 1") }
     it { expect(rendered).to have_text("Contact Topic 1 Answer") }
-    it { expect(rendered).to_not have_text("Contact Topic 2") }
+    it { expect(rendered).to have_no_text("Contact Topic 2") }
   end
 
   context "when there are no volunteers" do

@@ -33,7 +33,7 @@ RSpec.describe "other_duties/new", type: :system do
       expect(page).to have_text("Other Duties")
       expect(page).to have_text(other_duty_1.notes)
       expect(page).to have_text(other_duty_2.notes)
-      expect(page).to_not have_text(other_duty_3.notes)
+      expect(page).to have_no_text(other_duty_3.notes)
     end
 
     it "has an error if a new duty is attempted to be created without any notes" do
@@ -42,7 +42,7 @@ RSpec.describe "other_duties/new", type: :system do
 
       click_on "Submit"
 
-      message = page.find("#other_duty_notes").native.attribute("validationMessage")
+      message = page.find_by_id("other_duty_notes").native.attribute("validationMessage")
       expect(message).to match(/Please fill (in|out) this field./)
     end
   end

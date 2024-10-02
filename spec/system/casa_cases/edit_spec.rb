@@ -44,18 +44,18 @@ RSpec.describe "Edit CASA Case", type: :system do
       find("span", text: contact_type.name).click
 
       page.find('button[data-action="court-order-form#add"]').click
-      find("#court-orders-list-container").first("textarea").send_keys("Court Order Text One")
+      find_by_id("court-orders-list-container").first("textarea").send_keys("Court Order Text One")
 
       within ".top-page-actions" do
         click_on "Update CASA Case"
       end
       expect(page).to have_text("Submitted")
       expect(page).to have_text("Court Date")
-      expect(page).not_to have_text("Court Report Due Date")
-      expect(page).not_to have_field("Court Report Due Date")
+      expect(page).to have_no_text("Court Report Due Date")
+      expect(page).to have_no_field("Court Report Due Date")
       expect(page).to have_text("Youth's Date in Care")
       expect(page).to have_text("Court Order Text One")
-      expect(page).not_to have_text("Deactivate Case")
+      expect(page).to have_no_text("Deactivate Case")
 
       expect(casa_case.contact_types).to eq [contact_type]
       has_checked_field? contact_type.name
@@ -74,9 +74,9 @@ RSpec.describe "Edit CASA Case", type: :system do
       expect(page).to have_text("Case #{casa_case.case_number} has been deactivated")
       expect(page).to have_text("Case was deactivated on: #{I18n.l(casa_case.updated_at, format: :standard, default: nil)}")
       expect(page).to have_text("Reactivate CASA Case")
-      expect(page).to_not have_text("Court Date")
-      expect(page).to_not have_text("Court Report Due Date")
-      expect(page).to_not have_field("Court Report Due Date")
+      expect(page).to have_no_text("Court Date")
+      expect(page).to have_no_text("Court Report Due Date")
+      expect(page).to have_no_field("Court Report Due Date")
     end
 
     it "does not allow an admin to deactivate a case if not in an organization" do
@@ -93,8 +93,8 @@ RSpec.describe "Edit CASA Case", type: :system do
       expect(page).to have_text("Case #{casa_case.case_number} has been reactivated.")
       expect(page).to have_text("Deactivate CASA Case")
       expect(page).to have_text("Court Date")
-      expect(page).not_to have_text("Court Report Due Date")
-      expect(page).not_to have_field("Court Report Due Date")
+      expect(page).to have_no_text("Court Report Due Date")
+      expect(page).to have_no_field("Court Report Due Date")
     end
 
     context "when trying to assign a volunteer to a case" do
@@ -132,9 +132,9 @@ RSpec.describe "Edit CASA Case", type: :system do
         visit edit_casa_case_path(casa_case)
         within "#casa_case_siblings_casa_cases" do
           siblings_casa_cases.each do |scc|
-            expect(page).to have_selector("option", text: scc.case_number)
+            expect(page).to have_css("option", text: scc.case_number)
           end
-          expect(page).not_to have_selector("option", text: casa_case.case_number)
+          expect(page).to have_no_css("option", text: casa_case.case_number)
         end
       end
 
@@ -215,7 +215,7 @@ RSpec.describe "Edit CASA Case", type: :system do
       select "Submitted", from: "casa_case_court_report_status"
 
       scroll_to('button[data-action="court-order-form#add"]').click
-      find("#court-orders-list-container").first("textarea").send_keys("Court Order Text One")
+      find_by_id("court-orders-list-container").first("textarea").send_keys("Court Order Text One")
 
       select "Partially implemented", from: "casa_case[case_court_orders_attributes][0][implementation_status]"
 
@@ -231,9 +231,9 @@ RSpec.describe "Edit CASA Case", type: :system do
       has_no_checked_field? "Supervisor"
 
       expect(page).to have_text("Court Date")
-      expect(page).not_to have_text("Court Report Due Date")
-      expect(page).not_to have_field("Court Report Due Date")
-      expect(page).not_to have_field("Court Report Due Date", with: "#{next_year}-09-08")
+      expect(page).to have_no_text("Court Report Due Date")
+      expect(page).to have_no_field("Court Report Due Date")
+      expect(page).to have_no_field("Court Report Due Date", with: "#{next_year}-09-08")
       expect(page).to have_text("Youth's Date in Care")
       expect(page).to have_text("Court Order Text One")
       expect(page).to have_text("Partially implemented")
@@ -241,7 +241,7 @@ RSpec.describe "Edit CASA Case", type: :system do
       visit casa_case_path(casa_case)
 
       expect(page).to have_text("Court Report Status: Submitted")
-      expect(page).not_to have_text("8-SEP-#{next_year}")
+      expect(page).to have_no_text("8-SEP-#{next_year}")
     end
 
     it "views deactivated case" do
@@ -249,14 +249,14 @@ RSpec.describe "Edit CASA Case", type: :system do
       visit edit_casa_case_path(casa_case)
 
       expect(page).to have_text("Case was deactivated on: #{I18n.l(casa_case.updated_at, format: :standard, default: nil)}")
-      expect(page).not_to have_text("Court Date")
-      expect(page).not_to have_text("Court Report Due Date")
-      expect(page).not_to have_text("Youth's Date in Care")
-      expect(page).not_to have_text("Day")
-      expect(page).not_to have_text("Month")
-      expect(page).not_to have_text("Year")
-      expect(page).not_to have_text("Reactivate Case")
-      expect(page).not_to have_text("Update Casa Case")
+      expect(page).to have_no_text("Court Date")
+      expect(page).to have_no_text("Court Report Due Date")
+      expect(page).to have_no_text("Youth's Date in Care")
+      expect(page).to have_no_text("Day")
+      expect(page).to have_no_text("Month")
+      expect(page).to have_no_text("Year")
+      expect(page).to have_no_text("Reactivate Case")
+      expect(page).to have_no_text("Update Casa Case")
     end
 
     it "shows court orders" do
@@ -391,10 +391,10 @@ RSpec.describe "Edit CASA Case", type: :system do
         sign_in supervisor
         visit edit_casa_case_path(casa_case.id)
 
-        select_element = find("#case_assignment_casa_case_id")
+        select_element = find_by_id("case_assignment_casa_case_id")
 
         # Check if the default option exists and has the expected text
-        expect(select_element).to have_selector("option[value='']", text: "Please Select Volunteer")
+        expect(select_element).to have_css("option[value='']", text: "Please Select Volunteer")
       end
     end
 
@@ -411,12 +411,12 @@ RSpec.describe "Edit CASA Case", type: :system do
         expect(page).to have_text("Are you sure you want to remove this court order? Doing so will delete all records of it unless it was included in a previous court report.")
 
         find("button.swal2-confirm").click
-        expect(page).to_not have_text(text)
+        expect(page).to have_no_text(text)
 
         within ".actions-cc" do
           click_on "Update CASA Case"
         end
-        expect(page).to_not have_text(text)
+        expect(page).to have_no_text(text)
       end
     end
 
@@ -517,9 +517,9 @@ RSpec.describe "Edit CASA Case", type: :system do
         click_on "Update CASA Case"
       end
 
-      expect(page).not_to have_field("Court Report Due Date")
-      expect(page).not_to have_text("Youth's Date in Care")
-      expect(page).not_to have_text("Deactivate Case")
+      expect(page).to have_no_field("Court Report Due Date")
+      expect(page).to have_no_text("Youth's Date in Care")
+      expect(page).to have_no_text("Deactivate Case")
 
       expect(page).to have_css('button[data-action="court-order-form#add"]')
 
@@ -561,17 +561,17 @@ RSpec.describe "Edit CASA Case", type: :system do
         casa_case = create(:casa_case, :with_one_court_order, casa_org: volunteer.casa_org)
         create(:case_assignment, volunteer: volunteer, casa_case: casa_case)
         visit edit_casa_case_path(casa_case)
-        expect(page).not_to have_button("copy-court-button")
-        expect(page).not_to have_selector("casa_case_siblings_casa_cases")
+        expect(page).to have_no_button("copy-court-button")
+        expect(page).to have_no_css("casa_case_siblings_casa_cases")
       end
 
       it "containses all cases associated to current volunteer except current case", :js do
         visit edit_casa_case_path(casa_case)
         within "#casa_case_siblings_casa_cases" do
           siblings_casa_cases.each do |scc|
-            expect(page).to have_selector("option", text: scc.case_number)
+            expect(page).to have_css("option", text: scc.case_number)
           end
-          expect(page).not_to have_selector("option", text: casa_case.case_number)
+          expect(page).to have_no_css("option", text: casa_case.case_number)
         end
       end
 

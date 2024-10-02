@@ -47,7 +47,7 @@ RSpec.describe "volunteers/new", type: :system do
     it "redirects the user with an error message" do
       visit new_volunteer_path
 
-      expect(page).to have_selector(".alert", text: "Sorry, you are not authorized to perform this action.")
+      expect(page).to have_css(".alert", text: "Sorry, you are not authorized to perform this action.")
     end
   end
 
@@ -66,6 +66,6 @@ RSpec.describe "volunteers/new", type: :system do
 
     sign_in volunteer
     visit new_learning_hour_path
-    expect(page).to_not have_text("Learning Topic")
+    expect(page).to have_no_text("Learning Topic")
   end
 end

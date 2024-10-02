@@ -45,7 +45,7 @@ RSpec.describe "casa_cases/new", type: :system do
           expect(page).to have_content(case_number)
           expect(page).to have_content(I18n.l(court_date, format: :day_and_date))
           expect(page).to have_content("CASA case was successfully created.")
-          expect(page).not_to have_content("Court Report Due Date: Thursday, 1-APR-2021") # accurate for frozen time
+          expect(page).to have_no_content("Court Report Due Date: Thursday, 1-APR-2021") # accurate for frozen time
           expect(page).to have_content("Transition Aged Youth: Yes")
           expect(page).to have_content(volunteer_display_name)
         end
@@ -79,7 +79,7 @@ RSpec.describe "casa_cases/new", type: :system do
         expect(page).to have_content(case_number)
         expect(page).to have_content("CASA case was successfully created.")
         expect(page).to have_content("Next Court Date: ")
-        expect(page).not_to have_content("Court Report Due Date:")
+        expect(page).to have_no_content("Court Report Due Date:")
         expect(page).to have_content("Transition Aged Youth: No")
       end
     end
@@ -97,7 +97,7 @@ RSpec.describe "casa_cases/new", type: :system do
           click_on "Create CASA Case"
         end
 
-        expect(find("#casa_case_empty_court_date")).to be_checked
+        expect(find_by_id("casa_case_empty_court_date")).to be_checked
         expect(page).to have_current_path(casa_cases_path, ignore_query: true)
         expect(page).to have_content("Case number can't be blank")
       end
@@ -131,7 +131,7 @@ RSpec.describe "casa_cases/new", type: :system do
           expect(page).to have_content(case_number)
           expect(page).to have_content("CASA case was successfully created.")
           expect(page).to have_content("Next Court Date:")
-          expect(page).not_to have_content("Court Report Due Date:")
+          expect(page).to have_no_content("Court Report Due Date:")
           expect(page).to have_content("Transition Aged Youth: No")
         end
       end

@@ -69,16 +69,16 @@ RSpec.describe "case_contacts/create", :js, type: :system do
       topic_two_id = contact_topics.last.question.parameterize.underscore
 
       expect(page).to have_text contact_topics.first.question
-      expect(page).to_not have_text contact_topics.first.details
+      expect(page).to have_no_text contact_topics.first.details
 
       within("##{topic_one_id}") do
         expect(page).to have_text("read more")
-        expect(page).to have_selector("##{topic_one_id} textarea")
+        expect(page).to have_css("##{topic_one_id} textarea")
       end
 
       expect(page).to have_text contact_topics.last.question
-      expect(page).to_not have_text contact_topics.last.details
-      expect(page).to_not have_selector("##{topic_two_id}")
+      expect(page).to have_no_text contact_topics.last.details
+      expect(page).to have_no_css("##{topic_two_id}")
     end
 
     it "expands to show and hide the text field and details", :js do
@@ -87,19 +87,19 @@ RSpec.describe "case_contacts/create", :js, type: :system do
 
       expect(page).to have_text(contact_topics.first.question)
       expect(page).to have_text(contact_topics.first.details)
-      expect(page).to have_selector("##{topic_id} textarea")
+      expect(page).to have_css("##{topic_id} textarea")
 
       find("##{topic_id}_button").click
 
       expect(page).to have_text(contact_topics.first.question)
-      expect(page).to_not have_text(contact_topics.first.details)
-      expect(page).to_not have_selector("##{topic_id} textarea")
+      expect(page).to have_no_text(contact_topics.first.details)
+      expect(page).to have_no_css("##{topic_id} textarea")
 
       find("##{topic_id}_button").click
 
       expect(page).to have_text(contact_topics.first.question)
       expect(page).to have_text(contact_topics.first.details)
-      expect(page).to have_selector("##{topic_id} textarea")
+      expect(page).to have_css("##{topic_id} textarea")
     end
 
     it "expands to show/hide details", :js do
@@ -108,18 +108,18 @@ RSpec.describe "case_contacts/create", :js, type: :system do
       expect(page).to have_text(contact_topics.first.question)
 
       within("##{topic_id}") do
-        expect(page).to_not have_text(contact_topics.first.details)
-        expect(page).to have_selector("##{topic_id} textarea")
+        expect(page).to have_no_text(contact_topics.first.details)
+        expect(page).to have_css("##{topic_id} textarea")
 
         click_on "read more"
 
         expect(page).to have_text(contact_topics.first.details)
-        expect(page).to have_selector("##{topic_id} textarea")
+        expect(page).to have_css("##{topic_id} textarea")
 
         click_on "read less"
 
-        expect(page).to_not have_text(contact_topics.first.details)
-        expect(page).to have_selector("##{topic_id} textarea")
+        expect(page).to have_no_text(contact_topics.first.details)
+        expect(page).to have_css("##{topic_id} textarea")
       end
     end
   end

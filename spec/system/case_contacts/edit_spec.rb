@@ -56,7 +56,7 @@ RSpec.describe "case_contacts/edit", type: :system do
       complete_details_page(case_numbers: [], contact_types: [], contact_made: true, medium: "In Person", hours: 1, minutes: 45, occurred_on: "04/04/2020")
       complete_notes_page
 
-      expect(find("#case_contact_volunteer_address").value)
+      expect(find_by_id("case_contact_volunteer_address").value)
         .to eq("There are two or more volunteers assigned to this case and \
 you are trying to set the address for both of them. This is not currently possible.")
     end
@@ -69,7 +69,7 @@ you are trying to set the address for both of them. This is not currently possib
         sign_in admin
 
         visit edit_case_contact_path(case_contact)
-        expect(current_path).to eq supervisors_path
+        expect(page).to have_current_path supervisors_path, ignore_query: true
       end
     end
   end

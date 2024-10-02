@@ -105,7 +105,7 @@ RSpec.describe "supervisors/edit", type: :system do
 
       click_on "Activate supervisor"
 
-      expect(page).not_to have_text("Supervisor was deactivated on")
+      expect(page).to have_no_text("Supervisor was deactivated on")
 
       expect(inactive_supervisor.reload).to be_active
     end
@@ -149,7 +149,7 @@ RSpec.describe "supervisors/edit", type: :system do
         sign_in supervisor
         visit edit_supervisor_path(supervisor2)
 
-        expect(page).to_not have_text("Deactivate supervisor")
+        expect(page).to have_no_text("Deactivate supervisor")
       end
 
       it "can't activate a supervisor" do
@@ -160,7 +160,7 @@ RSpec.describe "supervisors/edit", type: :system do
 
         visit edit_supervisor_path(inactive_supervisor)
 
-        expect(page).not_to have_text("Activate supervisor")
+        expect(page).to have_no_text("Activate supervisor")
       end
     end
 
@@ -252,7 +252,7 @@ RSpec.describe "supervisors/edit", type: :system do
       end
 
       it "does not have a submit button" do
-        expect(page).not_to have_selector(:link_or_button, "Submit")
+        expect(page).to have_no_selector(:link_or_button, "Submit")
       end
     end
 
@@ -293,8 +293,8 @@ RSpec.describe "supervisors/edit", type: :system do
           visit edit_supervisor_path(supervisor)
 
           expect(page).to have_text "Assigned Volunteers"
-          expect(page).to_not have_button("Include unassigned")
-          expect(page).to_not have_text("Currently Assigned To")
+          expect(page).to have_no_button("Include unassigned")
+          expect(page).to have_no_text("Currently Assigned To")
           supervisor.volunteers.each do |volunteer|
             expect(page).to have_text volunteer.email
           end
@@ -306,7 +306,7 @@ RSpec.describe "supervisors/edit", type: :system do
           it "does not show them by default" do
             visit edit_supervisor_path(supervisor)
 
-            expect(page).to_not have_text unassigned_volunteer.email
+            expect(page).to have_no_text unassigned_volunteer.email
             expect(page).to have_button("Include unassigned")
 
             click_on "Include unassigned"
@@ -329,7 +329,7 @@ RSpec.describe "supervisors/edit", type: :system do
             visit edit_supervisor_path(supervisor)
 
             expect(page).to have_text "Assigned Volunteers"
-            expect(page).to_not have_text unassigned_volunteer.email
+            expect(page).to have_no_text unassigned_volunteer.email
             expect(page).to have_button("Include unassigned")
 
             click_on "Include unassigned"
@@ -341,8 +341,8 @@ RSpec.describe "supervisors/edit", type: :system do
 
             click_on "Hide unassigned"
 
-            expect(page).to_not have_text "Currently Assigned To"
-            expect(page).to_not have_text "No One"
+            expect(page).to have_no_text "Currently Assigned To"
+            expect(page).to have_no_text "No One"
           end
         end
       end

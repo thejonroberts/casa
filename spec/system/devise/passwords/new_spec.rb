@@ -80,7 +80,7 @@ RSpec.describe "users/passwords/new", type: :system do
       click_on "Log In"
 
       expect(page).to have_text(user.display_name)
-      expect(page).not_to have_text("Sign in")
+      expect(page).to have_no_text("Sign in")
     end
   end
 end

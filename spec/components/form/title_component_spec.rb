@@ -21,11 +21,11 @@ RSpec.describe Form::TitleComponent, type: :component do
     end
 
     it "does not render progress" do
-      expect(page).not_to have_css "div[class='progress']"
+      expect(page).to have_no_css "div[class='progress']"
     end
 
     it "does not render autosave alert div" do
-      expect(page).not_to have_css "small[data-autosave-target='alert']"
+      expect(page).to have_no_css "small[data-autosave-target='alert']"
     end
   end
 

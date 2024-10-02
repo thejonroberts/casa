@@ -13,7 +13,7 @@ RSpec.describe "banners/dismiss", :js, type: :system do
       expect(page).to have_text("Please fill out this survey")
 
       click_on "Dismiss"
-      expect(page).not_to have_text("Please fill out this survey")
+      expect(page).to have_no_text("Please fill out this survey")
     end
   end
 end

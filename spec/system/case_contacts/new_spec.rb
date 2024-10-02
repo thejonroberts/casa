@@ -27,9 +27,9 @@ RSpec.describe "case_contacts/new", :js, type: :system do
       # assert to wait for page loading, to reduce flakiness
       expect(page).to have_text("CASA Case Details")
       # does not show empty contact type groups
-      expect(page).to_not have_text("Empty")
+      expect(page).to have_no_text("Empty")
       # does not show contact type groups with only hidden contact types
-      expect(page).to_not have_text("Hidden")
+      expect(page).to have_no_text("Hidden")
 
       click_on "New Case Contact"
       complete_details_page(
@@ -182,7 +182,7 @@ RSpec.describe "case_contacts/new", :js, type: :system do
       it "renders all of the org's contact types" do
         subject
 
-        find("#case_contact_contact_type_ids-ts-control").click
+        find_by_id("case_contact_contact_type_ids-ts-control").click
         expect(page).to have_text("School")
         expect(page).to have_text("Therapist")
       end
@@ -197,11 +197,11 @@ RSpec.describe "case_contacts/new", :js, type: :system do
         expect(casa_org.contact_types.map(&:name)).to include("Attorney")
         subject
 
-        within find("#contact-type-id-selector") do
+        within "#contact-type-id-selector" do
           find(".ts-control").click
         end
 
-        expect(page).not_to have_text("Attorney")
+        expect(page).to have_no_text("Attorney")
         expect(page).to have_text("School")
         expect(page).to have_text("Therapist")
       end
@@ -233,7 +233,7 @@ RSpec.describe "case_contacts/new", :js, type: :system do
         complete_details_page(case_numbers: [case_number], contact_types: %w[School], contact_made: true, medium: "In Person")
         complete_notes_page
 
-        expect(page).not_to have_field("b. Want Driving Reimbursement")
+        expect(page).to have_no_field("b. Want Driving Reimbursement")
       end
     end
 
@@ -320,15 +320,15 @@ RSpec.describe "case_contacts/new", :js, type: :system do
           it "selects no cases" do
             subject
 
-            expect(page).not_to have_text(first_case.case_number)
-            expect(page).not_to have_text(second_case.case_number)
+            expect(page).to have_no_text(first_case.case_number)
+            expect(page).to have_no_text(second_case.case_number)
           end
 
           it "warns user about using the back button on step 1" do
             subject
 
             click_on "Back"
-            expect(page).to have_selector("h2", text: "Discard draft?")
+            expect(page).to have_css("h2", text: "Discard draft?")
           end
 
           context "when there are params defined" do
@@ -336,15 +336,15 @@ RSpec.describe "case_contacts/new", :js, type: :system do
               visit new_case_contact_path(case_contact: {casa_case_id: first_case.id})
 
               expect(page).to have_text(first_case.case_number)
-              expect(page).not_to have_text(second_case.case_number)
+              expect(page).to have_no_text(second_case.case_number)
             end
 
             it "does not warn user when clicking the back button" do
               visit new_case_contact_path(case_contact: {casa_case_id: first_case.id})
 
               click_on "Back"
-              expect(page).to have_selector("h1", text: "Case Contacts")
-              expect(page).to have_selector("a", text: "New Case Contact")
+              expect(page).to have_css("h1", text: "Case Contacts")
+              expect(page).to have_css("a", text: "New Case Contact")
             end
           end
         end
@@ -363,8 +363,8 @@ RSpec.describe "case_contacts/new", :js, type: :system do
           visit new_case_contact_path(case_contact: {casa_case_id: first_case.id})
 
           click_on "Back"
-          expect(page).to have_selector("h1", text: "Case Contacts")
-          expect(page).to have_selector("a", text: "New Case Contact")
+          expect(page).to have_css("h1", text: "Case Contacts")
+          expect(page).to have_css("a", text: "New Case Contact")
         end
       end
     end

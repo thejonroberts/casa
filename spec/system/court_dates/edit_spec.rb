@@ -63,7 +63,7 @@ RSpec.describe "court_dates/edit", type: :system do
       expect(page).to have_text("Add a court order")
 
       page.find('button[data-action="court-order-form#add"]').click
-      find("#court-orders-list-container").first("textarea").send_keys("Court Order Text One")
+      find_by_id("court-orders-list-container").first("textarea").send_keys("Court Order Text One")
 
       within ".top-page-actions" do
         click_on "Update"
@@ -118,7 +118,7 @@ RSpec.describe "court_dates/edit", type: :system do
       expect(CourtDate.count).to eq 2
       expect(page).to have_content future_court_date.date.strftime("%B %-d, %Y")
       page.find("a", text: future_court_date.date.strftime("%B %-d, %Y")).click
-      expect(page).not_to have_content "Delete Future Court Date"
+      expect(page).to have_no_content "Delete Future Court Date"
     end
   end
 end

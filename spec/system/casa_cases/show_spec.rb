@@ -36,7 +36,7 @@ RSpec.describe "casa_cases/show", type: :system do
       end
 
       it "does not see a link to emancipation checklist" do
-        expect(page).not_to have_link("Emancipation 0 / #{emancipation_categories.size}")
+        expect(page).to have_no_link("Emancipation 0 / #{emancipation_categories.size}")
       end
     end
   end
@@ -55,8 +55,8 @@ RSpec.describe "casa_cases/show", type: :system do
 
     context "when first arriving to 'Generate Court Report' page" do
       it "generation modal hidden" do
-        expect(page).to have_selector "#btnGenerateReport", text: "Generate Report", visible: false
-        expect(page).not_to have_selector ".select2"
+        expect(page).to have_css "#btnGenerateReport", text: "Generate Report", visible: false
+        expect(page).to have_no_css ".select2"
       end
     end
 
@@ -67,18 +67,18 @@ RSpec.describe "casa_cases/show", type: :system do
 
       # putting all this in the same system test shaves 3 seconds off the test suite
       it "modal has correct contents" do
-        start_date = page.find("#start_date").value
+        start_date = page.find_by_id("start_date").value
         expect(start_date).to eq("January 01, 2021") # default date
 
-        end_date = page.find("#end_date").value
+        end_date = page.find_by_id("end_date").value
         expect(end_date).to eq("January 01, 2021") # default date
 
-        expect(page).to have_selector "#btnGenerateReport", text: "Generate Report", visible: true
-        expect(page).to_not have_selector ".select2"
+        expect(page).to have_css "#btnGenerateReport", text: "Generate Report", visible: true
+        expect(page).to have_no_css ".select2"
 
-        expect(page).to have_selector("#btnGenerateReport .lni-download", visible: true)
-        expect(page).to_not have_selector("#btnGenerateReport[disabled]")
-        expect(page).to have_selector("#spinner", visible: :hidden)
+        expect(page).to have_css("#btnGenerateReport .lni-download", visible: true)
+        expect(page).to have_no_css("#btnGenerateReport[disabled]")
+        expect(page).to have_css("#spinner", visible: :hidden)
 
         within("#generate-docx-report-modal") do
           expect(page).to have_content(casa_case.case_number)
@@ -145,7 +145,7 @@ RSpec.describe "casa_cases/show", type: :system do
       end
 
       it "can not see Add to Calendar buttons", :js do
-        expect(page).not_to have_content("Add to Calendar")
+        expect(page).to have_no_content("Add to Calendar")
       end
     end
 

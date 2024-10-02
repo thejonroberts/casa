@@ -21,8 +21,8 @@ RSpec.describe "casa_org/edit", type: :view do
     render template: "casa_org/edit"
 
     expect(rendered).to have_text "Editing CASA Organization"
-    expect(rendered).to_not have_text "sign in before continuing"
-    expect(rendered).to have_selector("input[required=required]", id: "casa_org_name")
+    expect(rendered).to have_no_text "sign in before continuing"
+    expect(rendered).to have_css("input[required=required]", id: "casa_org_name")
   end
 
   it "has contact topic content" do
@@ -108,7 +108,7 @@ RSpec.describe "casa_org/edit", type: :view do
 
     render template: "casa_org/edit"
 
-    expect(rendered).not_to have_text("Download Current Template")
+    expect(rendered).to have_no_text("Download Current Template")
   end
 
   it "has sent emails content" do
@@ -163,7 +163,7 @@ RSpec.describe "casa_org/edit", type: :view do
 
         render template: "casa_org/edit"
 
-        expect(rendered).not_to have_text("Volunteers can add Other Expenses")
+        expect(rendered).to have_no_text("Volunteers can add Other Expenses")
       end
     end
   end
