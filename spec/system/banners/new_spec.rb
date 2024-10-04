@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Banners", :js, type: :system do
+RSpec.describe "Banners", :js do
   let(:admin) { create(:casa_admin) }
   let(:organization) { admin.casa_org }
 

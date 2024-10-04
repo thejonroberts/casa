@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CourtDate, type: :model do
+RSpec.describe CourtDate do
   subject(:court_date) { create(:court_date, casa_case: casa_case) }
 
   let(:casa_case) { create(:casa_case, case_number: "AAA123123") }

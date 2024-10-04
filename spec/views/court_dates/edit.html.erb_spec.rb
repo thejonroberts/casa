@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "court_dates/edit", type: :view do
+RSpec.describe "court_dates/edit" do
   subject { render template: "court_dates/edit" }
 
   let(:organization) { create(:casa_org) }

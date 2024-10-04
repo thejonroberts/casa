@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_cases/new", type: :system do
+RSpec.describe "casa_cases/new" do
   context "when signed in as a Casa Org Admin" do
     context "when all fields are filled" do
       let(:casa_org) { build(:casa_org) }

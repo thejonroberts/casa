@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_cases/show", type: :system do
+RSpec.describe "casa_cases/show" do
   include ActionView::Helpers::DateHelper
 
   let(:organization) { create(:casa_org) }

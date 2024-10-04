@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe VolunteerMailer, type: :mailer do
+RSpec.describe VolunteerMailer do
   let(:volunteer) { create(:volunteer) }
   let(:volunteer_with_supervisor) { create(:volunteer, :with_assigned_supervisor) }
 

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe PatchNoteType, type: :model do
+RSpec.describe PatchNoteType do
   let!(:patch_note_type) { create(:patch_note_type) }
 
   it { is_expected.to validate_presence_of(:name) }

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "emancipations/show", type: :system do
+RSpec.describe "emancipations/show" do
   let(:org) { build(:casa_org) }
   let(:volunteer) { build(:volunteer, casa_org: org) }
   let(:supervisor) { create(:supervisor, casa_org: org) }

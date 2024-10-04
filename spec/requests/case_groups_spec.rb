@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/case_groups", type: :request do
+RSpec.describe "/case_groups" do
   let(:casa_org) { create :casa_org }
   let(:supervisor) { create :supervisor, casa_org: }
   let(:user) { supervisor }

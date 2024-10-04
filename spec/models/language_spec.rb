@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Language, type: :model do
+RSpec.describe Language do
   let(:organization) { create(:casa_org) }
   let!(:language) { create(:language, name: "Spanish", casa_org: organization) }
 

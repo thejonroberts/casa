@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CaseGroup, type: :model do
+RSpec.describe CaseGroup do
   describe "validations" do
     it { is_expected.to validate_presence_of(:case_group_memberships) }
 

@@ -1,7 +1,7 @@
 require "rails_helper"
 require "stringio"
 
-RSpec.describe "Edit CASA Case", type: :system do
+RSpec.describe "Edit CASA Case" do
   context "logged in as admin" do
     let(:organization) { build(:casa_org) }
     let(:other_organization) { build(:casa_org) }

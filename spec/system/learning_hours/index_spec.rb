@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Learning Hours Index", type: :system do
+RSpec.describe "Learning Hours Index" do
   let!(:supervisor) { create(:supervisor, :with_volunteers) }
   let!(:volunteer) { supervisor.volunteers.first }
   let!(:learning_hours) { create_list(:learning_hour, 2, user: volunteer) }

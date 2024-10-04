@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe User, type: :model do
+RSpec.describe User do
   it { is_expected.to belong_to(:casa_org) }
 
   it { is_expected.to have_many(:case_assignments) }

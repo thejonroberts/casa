@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "bulk_court_dates/new", type: :system do
+RSpec.describe "bulk_court_dates/new" do
   let(:now) { Date.new(2021, 1, 1) }
   let(:casa_org) { create(:casa_org) }
   let(:admin) { create(:casa_admin, casa_org: casa_org) }

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe FundRequestMailer, type: :mailer do
+RSpec.describe FundRequestMailer do
   let(:fund_request) { build(:fund_request) }
   let(:mail) { described_class.send_request(nil, fund_request) }
 

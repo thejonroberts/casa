@@ -9,7 +9,7 @@ RSpec.shared_examples "compares opening and closing tags" do
   end
 end
 
-RSpec.describe "casa_admin_mailer", type: :view do
+RSpec.describe "casa_admin_mailer" do
   describe "should validate that account_setup email template is valid" do
     let(:file_path) { "app/views/casa_admin_mailer/account_setup.html.erb" }
 
@@ -23,7 +23,7 @@ RSpec.describe "casa_admin_mailer", type: :view do
   end
 end
 
-RSpec.describe "devise", type: :view do
+RSpec.describe "devise" do
   describe "should validate that confirmation_instructions email template is valid" do
     let(:file_path) { "app/views/devise/mailer/confirmation_instructions.html.erb" }
 
@@ -61,7 +61,7 @@ RSpec.describe "devise", type: :view do
   end
 end
 
-RSpec.describe "supervisor_mailer", type: :view do
+RSpec.describe "supervisor_mailer" do
   describe "should validate that account_setup email template is valid" do
     let(:file_path) { "app/views/supervisor_mailer/account_setup.html.erb" }
 
@@ -75,7 +75,7 @@ RSpec.describe "supervisor_mailer", type: :view do
   end
 end
 
-RSpec.describe "user_mailer", type: :view do
+RSpec.describe "user_mailer" do
   describe "should validate that password_changed_reminder email template is valid" do
     let(:file_path) { "app/views/user_mailer/password_changed_reminder.html.erb" }
 
@@ -83,7 +83,7 @@ RSpec.describe "user_mailer", type: :view do
   end
 end
 
-RSpec.describe "volunteer_mailer", type: :view do
+RSpec.describe "volunteer_mailer" do
   describe "should validate that account_setup email template is valid" do
     let(:file_path) { "app/views/volunteer_mailer/account_setup.html.erb" }
 

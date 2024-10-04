@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "all_casa_admins/patch_notes/index", type: :system do
+RSpec.describe "all_casa_admins/patch_notes/index" do
   context "the new patch note form" do
     let(:all_casa_admin) { create(:all_casa_admin) }
 

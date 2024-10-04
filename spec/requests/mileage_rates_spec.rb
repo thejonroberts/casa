@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/mileage_rates", type: :request do
+RSpec.describe "/mileage_rates" do
   let(:casa_org) { create(:casa_org) }
   let(:admin) { create(:casa_admin, casa_org: casa_org) }
 

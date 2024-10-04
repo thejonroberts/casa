@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe OtherDuty, type: :model do
+RSpec.describe OtherDuty do
   it { is_expected.to belong_to(:creator) }
 
   it "validates presence of notes" do

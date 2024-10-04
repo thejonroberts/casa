@@ -1,7 +1,7 @@
 require "rails_helper"
 require "support/stubbed_requests/webmock_helper"
 
-RSpec.describe CasaOrg, type: :model do
+RSpec.describe CasaOrg do
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to have_many(:users).dependent(:destroy) }
   it { is_expected.to have_many(:casa_cases).dependent(:destroy) }

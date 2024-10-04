@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "case_contacts/index", :js, type: :system do
+RSpec.describe "case_contacts/index", :js do
   let(:volunteer) { build(:volunteer, display_name: "Bob Loblaw", casa_org: organization) }
   let(:organization) { create(:casa_org) }
 

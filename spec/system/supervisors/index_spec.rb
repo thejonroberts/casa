@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "supervisors/index", type: :system do
+RSpec.describe "supervisors/index" do
   shared_examples_for "functioning sort buttons" do
     it "sorts table columns" do
       expect(page).to have_css("tr:nth-child(1)", text: expected_first_ordered_value)

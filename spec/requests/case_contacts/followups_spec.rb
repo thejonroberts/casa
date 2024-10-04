@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "CaseContacts::FollowupsController", type: :request do
+RSpec.describe "CaseContacts::FollowupsController" do
   let(:volunteer) { create(:volunteer) }
   let(:case_contact) { create(:case_contact) }
 

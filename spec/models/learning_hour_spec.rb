@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe LearningHour, type: :model do
+RSpec.describe LearningHour do
   it "has a title" do
     learning_hour = build_stubbed(:learning_hour, name: nil)
     expect(learning_hour).to_not be_valid

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CasaAdminMailer, type: :mailer do
+RSpec.describe CasaAdminMailer do
   let(:casa_admin) { create(:casa_admin) }
 
   describe ".account_setup for an admin" do

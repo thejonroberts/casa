@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/all_casa_admins", type: :request do
+RSpec.describe "/all_casa_admins" do
   let(:admin) { create(:all_casa_admin) }
 
   before { sign_in admin }

@@ -11,6 +11,7 @@ require:
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-rspec_rails
 
 inherit_gem:
   standard: config/ruby-3.2.yml

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_org/edit", type: :view do
+RSpec.describe "casa_org/edit" do
   before do
     assign(:contact_type_groups, [])
     assign(:contact_types, [])

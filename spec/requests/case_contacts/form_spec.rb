@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "CaseContacts::Forms", type: :request do
+RSpec.describe "CaseContacts::Forms" do
   let(:organization) { build(:casa_org) }
   let(:admin) { create(:casa_admin, casa_org: organization) }
   let(:supervisor) { create(:supervisor, casa_org: organization) }

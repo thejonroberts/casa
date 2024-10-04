@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "static/index", type: :system do
+RSpec.describe "static/index" do
   context "when visiting the CASA volunteer landing page", :js do
     describe "when all organizations have logos" do
       before do

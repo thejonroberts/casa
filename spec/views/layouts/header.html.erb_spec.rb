@@ -5,7 +5,7 @@ module PretenderContext
   end
 end
 
-RSpec.describe "layout/header", type: :view do
+RSpec.describe "layout/header" do
   before do
     view.class.include PretenderContext
 

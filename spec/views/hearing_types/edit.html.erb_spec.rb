@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "hearing_types/edit", type: :view do
+RSpec.describe "hearing_types/edit" do
   let(:admin) { build_stubbed(:casa_admin) }
 
   before do

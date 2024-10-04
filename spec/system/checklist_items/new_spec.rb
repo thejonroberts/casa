@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "checklist_items/new", type: :system do
+RSpec.describe "checklist_items/new" do
   let(:casa_admin) { create(:casa_admin) }
   let(:hearing_type) { create(:hearing_type) }
 

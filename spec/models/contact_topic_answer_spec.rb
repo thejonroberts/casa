@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ContactTopicAnswer, type: :model do
+RSpec.describe ContactTopicAnswer do
   it { is_expected.to belong_to(:case_contact) }
   it { is_expected.to belong_to(:contact_topic) }
 

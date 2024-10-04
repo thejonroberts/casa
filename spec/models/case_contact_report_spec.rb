@@ -1,6 +1,6 @@
 require "rails_helper"
 require "csv"
-RSpec.describe CaseContactReport, type: :model do
+RSpec.describe CaseContactReport do
   describe "#generate_headers" do
     it "matches the length of row data" do
       create(:case_contact)

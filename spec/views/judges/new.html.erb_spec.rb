@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "judges/new", type: :view do
+RSpec.describe "judges/new" do
   let(:admin) { build_stubbed(:casa_admin) }
 
   before do

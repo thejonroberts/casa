@@ -1,6 +1,6 @@
 require "swagger_helper"
 
-RSpec.describe "sessions API", type: :request do
+RSpec.describe "sessions API" do
   path "/api/v1/users/sign_in" do
     post "Signs in a user" do
       tags "Sessions"

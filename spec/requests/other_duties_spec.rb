@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/other_duties", type: :request do
+RSpec.describe "/other_duties" do
   describe "GET /new" do
     context "when volunteer" do
       it "is successful" do

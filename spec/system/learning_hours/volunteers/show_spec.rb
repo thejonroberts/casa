@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "LearningHours::Volunteers #show", type: :system do
+RSpec.describe "LearningHours::Volunteers #show" do
   let!(:volunteer) { create(:volunteer) }
   let!(:supervisor) { create(:supervisor) }
   let!(:learning_hours) { create_list(:learning_hour, 5, user: volunteer) }

@@ -1,7 +1,7 @@
 require "rails_helper"
 require "support/stubbed_requests/webmock_helper"
 
-RSpec.describe "/casa_admins", type: :request do
+RSpec.describe "/casa_admins" do
   describe "GET /casa_admins" do
     it "is successful" do
       admins = create_pair(:casa_admin)

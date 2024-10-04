@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe LoginActivity, type: :model do
+RSpec.describe LoginActivity do
   it "has a valid factory" do
     login_activity = build(:login_activity)
 

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe LearningHoursHelper, type: :helper do
+RSpec.describe LearningHoursHelper do
   describe "#format_time" do
     it "formats time correctly for positive values" do
       expect(helper.format_time(120)).to eq("2 hours 0 minutes")

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "CasaOrg", type: :request do
+RSpec.describe "CasaOrg" do
   let(:casa_org) { build(:casa_org) }
   let(:casa_case) { build_stubbed(:casa_case, casa_org: casa_org) }
 

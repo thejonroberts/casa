@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/supervisor_volunteers", type: :request do
+RSpec.describe "/supervisor_volunteers" do
   let!(:casa_org) { build(:casa_org) }
   let!(:admin) { build(:casa_admin, casa_org: casa_org) }
   let!(:supervisor) { create(:supervisor, casa_org: casa_org) }

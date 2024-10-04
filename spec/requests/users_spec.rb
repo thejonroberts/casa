@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/users", type: :request do
+RSpec.describe "/users" do
   before {
     sms_notification_event = SmsNotificationEvent.new(name: "test", user_type: Volunteer)
     sms_notification_event.save
@@ -476,7 +476,7 @@ RSpec.describe "/users", type: :request do
       it "removes a language from a volunteer languages list" do
         delete remove_language_users_path(language_id: language.id)
 
-        expect(response.status).to eq 302
+        expect(response).to have_http_status :found
         expect(response).to redirect_to(edit_users_path)
         expect(flash[:notice]).to eq "#{language.name} was removed from your languages list."
         expect(volunteer.languages).not_to include language

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CaseAssignment, type: :model do
+RSpec.describe CaseAssignment do
   let(:casa_org_1) { build(:casa_org) }
   let(:casa_case_1) { create(:casa_case, casa_org: casa_org_1) }
   let(:volunteer_1) { create(:volunteer, casa_org: casa_org_1) }
@@ -14,10 +14,10 @@ RSpec.describe CaseAssignment, type: :model do
     expect(casa_case_1.case_assignments.new(volunteer: volunteer_1)).to be_valid
     casa_case_1.reload
 
-    expect(casa_case_1.case_assignments.new(volunteer: inactive)).to be_invalid
+    expect(casa_case_1.case_assignments.new(volunteer: inactive)).not_to be_valid
     casa_case_1.reload
 
-    expect(casa_case_1.case_assignments.new(volunteer: supervisor)).to be_invalid
+    expect(casa_case_1.case_assignments.new(volunteer: supervisor)).not_to be_valid
   end
 
   it "allows two volunteers to be assigned to the same case" do

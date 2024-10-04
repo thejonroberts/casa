@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/casa_cases", type: :request do
+RSpec.describe "/casa_cases" do
   let(:date_in_care) { Date.today }
   let(:organization) { build(:casa_org) }
   let(:group) { build(:contact_type_group) }

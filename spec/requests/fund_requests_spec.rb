@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe FundRequestsController, type: :request do
+RSpec.describe FundRequestsController do
   describe "GET /casa_cases/:casa_id/fund_request/new" do
     context "when volunteer" do
       context "when casa_case is within organization" do

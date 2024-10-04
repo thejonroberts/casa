@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "BulkCourtDates", type: :request do
+RSpec.describe "BulkCourtDates" do
   let(:user) { create(:supervisor) }
 
   before { sign_in user }

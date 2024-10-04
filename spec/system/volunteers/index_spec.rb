@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "view all volunteers", :js, type: :system do
+RSpec.describe "view all volunteers", :js do
   let(:organization) { create(:casa_org) }
   let(:admin) { create(:casa_admin, casa_org: organization) }
 

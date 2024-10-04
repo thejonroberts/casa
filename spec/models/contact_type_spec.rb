@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ContactType, type: :model do
+RSpec.describe ContactType do
   let(:contact_type_group) { create(:contact_type_group, name: "Group 1") }
   let(:contact_type) { create(:contact_type, name: "Type 1", contact_type_group: contact_type_group) }
 

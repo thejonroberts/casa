@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "imports/index", type: :system do
+RSpec.describe "imports/index" do
   context "as a volunteer" do
     it "redirects the user with an error message" do
       volunteer = create(:volunteer)

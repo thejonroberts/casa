@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "volunteers", type: :view do
+RSpec.describe "volunteers" do
   subject { render template: "volunteers/index" }
 
   let(:user) { build_stubbed :volunteer }

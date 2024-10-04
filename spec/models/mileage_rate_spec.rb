@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe MileageRate, type: :model do
+RSpec.describe MileageRate do
   subject { build(:mileage_rate) }
 
   it { is_expected.to belong_to(:casa_org) }

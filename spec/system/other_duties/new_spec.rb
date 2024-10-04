@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "other_duties/new", type: :system do
+RSpec.describe "other_duties/new" do
   let(:casa_org) { build(:casa_org) }
   let(:admin) { create(:casa_admin, casa_org: casa_org) }
   let(:case_number) { "12345" }

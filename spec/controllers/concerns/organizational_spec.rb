@@ -4,7 +4,7 @@ class MockController < ApplicationController
   include Organizational
 end
 
-RSpec.describe MockController, type: :controller do
+RSpec.describe MockController do
   it "raises a UnknownOrganization error" do
     expect { controller.require_organization! }.to raise_error(Organizational::UnknownOrganization)
   end

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Volunteer, type: :model do
+RSpec.describe Volunteer do
   describe ".email_court_report_reminder" do
     let!(:casa_org) { build(:casa_org) }
     let!(:casa_org_twilio_disabled) { build(:casa_org, twilio_enabled: false) }

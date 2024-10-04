@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "supervisors/index", type: :view do
+RSpec.describe "supervisors/index" do
   context "when logged in as an admin" do
     it "can access the 'New Supervisor' button" do
       user = create(:casa_admin)

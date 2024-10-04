@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CasaCase, type: :model do
+RSpec.describe CasaCase do
   subject { build(:casa_case) }
 
   it { is_expected.to have_many(:case_assignments).dependent(:destroy) }
@@ -163,7 +163,7 @@ RSpec.describe CasaCase, type: :model do
         casa_case: other_inactive_case, volunteer: other_user, active: false
       )
 
-      assert_equal active_cases.map(&:case_number).sort, described_class.actively_assigned_to(current_user).map(&:case_number).sort
+      expect(described_class.actively_assigned_to(current_user)).to match_array(active_cases)
     end
   end
 

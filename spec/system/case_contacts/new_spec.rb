@@ -1,7 +1,7 @@
 require "rails_helper"
 require "action_view"
 
-RSpec.describe "case_contacts/new", :js, type: :system do
+RSpec.describe "case_contacts/new", :js do
   include ActionView::Helpers::SanitizeHelper
 
   subject { visit new_case_contact_path casa_case }

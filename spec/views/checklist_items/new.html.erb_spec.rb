@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "checklist_items/new", type: :view do
+RSpec.describe "checklist_items/new" do
   let(:admin) { build_stubbed(:casa_admin) }
 
   before do

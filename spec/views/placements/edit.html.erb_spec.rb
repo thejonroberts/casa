@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "placements/edit", type: :view do
+RSpec.describe "placements/edit" do
   subject { render template: "placements/edit" }
 
   let(:organization) { create(:casa_org) }

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ContactTopic, type: :model do
+RSpec.describe ContactTopic do
   it { is_expected.to belong_to(:casa_org) }
   it { is_expected.to have_many(:contact_topic_answers) }
 

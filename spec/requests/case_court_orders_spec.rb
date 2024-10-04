@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/case_court_orders", type: :request do
+RSpec.describe "/case_court_orders" do
   let(:user) { build(:casa_admin) }
   let(:case_court_order) { build(:case_court_order) }
 

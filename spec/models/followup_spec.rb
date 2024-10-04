@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Followup, type: :model do
+RSpec.describe Followup do
   subject { build(:followup) }
 
   it { is_expected.to belong_to(:case_contact) } # TOOD polymorph remove after migraion complete
@@ -28,7 +28,7 @@ RSpec.describe Followup, type: :model do
     create(:followup, case_contact: case_contact)
     invalid_followup = build(:followup, status: :requested, case_contact: case_contact)
 
-    expect(invalid_followup).to be_invalid
+    expect(invalid_followup).not_to be_valid
   end
 
   it "allows followup to be flipped to resolved" do

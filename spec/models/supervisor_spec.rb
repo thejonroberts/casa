@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Supervisor, type: :model do
+RSpec.describe Supervisor do
   include Devise::Test::IntegrationHelpers
 
   subject(:supervisor) { create :supervisor }

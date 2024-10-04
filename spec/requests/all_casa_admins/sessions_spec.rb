@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "AllCasaAdmin::SessionsController", type: :request do
+RSpec.describe "AllCasaAdmin::SessionsController" do
   let(:all_casa_admin) { create(:all_casa_admin) }
 
   describe "GET /new" do

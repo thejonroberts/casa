@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "User Login", type: :system do
+RSpec.describe "User Login" do
   %w[volunteer supervisor casa_admin].each do |user_type|
     let!(:user) { create(user_type.to_sym) }
     it "creates a login activity record on successful login" do

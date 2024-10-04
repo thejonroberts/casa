@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CaseGroupMembership, type: :model do
+RSpec.describe CaseGroupMembership do
   it "has a valid factory" do
     case_group_membership = build(:case_group_membership)
 

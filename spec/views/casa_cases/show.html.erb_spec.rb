@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_cases/show", type: :view do
+RSpec.describe "casa_cases/show" do
   let(:user) { create(:casa_admin) }
 
   before do

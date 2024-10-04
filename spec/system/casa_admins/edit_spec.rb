@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_admins/edit", type: :system do
+RSpec.describe "casa_admins/edit" do
   let(:admin) { create :casa_admin, monthly_learning_hours_report: false }
 
   before { sign_in admin }

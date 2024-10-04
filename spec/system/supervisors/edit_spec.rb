@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "supervisors/edit", type: :system do
+RSpec.describe "supervisors/edit" do
   let(:organization) { create(:casa_org) }
 
   context "logged in as an admin" do

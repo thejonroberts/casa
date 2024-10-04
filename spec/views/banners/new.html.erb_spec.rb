@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "banners/new", type: :view do
+RSpec.describe "banners/new" do
   context "when new banner is marked as inactive" do
     it "does not warn that current active banner will be deactivated" do
       user = build_stubbed(:casa_admin)

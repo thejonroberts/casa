@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Base Controller", type: :request do
+RSpec.describe "Base Controller" do
   before do
     base_controller = Class.new(Api::V1::BaseController) do
       def index

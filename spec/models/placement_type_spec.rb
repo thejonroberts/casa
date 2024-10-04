@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe PlacementType, type: :model do
+RSpec.describe PlacementType do
   let!(:object) { create(:placement_type) }
 
   it { is_expected.to validate_presence_of(:name) }

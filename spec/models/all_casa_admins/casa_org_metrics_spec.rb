@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe AllCasaAdmins::CasaOrgMetrics, type: :model do
+RSpec.describe AllCasaAdmins::CasaOrgMetrics do
   let(:organization) { create :casa_org }
   let(:user) { build(:all_casa_admin) }
 

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ApplicationHelper, type: :helper do
+RSpec.describe ApplicationHelper do
   describe "#page_header" do
     it "displays the header when user is logged in" do
       current_organization = build_stubbed(:casa_org)

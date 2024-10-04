@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "dashboard/show", type: :system do
+RSpec.describe "dashboard/show" do
   let(:volunteer) { create(:volunteer, display_name: "Bob Loblaw") }
   let(:casa_admin) { create(:casa_admin, display_name: "John Doe") }
 

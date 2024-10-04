@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/case_contact_reports", type: :request do
+RSpec.describe "/case_contact_reports" do
   let!(:case_contact) { build(:case_contact) }
 
   before do

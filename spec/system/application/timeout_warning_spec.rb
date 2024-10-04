@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/*", type: :system do
+RSpec.describe "/*" do
   context "when user is signed in" do
     let(:user) { create(:volunteer) }
 

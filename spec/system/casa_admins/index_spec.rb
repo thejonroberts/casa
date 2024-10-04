@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_admins/index", type: :system do
+RSpec.describe "casa_admins/index" do
   let(:organization) { build(:casa_org) }
   let(:admin) { build(:casa_admin, casa_org: organization) }
 

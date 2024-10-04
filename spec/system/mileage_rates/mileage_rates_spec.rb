@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "mileage_rates/new", :js, type: :system do
+RSpec.describe "mileage_rates/new", :js do
   let(:admin) { create(:casa_admin) }
   let(:organization) { admin.casa_org }
 

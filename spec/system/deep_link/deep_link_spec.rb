@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "deep_link", type: :system do
+RSpec.describe "deep_link" do
   describe "when user recieves a deep link" do
     %w[volunteer supervisor casa_admin].each do |user_type|
       let(:user) { create(user_type.to_sym) }

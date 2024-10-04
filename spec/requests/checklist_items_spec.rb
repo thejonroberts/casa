@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "ChecklistItems", type: :request do
+RSpec.describe "ChecklistItems" do
   describe "GET new" do
     context "when logged in as an admin user" do
       it "the new checklist item page should load successfully" do

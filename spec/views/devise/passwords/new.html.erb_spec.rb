@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "users/password/new", type: :view do
+RSpec.describe "users/password/new" do
   it "displays title" do
     render template: "devise/passwords/new"
     expect(rendered).to have_text("Forgot your password?")

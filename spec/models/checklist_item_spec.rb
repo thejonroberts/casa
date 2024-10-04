@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ChecklistItem, type: :model do
+RSpec.describe ChecklistItem do
   describe "associations" do
     it { is_expected.to belong_to(:hearing_type) }
   end

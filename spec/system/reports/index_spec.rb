@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "reports", :js, type: :system do
+RSpec.describe "reports", :js do
   context "volunteer user" do
     it "redirects to root" do
       user = create(:volunteer)

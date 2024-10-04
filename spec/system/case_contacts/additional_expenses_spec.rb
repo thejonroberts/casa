@@ -1,7 +1,7 @@
 require "rails_helper"
 require "action_view"
 
-RSpec.describe "additional_expenses", :flipper, type: :system do
+RSpec.describe "additional_expenses", :flipper do
   let(:organization) { build(:casa_org, additional_expenses_enabled: true) }
   let(:volunteer) { create(:volunteer, casa_org: organization) }
   let(:casa_case) { create(:casa_case, casa_org: organization) }

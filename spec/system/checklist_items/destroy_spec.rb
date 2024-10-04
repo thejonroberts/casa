@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "checklist_items/destroy", type: :system do
+RSpec.describe "checklist_items/destroy" do
   let(:casa_admin) { create(:casa_admin) }
   let(:checklist_item) { create(:checklist_item) }
   let(:hearing_type) { create(:hearing_type, checklist_items: [checklist_item]) }

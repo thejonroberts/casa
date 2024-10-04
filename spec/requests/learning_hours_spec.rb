@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "LearningHours", type: :request do
+RSpec.describe "LearningHours" do
   let(:volunteer) { create(:volunteer) }
 
   context "as a volunteer user" do

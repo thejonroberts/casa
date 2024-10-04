@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "AllCasaAdmin::Dashboard", type: :request do
+RSpec.describe "AllCasaAdmin::Dashboard" do
   let(:all_casa_admin) { create(:all_casa_admin) }
 
   before { sign_in all_casa_admin }

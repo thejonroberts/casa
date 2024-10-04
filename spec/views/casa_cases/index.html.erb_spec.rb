@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_cases/index", type: :view do
+RSpec.describe "casa_cases/index" do
   context "when accessed by a volunteer" do
     it "can not see the Assigned To column" do
       user = create(:volunteer, display_name: "Bob Loblaw")

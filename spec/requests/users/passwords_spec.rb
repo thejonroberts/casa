@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Users::PasswordsController", type: :request do
+RSpec.describe "Users::PasswordsController" do
   let!(:org) { create(:casa_org) }
   let!(:user) { create(:user, phone_number: "+12222222222", casa_org: org) }
 

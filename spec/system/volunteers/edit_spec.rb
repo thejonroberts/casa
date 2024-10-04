@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "volunteers/edit", type: :system do
+RSpec.describe "volunteers/edit" do
   describe "updating volunteer personal data" do
     context "with valid data" do
       it "updates successfully" do

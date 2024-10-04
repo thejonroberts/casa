@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/casa_case/:id/emancipation", type: :request do
+RSpec.describe "/casa_case/:id/emancipation" do
   let(:organization) { build(:casa_org) }
   let(:other_organization) { create(:casa_org) }
   let(:casa_case) { create(:casa_case, casa_org: organization, birth_month_year_youth: 15.years.ago) }

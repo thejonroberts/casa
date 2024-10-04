@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/notifications", type: :request do
+RSpec.describe "/notifications" do
   before do
     travel_to Date.new(2021, 1, 1)
   end

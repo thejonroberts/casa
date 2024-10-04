@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "case_contacts/edit", type: :system do
+RSpec.describe "case_contacts/edit" do
   let(:organization) { build(:casa_org) }
   let(:casa_case) { create(:casa_case, :with_case_assignments, casa_org: organization) }
   let!(:case_contact) { create(:case_contact, duration_minutes: 105, casa_case: casa_case) }

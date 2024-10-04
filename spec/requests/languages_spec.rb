@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe LanguagesController, type: :request do
+RSpec.describe LanguagesController do
   describe "POST /create" do
     context "when request params are valid" do
       it "creates a new language" do
@@ -14,7 +14,7 @@ RSpec.describe LanguagesController, type: :request do
           }
         }
 
-        expect(response.status).to eq 302
+        expect(response).to have_http_status :found
         expect(response).to redirect_to(edit_casa_org_path(organization.id))
         expect(flash[:notice]).to eq "Language was successfully created."
       end
@@ -35,7 +35,7 @@ RSpec.describe LanguagesController, type: :request do
           }
         }
 
-        expect(response.status).to eq 302
+        expect(response).to have_http_status :found
         expect(response).to redirect_to(edit_casa_org_path(organization.id))
         expect(flash[:notice]).to eq "Language was successfully updated."
       end

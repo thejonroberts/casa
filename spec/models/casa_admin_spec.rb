@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CasaAdmin, type: :model do
+RSpec.describe CasaAdmin do
   let(:casa_admin) { build(:casa_admin) }
 
   describe "#deactivate" do

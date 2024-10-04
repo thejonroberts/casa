@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "users/passwords/new", type: :system do
+RSpec.describe "users/passwords/new" do
   before do
     visit new_user_session_path
     click_on "Forgot your password?"

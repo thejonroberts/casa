@@ -1,7 +1,7 @@
 require "rails_helper"
 require "support/stubbed_requests/webmock_helper"
 
-RSpec.describe ApplicationController, type: :controller do
+RSpec.describe ApplicationController do
   let(:volunteer) { create(:volunteer) }
 
   controller do

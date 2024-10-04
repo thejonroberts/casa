@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CaseContactContactType, type: :model do
+RSpec.describe CaseContactContactType do
   it "does not allow adding the same contact type twice to a case contact" do
     expect {
       case_contact = create(:case_contact)

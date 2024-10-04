@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "reimbursements/index", type: :view do
+RSpec.describe "reimbursements/index" do
   before do
     admin = build_stubbed :casa_admin
     enable_pundit(view, admin)

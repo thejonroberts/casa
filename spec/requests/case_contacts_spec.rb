@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/case_contacts", type: :request do
+RSpec.describe "/case_contacts" do
   let(:organization) { build(:casa_org) }
   let(:admin) { create(:casa_admin, casa_org: organization) }
   let(:volunteer) { create(:volunteer, casa_org: organization) }

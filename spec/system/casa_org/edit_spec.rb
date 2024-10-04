@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_org/edit", type: :system do
+RSpec.describe "casa_org/edit" do
   it "can update show_driving_reimbursement flag" do
     organization = create(:casa_org)
     admin = create(:casa_admin, casa_org_id: organization.id)

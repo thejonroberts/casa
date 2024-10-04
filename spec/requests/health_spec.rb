@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Health", type: :request do
+RSpec.describe "Health" do
   before do
     Casa::Application.load_tasks
     Rake::Task["after_party:store_deploy_time"].invoke

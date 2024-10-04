@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_cases/show", type: :system do
+RSpec.describe "casa_cases/show" do
   let(:organization) { build(:casa_org) }
   let(:volunteer) { build(:volunteer, casa_org: organization) }
   let(:casa_case) { build(:casa_case, casa_org: organization) }

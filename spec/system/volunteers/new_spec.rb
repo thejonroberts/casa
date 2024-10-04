@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "volunteers/new", type: :system do
+RSpec.describe "volunteers/new" do
   context "when admin" do
     let(:admin) { create(:casa_admin) }
 

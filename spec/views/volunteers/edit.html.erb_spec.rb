@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "volunteers/edit", type: :view do
+RSpec.describe "volunteers/edit" do
   it "allows an administrator to edit a volunteers email address" do
     administrator = build_stubbed :casa_admin
     enable_pundit(view, administrator)

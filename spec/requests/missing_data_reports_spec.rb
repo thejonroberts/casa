@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe MissingDataReportsController, type: :request do
+RSpec.describe MissingDataReportsController do
   let(:admin) { create(:casa_admin) }
 
   context "as an admin user" do

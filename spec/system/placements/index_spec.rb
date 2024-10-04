@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "placements", type: :system do
+RSpec.describe "placements" do
   let(:now) { Date.new(2025, 1, 2) }
   let(:casa_org) { create(:casa_org, :with_placement_types) }
   let(:admin) { create(:casa_admin, casa_org:) }

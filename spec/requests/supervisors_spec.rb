@@ -3,7 +3,7 @@
 require "rails_helper"
 require "support/stubbed_requests/webmock_helper"
 
-RSpec.describe "/supervisors", type: :request do
+RSpec.describe "/supervisors" do
   let(:org) { create(:casa_org) }
   let(:admin) { build(:casa_admin, casa_org: org) }
   let(:supervisor) { create(:supervisor, casa_org: org) }

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "all_casa_admins/casa_orgs/casa_admins/new", type: :system do
+RSpec.describe "all_casa_admins/casa_orgs/casa_admins/new" do
   it "requires login" do
     visit new_all_casa_admins_casa_org_path
     expect(page).to have_content "You need to sign in before continuing."

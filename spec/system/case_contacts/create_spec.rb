@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "case_contacts/create", :js, type: :system do
+RSpec.describe "case_contacts/create", :js do
   let(:contact_topics) { [build(:contact_topic, question: "q1"), build(:contact_topic, question: "q2")] }
   let(:org) { create(:casa_org, contact_topics: contact_topics) }
   let(:volunteer) { create(:volunteer, :with_cases_and_contacts, :with_assigned_supervisor, casa_org: org) }

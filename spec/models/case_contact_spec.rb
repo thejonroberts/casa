@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CaseContact, type: :model do
+RSpec.describe CaseContact do
   it { is_expected.to have_many(:contact_topic_answers).dependent(:destroy) }
   it { is_expected.to validate_numericality_of(:miles_driven).is_less_than 10_000 }
   it { is_expected.to validate_numericality_of(:miles_driven).is_greater_than_or_equal_to 0 }

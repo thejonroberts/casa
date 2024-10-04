@@ -12,7 +12,7 @@ class MockController < ApplicationController
   end
 end
 
-RSpec.describe MockController, type: :controller do
+RSpec.describe MockController do
   let(:admin) { create(:casa_admin) }
   let(:volunteer) { create(:volunteer) }
 

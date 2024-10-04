@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/error", type: :request do
+RSpec.describe "/error" do
   it "raises an error causing an internal server error" do
     expect {
       get error_path

@@ -33,8 +33,8 @@ RSpec.describe Rack::Attack do
       it "changes the request status to 429 if greater than limit" do
         (limit * 2).times do |i|
           post path, params, header
-          expect(last_response.status).to_not eq 429 if i < limit
-          expect(last_response.status).to eq(429) if i >= limit
+          expect(last_response).to_not have_http_status :too_many_requests if i < limit
+          expect(last_response).to have_http_status(:too_many_requests) if i >= limit
         end
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe Rack::Attack do
     it "does not change the request status to 429" do
       (limit * 2).times do |i|
         post path, params, header
-        expect(last_response.status).to_not eq(429) if i > limit
+        expect(last_response).to_not have_http_status(:too_many_requests) if i > limit
       end
     end
   end
@@ -68,8 +68,8 @@ RSpec.describe Rack::Attack do
         (limit * 2).times do |i|
           header = {"REMOTE_ADDR" => "#{remote_ip}#{i}"}
           post path, params, header
-          expect(last_response.status).to_not eq 429 if i < limit
-          expect(last_response.status).to eq(429) if i >= limit
+          expect(last_response).to_not have_http_status :too_many_requests if i < limit
+          expect(last_response).to have_http_status(:too_many_requests) if i >= limit
         end
       end
     end
@@ -112,7 +112,7 @@ RSpec.describe Rack::Attack do
 
       it "is not blocked" do
         post path, params, header
-        expect(last_response.status).to_not eq(403)
+        expect(last_response).to_not have_http_status(:forbidden)
       end
     end
 
@@ -121,7 +121,7 @@ RSpec.describe Rack::Attack do
       shared_examples "blocks request" do
         it "changes the request status to 403" do
           post path, params, header
-          expect(last_response.status).to eq(403)
+          expect(last_response).to have_http_status(:forbidden)
         end
       end
 
@@ -143,7 +143,7 @@ RSpec.describe Rack::Attack do
     shared_examples "bans successfully" do
       it "changes the request status to 403" do
         head path, params, header
-        expect(last_response.status).to eq(403)
+        expect(last_response).to have_http_status(:forbidden)
       end
     end
 

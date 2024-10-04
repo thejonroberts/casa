@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_cases/edit", type: :view do
+RSpec.describe "casa_cases/edit" do
   let(:organization) { create(:casa_org) }
   let(:contact_type_group) { create(:contact_type_group, casa_org: organization) }
   let(:contact_type) { create(:contact_type, contact_type_group: contact_type_group) }

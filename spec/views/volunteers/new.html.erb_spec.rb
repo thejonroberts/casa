@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "volunteers/new", type: :view do
+RSpec.describe "volunteers/new" do
   subject { render template: "volunteers/new" }
 
   before do

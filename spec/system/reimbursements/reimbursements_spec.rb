@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "reimbursements", type: :system do
+RSpec.describe "reimbursements" do
   let(:admin) { create(:casa_admin) }
   let!(:contact1) { create(:case_contact, :wants_reimbursement) }
   let!(:contact2) { create(:case_contact, :wants_reimbursement) }

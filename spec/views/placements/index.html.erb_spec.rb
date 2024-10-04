@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "placements/index", type: :view do
+RSpec.describe "placements/index" do
   let(:casa_org) { create(:casa_org, :with_placement_types) }
   let(:casa_case) { create(:casa_case, casa_org:, case_number: "CINA-12345") }
   let(:placement_current) { create(:placement_type, name: "Reunification", casa_org:) }

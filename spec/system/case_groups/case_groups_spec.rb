@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Case Groups", :js, type: :system do
+RSpec.describe "Case Groups", :js do
   let(:admin) { create(:casa_admin) }
   let(:organization) { admin.casa_org }
 

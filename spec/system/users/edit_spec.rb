@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "users/edit", type: :system do
+RSpec.describe "users/edit" do
   context "volunteer user" do
     it "displays password errors messages when user is unable to set a password with incorrect current password" do
       organization = create(:casa_org)

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe SupervisorMailer, type: :mailer do
+RSpec.describe SupervisorMailer do
   describe ".weekly_digest" do
     let(:supervisor) { build(:supervisor, :receive_reimbursement_attachment) }
     let(:volunteer) { build(:volunteer, casa_org: supervisor.casa_org, supervisor: supervisor) }

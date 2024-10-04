@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "other_duties/edit", type: :view do
+RSpec.describe "other_duties/edit" do
   let(:other_duty) { create(:other_duty) }
 
   before do

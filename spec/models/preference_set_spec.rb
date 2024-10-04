@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe PreferenceSet, type: :model do
+RSpec.describe PreferenceSet do
   let(:preference_set) { PreferenceSet.create(params) }
 
   describe "allows setting values for case_volunteer_columns" do

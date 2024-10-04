@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "PreferenceSets", type: :request do
+RSpec.describe "PreferenceSets" do
   let!(:supervisor) { create(:supervisor) }
   let!(:preference_set) { supervisor.preference_set }
   let!(:table_state) { {"columns" => [{"visible" => "false"}, {"visible" => "true"}, {"visible" => "false"}, {"visible" => "true"}]} }

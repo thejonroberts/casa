@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "languages/new", type: :system do
+RSpec.describe "languages/new" do
   let(:admin) { create(:casa_admin) }
   let(:organization) { admin.casa_org }
 

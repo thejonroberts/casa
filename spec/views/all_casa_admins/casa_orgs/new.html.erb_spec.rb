@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "all_casa_admins/casa_orgs/new", type: :view do
+RSpec.describe "all_casa_admins/casa_orgs/new" do
   let(:organization) { create :casa_org }
   let(:admin) { build_stubbed(:all_casa_admin) }
 

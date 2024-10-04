@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/contact_topics", type: :request do
+RSpec.describe "/contact_topics" do
   # This should return the minimal set of attributes required to create a valid
   # ContactTopic. As you add validations to ContactTopic, be sure to
   # adjust the attributes here as well.
