@@ -148,12 +148,15 @@ RSpec.describe CaseContactDecorator do
   describe "#subheading" do
     let(:contact_group) { build_stubbed(:contact_type_group, name: "Group X") }
     let(:contact_type) { build_stubbed(:contact_type, contact_type_group: contact_group, name: "Type X") }
+    let(:case_contact) do
+      build(
+        :case_contact, occurred_at: "2020-12-01", duration_minutes: 99, contact_made: false,
+        miles_driven: 100, want_driving_reimbursement: true, contact_types: [contact_type]
+      )
+    end
 
     context "when all information is available" do
       it "returns a properly formatted string" do
-        case_contact.update(occurred_at: "2020-12-01", duration_minutes: 99, contact_made: false, miles_driven: 100, want_driving_reimbursement: true)
-        case_contact.contact_types = [contact_type]
-
         expect(case_contact.decorate.subheading).to eq(
           "December 1, 2020 | 1 hour 39 minutes | No Contact Made | 100 miles driven | Reimbursement"
         )
@@ -161,8 +164,11 @@ RSpec.describe CaseContactDecorator do
     end
 
     context "when some information is missing" do
+      before do
+        case_contact.contact_made = true
+      end
+
       it "returns a properly formatted string without extra pipes" do
-        case_contact.update(occurred_at: "2020-12-01", duration_minutes: 99, contact_made: true, miles_driven: 100, want_driving_reimbursement: true)
         case_contact.contact_types = [contact_type]
 
         expect(case_contact.decorate.subheading).to eq(

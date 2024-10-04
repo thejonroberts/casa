@@ -54,7 +54,7 @@ RSpec.describe CasaOrg do
       allow(Twilio::REST::Client).to receive(:new).and_return(twillio_client)
       allow(twillio_client).to receive_message_chain(:messages, :list).and_raise(URI::InvalidURIError)
 
-      casa_org.update(twilio_account_sid: "some bad value")
+      casa_org.twilio_account_sid = "some bad value"
 
       aggregate_failures do
         expect(casa_org).to_not be_valid

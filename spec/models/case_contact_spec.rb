@@ -643,7 +643,7 @@ RSpec.describe CaseContact do
     end
 
     it "returns false if creator's supervisor is inactive" do
-      supervisor.update(active: false)
+      supervisor.update!(active: false)
       expect(case_contact.should_send_reimbursement_email?).to be false
     end
   end

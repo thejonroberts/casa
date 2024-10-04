@@ -66,6 +66,11 @@ FactoryBot/AssociationStyle:
 FactoryBot/ConsistentParenthesesStyle:
   Enabled: false
 
+Rails/SaveBang:
+  Enabled: true
+  Include:
+    - 'spec/**/*' # Specs should fail if saved record is invalid
+
 RSpec/ExampleLength:
   CountAsOne: ['array', 'hash', 'heredoc', 'method_call']
   Max: 15 # could be lower; default is 5

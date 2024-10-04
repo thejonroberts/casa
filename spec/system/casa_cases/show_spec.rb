@@ -250,7 +250,7 @@ RSpec.describe "casa_cases/show" do
     let(:user) { admin }
 
     it "when implemented" do
-      casa_case.case_court_orders[0].update(implementation_status: :implemented)
+      casa_case.case_court_orders[0].update!(implementation_status: :implemented)
 
       visit casa_case_path(casa_case)
 
@@ -260,7 +260,7 @@ RSpec.describe "casa_cases/show" do
     end
 
     it "when not implemented" do
-      casa_case.case_court_orders[0].update(implementation_status: :unimplemented)
+      casa_case.case_court_orders[0].update!(implementation_status: :unimplemented)
 
       visit casa_case_path(casa_case)
 
@@ -270,7 +270,7 @@ RSpec.describe "casa_cases/show" do
     end
 
     it "when partial implemented" do
-      casa_case.case_court_orders[0].update(implementation_status: :partially_implemented)
+      casa_case.case_court_orders[0].update!(implementation_status: :partially_implemented)
 
       visit casa_case_path(casa_case)
 
@@ -280,7 +280,7 @@ RSpec.describe "casa_cases/show" do
     end
 
     it "when not specified" do
-      casa_case.case_court_orders[0].update(implementation_status: nil)
+      casa_case.case_court_orders[0].update!(implementation_status: nil)
 
       visit casa_case_path(casa_case)
 

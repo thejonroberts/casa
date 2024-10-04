@@ -86,8 +86,8 @@ RSpec.describe "patch_notes/index" do
 
   describe "the patch note list" do
     it "displays the patch_notes" do
-      patch_notes[0].update(note: "?UvV*Z~v\"`P]4ol")
-      patch_notes[1].update(note: "#tjJ/+o\"3s@osjV")
+      patch_notes[0].update!(note: "?UvV*Z~v\"`P]4ol")
+      patch_notes[1].update!(note: "#tjJ/+o\"3s@osjV")
 
       render template: "all_casa_admins/patch_notes/index"
       parsed_html = Nokogiri.HTML5(rendered)
@@ -97,8 +97,8 @@ RSpec.describe "patch_notes/index" do
     end
 
     it "displays the latest patch notes first" do
-      patch_notes[0].update(note: "#'hQ+`dGC(qc=}wu")
-      patch_notes[1].update(note: "k2cz&c'xYLr|&)B)")
+      patch_notes[0].update!(note: "#'hQ+`dGC(qc=}wu")
+      patch_notes[1].update!(note: "k2cz&c'xYLr|&)B)")
 
       render template: "all_casa_admins/patch_notes/index"
       parsed_html = Nokogiri.HTML5(rendered)
@@ -109,8 +109,8 @@ RSpec.describe "patch_notes/index" do
     end
 
     it "displays the correct patch note group and patch note type with the patch note" do
-      patch_notes[0].update(note: "#'hQ+`dGC(qc=}wu")
-      patch_notes[1].update(note: "k2cz&c'xYLr|&)B)")
+      patch_notes[0].update!(note: "#'hQ+`dGC(qc=}wu")
+      patch_notes[1].update!(note: "k2cz&c'xYLr|&)B)")
 
       render template: "all_casa_admins/patch_notes/index"
       parsed_html = Nokogiri.HTML5(rendered)
