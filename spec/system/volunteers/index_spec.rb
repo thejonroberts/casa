@@ -176,11 +176,7 @@ RSpec.describe "view all volunteers", :js, type: :system do
     # If the page is switched over to Hotwire, should try to re-instate these tests.
     describe "Manage Volunteers button" do
       let!(:volunteers) {
-        [
-          create(:volunteer, casa_org: organization),
-          create(:volunteer, casa_org: organization),
-          create(:volunteer, casa_org: organization)
-        ]
+        create_list(:volunteer, 3, casa_org: organization)
       }
 
       before do
@@ -230,11 +226,7 @@ RSpec.describe "view all volunteers", :js, type: :system do
 
     describe "Select All Checkbox" do
       let!(:volunteers) {
-        [
-          create(:volunteer, casa_org: organization),
-          create(:volunteer, casa_org: organization),
-          create(:volunteer, casa_org: organization)
-        ]
+        3.times.map { create(:volunteer, casa_org: organization) }
       }
 
       before do
