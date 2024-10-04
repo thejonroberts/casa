@@ -233,7 +233,7 @@ RSpec.describe VolunteerDatatable do
       describe "most_recent_attempt_occurred_at" do
         let(:order_by) { "most_recent_attempt_occurred_at" }
         let(:sorted_models) do
-          assigned_volunteers.order(:id).sort_by { |v| v.case_contacts.maximum :occurred_at }
+          assigned_volunteers.order(:created_at).sort_by { |v| v.case_contacts.maximum :occurred_at }
         end
 
         before do
@@ -263,7 +263,7 @@ RSpec.describe VolunteerDatatable do
         let(:casa_case2) { volunteer2.casa_cases.first }
         let(:sorted_models) do
           assigned_volunteers
-            .order(:id)
+            .order(:created_at)
             .sort_by { |v| v.case_contacts.where(occurred_at: 60.days.ago.to_date..).count }
             .sort_by { |v| v.case_contacts.exists?(occurred_at: 60.days.ago.to_date..) ? 0 : 1 }
         end

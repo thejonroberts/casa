@@ -264,17 +264,17 @@ RSpec.describe CasaCase do
     let!(:case_assignment2) { create(:case_assignment, casa_case: casa_case, volunteer: volunteer2) }
 
     it "only includes volunteers through active assignments" do
-      expect(casa_case.assigned_volunteers.order(:id)).to eq [volunteer1, volunteer2].sort_by(&:id)
+      expect(casa_case.assigned_volunteers).to contain_exactly(volunteer1, volunteer2)
 
       case_assignment1.update!(active: false)
-      expect(casa_case.reload.assigned_volunteers).to eq [volunteer2]
+      expect(casa_case.reload.assigned_volunteers).to contain_exactly(volunteer2)
     end
 
     it "only includes active volunteers" do
-      expect(casa_case.assigned_volunteers.order(:id)).to eq [volunteer1, volunteer2].sort_by(&:id)
+      expect(casa_case.assigned_volunteers).to contain_exactly(volunteer1, volunteer2)
 
       volunteer1.update!(active: false)
-      expect(casa_case.reload.assigned_volunteers).to eq [volunteer2]
+      expect(casa_case.reload.assigned_volunteers).to contain_exactly(volunteer2)
     end
   end
 

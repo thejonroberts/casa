@@ -66,6 +66,10 @@ FactoryBot/AssociationStyle:
 FactoryBot/ConsistentParenthesesStyle:
   Enabled: false
 
+Rails/DefaultScope:
+  Enabled: true # Default scopes lead to unexpected behavior, use named scopes
+Rails/OrderById:
+  Enabled: true # No guaranteed order of ids, use timestamps instead
 Rails/SaveBang:
   Enabled: true
   Include:
