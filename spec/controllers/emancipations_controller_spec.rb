@@ -1,10 +1,10 @@
 require "rails_helper"
 
 RSpec.describe EmancipationsController do
-  let(:organization) { build(:casa_org) }
+  let(:organization) { create(:casa_org) }
   let(:volunteer) { create(:volunteer, :with_casa_cases, casa_org: organization) }
-  let(:test_case_category) { build(:casa_case_emancipation_category) }
-  let(:casa_case) { create(:casa_case, casa_org: organization) }
+  let(:test_case_category) { create(:casa_case_emancipation_category) }
+  let(:casa_case) { volunteer.casa_cases.first }
   let(:casa_case_id) { casa_case.id.to_s }
   let(:params) do
     {
@@ -20,11 +20,11 @@ RSpec.describe EmancipationsController do
   describe "#not_authorized" do
     subject(:show) { get :show, params: {casa_case_id: casa_case_id, format: :json} }
 
-    before do
-      allow_any_instance_of(Volunteer).to receive(:casa_org).and_return nil
-    end
+    let(:other_volunteer) { build_stubbed(:volunteer) }
 
     it "does redirect to the root" do
+      allow(other_volunteer).to receive(:casa_org).and_return nil
+      allow(controller).to receive(:current_user).and_return(other_volunteer)
       expect(show).to redirect_to(root_url)
     end
 
@@ -34,6 +34,8 @@ RSpec.describe EmancipationsController do
       end
 
       it "renders the correct json message" do
+        allow(other_volunteer).to receive(:casa_org).and_return nil
+        allow(controller).to receive(:current_user).and_return(other_volunteer)
         show
         expect(response).to have_http_status(:unauthorized)
         expect(response.body).to eq({error: "Sorry, you are not authorized to perform this action. Did the session expire?"}.to_json)

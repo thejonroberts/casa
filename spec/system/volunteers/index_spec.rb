@@ -161,7 +161,9 @@ RSpec.describe "view all volunteers", :js do
       end
 
       it "is blank when volunteer's supervisor is inactive", :js do
-        create(:volunteer, :with_inactive_supervisor, casa_org: organization)
+        supervisor = create(:supervisor, :inactive, casa_org: organization)
+        create(:volunteer, supervisor: supervisor, casa_org: organization)
+
         sign_in admin
 
         visit volunteers_path

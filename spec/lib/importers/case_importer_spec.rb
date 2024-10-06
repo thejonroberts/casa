@@ -3,13 +3,14 @@ require "rails_helper"
 RSpec.describe CaseImporter do
   subject(:case_importer) { CaseImporter.new(import_file_path, casa_org_id) }
 
-  let(:casa_org_id) { import_user.casa_org.id }
+  let(:casa_org) { import_user.casa_org }
+  let(:casa_org_id) { casa_org.id }
   let!(:import_user) { build(:casa_admin) }
   let(:import_file_path) { Rails.root.join("spec/fixtures/casa_cases.csv") }
 
   before do
     allow(case_importer).to receive(:email_addresses_to_users) do |_clazz, comma_separated_emails|
-      create_list(:volunteer, comma_separated_emails.split(",").size, casa_org_id: casa_org_id)
+      create_list(:volunteer, comma_separated_emails.split(",").size, casa_org: casa_org)
     end
 
     # next_court_date in casa_cases.csv needs to be a future date

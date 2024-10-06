@@ -1,14 +1,11 @@
 require "rails_helper"
 
 RSpec.describe "other_duties/new" do
-  let(:casa_org) { build(:casa_org) }
-  let(:admin) { create(:casa_admin, casa_org: casa_org) }
+  let(:casa_org) { create(:casa_org) }
   let(:case_number) { "12345" }
   let!(:next_year) { (Date.today.year + 1).to_s }
   let(:court_date) { 21.days.from_now }
-
-  let(:organization) { build(:casa_org) }
-  let(:volunteer) { create(:volunteer, :with_casa_cases, casa_org: organization) }
+  let(:volunteer) { create(:volunteer, :with_casa_cases, casa_org:) }
 
   before do
     sign_in volunteer
@@ -42,7 +39,7 @@ RSpec.describe "other_duties/new" do
 
       click_on "Submit"
 
-      message = page.find_by_id("other_duty_notes").native.attribute("validationMessage")
+      message = page.find_by_id("other_duty_notes")["validationMessage"]
       expect(message).to match(/Please fill (in|out) this field./)
     end
   end

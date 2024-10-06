@@ -132,11 +132,11 @@ RSpec.describe Volunteer do
     end
 
     context "when active supervisor_volunteer record" do
-      let(:sv) { create(:supervisor_volunteer, is_active: true) }
-      let(:volunteer) { sv.volunteer }
+      let(:volunteer) { create(:volunteer) }
+      let!(:sv) { create(:supervisor_volunteer, is_active: true, volunteer:) }
 
       it "returns true" do
-        expect(volunteer.has_supervisor?).to be true
+        expect(volunteer.reload.has_supervisor?).to be true
       end
     end
 

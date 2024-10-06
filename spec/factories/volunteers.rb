@@ -1,19 +1,61 @@
 FactoryBot.define do
   factory :volunteer, class: "Volunteer", parent: :user do
+    transient do
+      case_count { 0 }
+      contacts_per_case { 0 }
+      supervisor { nil }
+    end
+
+    type { "Volunteer" }
+
+    case_assignments do
+      Array.new(case_count) { association(:case_assignment, volunteer: instance, casa_org: instance.casa_org) }
+    end
+
+    supervisor_volunteer do
+      association(:supervisor_volunteer, volunteer: instance, supervisor:, casa_org: instance.casa_org) if supervisor
+    end
+
     trait :inactive do
       active { false }
     end
 
     trait :with_casa_cases do
-      after(:create) do |user, _|
-        create(:case_assignment, casa_case: create(:casa_case, casa_org: user.casa_org), volunteer: user)
-        create(:case_assignment, casa_case: create(:casa_case, casa_org: user.casa_org), volunteer: user)
+      case_count { 2 }
+    end
+
+    trait :with_single_case do
+      case_count { 1 }
+    end
+
+    trait :with_case_contacts do
+      case_contacts do
+        case_assignments.map { |ca|
+          Array.new(contacts_per_case) { association(:case_contact, creator: ca.volunteer, casa_case: ca.casa_case) }
+        }.flatten
+      end
+    end
+
+    trait :with_case_contact do
+      case_count { 1 }
+      contacts_per_case { 1 }
+      with_case_contacts
+    end
+
+    trait :with_case_contact_wants_driving_reimbursement do
+      case_count { 1 }
+      contacts_per_case { 1 }
+      case_contacts do
+        case_assignments.map { |ca|
+          Array.new(contacts_per_case) { association(:case_contact, :wants_reimbursement, creator: ca.volunteer, casa_case: ca.casa_case) }
+        }.flatten
       end
     end
 
     trait :with_pretransition_age_case do
-      after(:create) do |user, _|
-        create(:case_assignment, casa_case: create(:casa_case, :pre_transition, casa_org: user.casa_org), volunteer: user)
+      case_count { 1 }
+      case_assignments do
+        Array.new(case_count) { association(:case_assignment, :pre_transition, volunteer: instance, casa_org: instance.casa_org) }
       end
     end
 
@@ -31,20 +73,8 @@ FactoryBot.define do
     end
 
     trait :with_assigned_supervisor do
-      transient { supervisor { nil } }
-
-      after(:create) do |volunteer, evaluator|
-        supervisor = evaluator.supervisor || create(:supervisor, casa_org: volunteer.casa_org)
-        create(:supervisor_volunteer, volunteer:, supervisor:)
-      end
-    end
-
-    trait :with_inactive_supervisor do
-      transient { supervisor { nil } }
-
-      after(:create) do |user, evaluator|
-        supervisor = evaluator.supervisor || create(:supervisor, casa_org: user.casa_org)
-        create(:supervisor_volunteer, :inactive, volunteer: user, supervisor:)
+      transient do
+        supervisor { association(:supervisor, casa_org: casa_org) }
       end
     end
 

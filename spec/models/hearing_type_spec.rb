@@ -12,8 +12,8 @@ RSpec.describe HearingType do
     let!(:record_2) { create(:hearing_type, casa_org: casa_org_2) }
 
     it "returns only records matching the specified organization" do
-      expect(described_class.for_organization(casa_org_1)).to eq([record_1])
-      expect(described_class.for_organization(casa_org_2)).to eq([record_2])
+      expect(described_class.for_organization(casa_org_1)).to contain_exactly(record_1)
+      expect(described_class.for_organization(casa_org_2)).to contain_exactly(record_2)
     end
   end
 

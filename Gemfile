@@ -105,7 +105,8 @@ group :test do
   gem "rails-controller-testing"
   gem "rake"
   gem "selenium-webdriver"
-  gem "simplecov"
+  gem "simplecov", require: false
+  gem "test-prof"
   gem "webmock" # HTTP request stubber
 end
 
