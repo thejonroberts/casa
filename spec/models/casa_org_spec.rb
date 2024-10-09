@@ -1,7 +1,7 @@
 require "rails_helper"
 require "support/stubbed_requests/webmock_helper"
 
-RSpec.describe CasaOrg, type: :model do
+RSpec.describe CasaOrg do
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to have_many(:users).dependent(:destroy) }
   it { is_expected.to have_many(:casa_cases).dependent(:destroy) }
@@ -54,7 +54,7 @@ RSpec.describe CasaOrg, type: :model do
       allow(Twilio::REST::Client).to receive(:new).and_return(twillio_client)
       allow(twillio_client).to receive_message_chain(:messages, :list).and_raise(URI::InvalidURIError)
 
-      casa_org.update(twilio_account_sid: "some bad value")
+      casa_org.twilio_account_sid = "some bad value"
 
       aggregate_failures do
         expect(casa_org).to_not be_valid
@@ -78,10 +78,10 @@ RSpec.describe CasaOrg, type: :model do
       aggregate_failures do
         subject = build(:casa_org, twilio_enabled: false)
 
-        expect(subject.org_logo).to eq(Pathname.new("#{Rails.root}/public/logo.jpeg"))
+        expect(subject.org_logo).to eq(Pathname.new("#{Rails.public_path.join("logo.jpeg")}"))
 
         subject.logo.attach(
-          io: File.open("#{Rails.root}/spec/fixtures/company_logo.png"),
+          io: File.open("#{Rails.root.join("spec/fixtures/company_logo.png")}"),
           filename: "company_logo.png", content_type: "image/png"
         )
 
@@ -95,6 +95,7 @@ RSpec.describe CasaOrg, type: :model do
 
   context "when creating an organization" do
     let(:org) { create(:casa_org, name: "Prince George CASA") }
+
     it "has a slug based on the name" do
       expect(org.slug).to eq "prince-george-casa"
     end

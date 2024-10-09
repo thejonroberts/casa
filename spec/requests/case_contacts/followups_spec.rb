@@ -1,18 +1,18 @@
 require "rails_helper"
 
-RSpec.describe "CaseContacts::FollowupsController", type: :request do
+RSpec.describe "CaseContacts::FollowupsController" do
   let(:volunteer) { create(:volunteer) }
   let(:case_contact) { create(:case_contact) }
 
   describe "POST /create" do
-    let(:notification_double) { double("FollowupNotifier") }
-    let(:params) { {note: "Hello, world!"} }
-
     subject(:request) do
       post case_contact_followups_path(case_contact), params: params
 
       response
     end
+
+    let(:notification_double) { double("FollowupNotifier") }
+    let(:params) { {note: "Hello, world!"} }
 
     before do
       sign_in volunteer
@@ -53,13 +53,13 @@ RSpec.describe "CaseContacts::FollowupsController", type: :request do
     end
 
     context "followup exists" do
-      let(:followup) { create(:followup, case_contact: case_contact, creator: volunteer) }
-
       subject(:request) do
         patch resolve_followup_path(followup)
 
         response
       end
+
+      let(:followup) { create(:followup, case_contact: case_contact, creator: volunteer) }
 
       it "marks it as :resolved" do
         followup

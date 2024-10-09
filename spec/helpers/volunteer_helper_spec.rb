@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe VolunteerHelper, type: :helper do
+RSpec.describe VolunteerHelper do
   let(:casa_case) { create(:casa_case) }
   let(:current_user) { create(:user) }
 

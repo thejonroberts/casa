@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/contact_topics", type: :request do
+RSpec.describe "/contact_topics" do
   # This should return the minimal set of attributes required to create a valid
   # ContactTopic. As you add validations to ContactTopic, be sure to
   # adjust the attributes here as well.
@@ -67,7 +67,7 @@ RSpec.describe "/contact_topics", type: :request do
       it "does not create a new ContactTopic" do
         expect do
           post contact_topics_url, params: {contact_topic: attributes}
-        end.to change(ContactTopic, :count).by(0)
+        end.not_to change(ContactTopic, :count)
       end
 
       it "renders a response with 422 status (i.e. to display the 'new' template)" do
@@ -121,6 +121,7 @@ RSpec.describe "/contact_topics", type: :request do
 
   describe "DELETE /soft_delete" do
     let!(:contact_topic) { create(:contact_topic, casa_org: casa_org) }
+
     it "does not destroy the requested contact_topic" do
       expect do
         delete soft_delete_contact_topic_url(contact_topic)

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe SentEmail, type: :model do
+RSpec.describe SentEmail do
   it { is_expected.to belong_to(:casa_org) }
   it { is_expected.to belong_to(:user) }
   it { is_expected.to validate_presence_of(:mailer_type) }

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "users/edit", type: :system do
+RSpec.describe "users/edit" do
   context "volunteer user" do
     it "displays password errors messages when user is unable to set a password with incorrect current password" do
       organization = create(:casa_org)
@@ -44,16 +44,16 @@ RSpec.describe "users/edit", type: :system do
       volunteer = create(:volunteer, casa_org: organization)
 
       SmsNotificationEvent.delete_all
-      SmsNotificationEvent.new(name: "sms_event_test_volunteer", user_type: Volunteer).save
-      SmsNotificationEvent.new(name: "sms_event_test_supervisor", user_type: Supervisor).save
-      SmsNotificationEvent.new(name: "sms_event_test_casa_admin", user_type: CasaAdmin).save
+      SmsNotificationEvent.new(name: "sms_event_test_volunteer", user_type: Volunteer).save!
+      SmsNotificationEvent.new(name: "sms_event_test_supervisor", user_type: Supervisor).save!
+      SmsNotificationEvent.new(name: "sms_event_test_casa_admin", user_type: CasaAdmin).save!
 
       sign_in volunteer
       visit edit_users_path
 
       expect(page).to have_content "sms_event_test_volunteer"
-      expect(page).not_to have_content "sms_event_test_supervisor"
-      expect(page).not_to have_content "sms_event_test_casa_admin"
+      expect(page).to have_no_content "sms_event_test_supervisor"
+      expect(page).to have_no_content "sms_event_test_casa_admin"
     end
 
     it "notifies a user when they update their password" do
@@ -150,7 +150,7 @@ RSpec.describe "users/edit", type: :system do
       formatted_current_sign_in_at = I18n.l(volunteer.current_sign_in_at, format: :edit_profile, default: nil)
       formatted_last_sign_in_at = I18n.l(volunteer.last_sign_in_at, format: :edit_profile, default: nil)
       expect(page).to have_text("Last logged in #{formatted_current_sign_in_at}")
-      expect(page).not_to have_text("Last logged in #{formatted_last_sign_in_at}")
+      expect(page).to have_no_text("Last logged in #{formatted_last_sign_in_at}")
     end
 
     it "displays Volunteer error message if no communication preference is selected" do
@@ -185,9 +185,9 @@ RSpec.describe "users/edit", type: :system do
       volunteer = create(:volunteer, casa_org: organization)
 
       SmsNotificationEvent.delete_all
-      SmsNotificationEvent.new(name: "sms_event_test_volunteer", user_type: Volunteer).save
-      SmsNotificationEvent.new(name: "sms_event_test_supervisor", user_type: Supervisor).save
-      SmsNotificationEvent.new(name: "sms_event_test_casa_admin", user_type: CasaAdmin).save
+      SmsNotificationEvent.new(name: "sms_event_test_volunteer", user_type: Volunteer).save!
+      SmsNotificationEvent.new(name: "sms_event_test_supervisor", user_type: Supervisor).save!
+      SmsNotificationEvent.new(name: "sms_event_test_casa_admin", user_type: CasaAdmin).save!
 
       sign_in volunteer
       visit edit_users_path
@@ -196,14 +196,14 @@ RSpec.describe "users/edit", type: :system do
       expect(page).to have_field("toggle-sms-notification-event", type: "checkbox", disabled: false)
     end
 
-    it "displays notification events selection as disabled if sms notification preference is not selected", js: true do
+    it "displays notification events selection as disabled if sms notification preference is not selected", :js do
       organization = create(:casa_org, twilio_enabled: true)
       volunteer = create(:volunteer, casa_org: organization)
 
       SmsNotificationEvent.delete_all
-      SmsNotificationEvent.new(name: "sms_event_test_volunteer", user_type: Volunteer).save
-      SmsNotificationEvent.new(name: "sms_event_test_supervisor", user_type: Supervisor).save
-      SmsNotificationEvent.new(name: "sms_event_test_casa_admin", user_type: CasaAdmin).save
+      SmsNotificationEvent.new(name: "sms_event_test_volunteer", user_type: Volunteer).save!
+      SmsNotificationEvent.new(name: "sms_event_test_supervisor", user_type: Supervisor).save!
+      SmsNotificationEvent.new(name: "sms_event_test_casa_admin", user_type: CasaAdmin).save!
 
       sign_in volunteer
       visit edit_users_path
@@ -292,16 +292,16 @@ RSpec.describe "users/edit", type: :system do
       supervisor = create(:supervisor, casa_org: org)
 
       SmsNotificationEvent.delete_all
-      SmsNotificationEvent.new(name: "sms_event_test_volunteer", user_type: Volunteer).save
-      SmsNotificationEvent.new(name: "sms_event_test_supervisor", user_type: Supervisor).save
-      SmsNotificationEvent.new(name: "sms_event_test_casa_admin", user_type: CasaAdmin).save
+      SmsNotificationEvent.new(name: "sms_event_test_volunteer", user_type: Volunteer).save!
+      SmsNotificationEvent.new(name: "sms_event_test_supervisor", user_type: Supervisor).save!
+      SmsNotificationEvent.new(name: "sms_event_test_casa_admin", user_type: CasaAdmin).save!
 
       sign_in supervisor
       visit edit_users_path
 
-      expect(page).not_to have_content "sms_event_test_volunteer"
+      expect(page).to have_no_content "sms_event_test_volunteer"
       expect(page).to have_content "sms_event_test_supervisor"
-      expect(page).not_to have_content "sms_event_test_casa_admin"
+      expect(page).to have_no_content "sms_event_test_casa_admin"
     end
 
     it "displays Supervisor error message if no communication preference is selected" do
@@ -490,15 +490,15 @@ RSpec.describe "users/edit", type: :system do
       admin = create(:casa_admin, casa_org: org)
 
       SmsNotificationEvent.delete_all
-      SmsNotificationEvent.new(name: "sms_event_test_volunteer", user_type: Volunteer).save
-      SmsNotificationEvent.new(name: "sms_event_test_supervisor", user_type: Supervisor).save
-      SmsNotificationEvent.new(name: "sms_event_test_casa_admin", user_type: CasaAdmin).save
+      SmsNotificationEvent.new(name: "sms_event_test_volunteer", user_type: Volunteer).save!
+      SmsNotificationEvent.new(name: "sms_event_test_supervisor", user_type: Supervisor).save!
+      SmsNotificationEvent.new(name: "sms_event_test_casa_admin", user_type: CasaAdmin).save!
 
       sign_in admin
       visit edit_users_path
 
-      expect(page).not_to have_content "sms_event_test_volunteer"
-      expect(page).not_to have_content "sms_event_test_supervisor"
+      expect(page).to have_no_content "sms_event_test_volunteer"
+      expect(page).to have_no_content "sms_event_test_supervisor"
       expect(page).to have_content "sms_event_test_casa_admin"
     end
 

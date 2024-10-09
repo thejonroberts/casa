@@ -1,7 +1,7 @@
 require "rails_helper"
 require "csv"
 
-RSpec.describe LearningHoursReport, type: :model do
+RSpec.describe LearningHoursReport do
   describe "#to_csv" do
     context "when there are learning hours" do
       it "includes all learning hours" do

@@ -5,7 +5,7 @@ RSpec.describe CaseImporter do
 
   let(:casa_org_id) { import_user.casa_org.id }
   let!(:import_user) { build(:casa_admin) }
-  let(:import_file_path) { Rails.root.join("spec", "fixtures", "casa_cases.csv") }
+  let(:import_file_path) { Rails.root.join("spec/fixtures/casa_cases.csv") }
 
   before do
     allow(case_importer).to receive(:email_addresses_to_users) do |_clazz, comma_separated_emails|
@@ -86,12 +86,12 @@ RSpec.describe CaseImporter do
       before { case_importer.import_cases }
 
       it "does not duplicate casa case files from csv files" do
-        expect { case_importer.import_cases }.to change(CasaCase, :count).by(0)
+        expect { case_importer.import_cases }.not_to change(CasaCase, :count)
       end
     end
 
     context "when there's no case number" do
-      let(:import_file_path) { Rails.root.join("spec", "fixtures", "casa_cases_without_case_number.csv") }
+      let(:import_file_path) { Rails.root.join("spec/fixtures/casa_cases_without_case_number.csv") }
 
       it "returns an error message if row does not contain a case number" do
         alert = case_importer.import_cases

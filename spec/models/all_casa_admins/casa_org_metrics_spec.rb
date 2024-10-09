@@ -1,11 +1,12 @@
 require "rails_helper"
 
-RSpec.describe AllCasaAdmins::CasaOrgMetrics, type: :model do
+RSpec.describe AllCasaAdmins::CasaOrgMetrics do
   let(:organization) { create :casa_org }
   let(:user) { build(:all_casa_admin) }
 
   describe "#metrics" do
     subject { described_class.new(organization).metrics }
+
     context "minimal data" do
       it "shows stats" do
         expect(subject).to eq(
@@ -42,6 +43,7 @@ RSpec.describe AllCasaAdmins::CasaOrgMetrics, type: :model do
           create(obj_type, :inactive, casa_org: organization)
         end
       end
+
       it "shows stats" do
         expect(subject).to eq(
           {

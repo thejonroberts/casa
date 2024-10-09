@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/contact_type_groups", type: :request do
+RSpec.describe "/contact_type_groups" do
   describe "GET /contact_type_groups/new" do
     context "logged in as admin user" do
       it "can successfully access a contact type group create page" do

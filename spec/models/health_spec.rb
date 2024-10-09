@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Health, type: :model do
+RSpec.describe Health do
   describe "#instance" do
     it "returns an instance of the health class" do
       expect(Health.instance).not_to eq nil

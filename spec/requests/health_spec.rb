@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Health", type: :request do
+RSpec.describe "Health" do
   before do
     Casa::Application.load_tasks
     Rake::Task["after_party:store_deploy_time"].invoke
@@ -29,7 +29,7 @@ RSpec.describe "Health", type: :request do
     it "has key latest_deploy_time" do
       hash_body = nil # This is here for the linter
       expect { hash_body = JSON.parse(response.body).with_indifferent_access }.not_to raise_exception
-      expect(hash_body.keys).to match_array(["latest_deploy_time"])
+      expect(hash_body.keys).to contain_exactly("latest_deploy_time")
     end
   end
 

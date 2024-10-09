@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe SupervisorMailer, type: :mailer do
+RSpec.describe SupervisorMailer do
   describe ".weekly_digest" do
     let(:supervisor) { build(:supervisor, :receive_reimbursement_attachment) }
     let(:volunteer) { build(:volunteer, casa_org: supervisor.casa_org, supervisor: supervisor) }
@@ -68,6 +68,7 @@ RSpec.describe SupervisorMailer, type: :mailer do
 
     context "when a supervisor has pending volunteer to accepts invitation" do
       let(:volunteer2) { create(:volunteer) }
+
       before do
         volunteer2.invite!(supervisor)
       end
@@ -82,7 +83,7 @@ RSpec.describe SupervisorMailer, type: :mailer do
 
       it "do not shows a summary of pending volunteers if the volunteer already accepted" do
         volunteer2.invitation_accepted_at = DateTime.current
-        volunteer2.save
+        volunteer2.save!
 
         expect(mail.body.encoded).to_not match(volunteer2.display_name.to_s)
       end

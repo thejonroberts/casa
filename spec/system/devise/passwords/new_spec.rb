@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "users/passwords/new", type: :system do
+RSpec.describe "users/passwords/new" do
   before do
     visit new_user_session_path
     click_on "Forgot your password?"
@@ -8,6 +8,7 @@ RSpec.describe "users/passwords/new", type: :system do
 
   describe "reset password page" do
     let!(:user) { create(:user, email: "glados@aperture.labs", phone_number: "+16578900012") }
+
     it "displays error messages for non-existent user" do
       fill_in "Email", with: "tangerine@forward.com"
       fill_in "Phone number", with: user.phone_number
@@ -79,7 +80,7 @@ RSpec.describe "users/passwords/new", type: :system do
       click_on "Log In"
 
       expect(page).to have_text(user.display_name)
-      expect(page).not_to have_text("Sign in")
+      expect(page).to have_no_text("Sign in")
     end
   end
 end

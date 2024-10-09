@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe UserLanguage, type: :model do
+RSpec.describe UserLanguage do
   it { is_expected.to belong_to(:language) }
   it { is_expected.to belong_to(:user) }
 

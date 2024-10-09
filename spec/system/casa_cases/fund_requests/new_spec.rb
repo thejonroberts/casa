@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_cases/fund_requests/new", type: :system do
+RSpec.describe "casa_cases/fund_requests/new" do
   it "creates a fund request for the casa case" do
     org = create(:casa_org)
     volunteer = create(:volunteer, :with_casa_cases, casa_org: org)

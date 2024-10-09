@@ -10,7 +10,7 @@ RSpec.describe Form::TitleComponent, type: :component do
   let(:notes) { nil }
   let(:autosave) { nil }
 
-  before(:each) do
+  before do
     render_inline(described_class.new(title: title, subtitle: subtitle, step: step, total_steps: total_steps, notes: notes, autosave: autosave))
   end
 
@@ -21,11 +21,11 @@ RSpec.describe Form::TitleComponent, type: :component do
     end
 
     it "does not render progress" do
-      expect(page).not_to have_css "div[class='progress']"
+      expect(page).to have_no_css "div[class='progress']"
     end
 
     it "does not render autosave alert div" do
-      expect(page).not_to have_css "small[data-autosave-target='alert']"
+      expect(page).to have_no_css "small[data-autosave-target='alert']"
     end
   end
 

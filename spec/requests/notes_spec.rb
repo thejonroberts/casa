@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/volunteers/notes", type: :request do
+RSpec.describe "/volunteers/notes" do
   describe "POST /create" do
     context "when logged in as admin" do
       it "can create a note for volunteer in same organization" do

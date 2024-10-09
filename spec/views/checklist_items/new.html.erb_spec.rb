@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "checklist_items/new", type: :view do
+RSpec.describe "checklist_items/new" do
   let(:admin) { build_stubbed(:casa_admin) }
 
   before do
@@ -16,17 +16,17 @@ RSpec.describe "checklist_items/new", type: :view do
   end
 
   it "shows new checklist item form" do
-    expect(rendered).to have_selector("input", id: "checklist_item_category")
-    expect(rendered).to have_selector("input", id: "checklist_item_description")
-    expect(rendered).to have_selector("input", id: "checklist_item_mandatory")
-    expect(rendered).to have_selector("button[type=submit]")
+    expect(rendered).to have_css("input", id: "checklist_item_category")
+    expect(rendered).to have_css("input", id: "checklist_item_description")
+    expect(rendered).to have_css("input", id: "checklist_item_mandatory")
+    expect(rendered).to have_css("button[type=submit]")
   end
 
   it "requires category text field" do
-    expect(rendered).to have_selector("input[required=required]", id: "checklist_item_category")
+    expect(rendered).to have_css("input[required=required]", id: "checklist_item_category")
   end
 
   it "requires description text field" do
-    expect(rendered).to have_selector("input[required=required]", id: "checklist_item_description")
+    expect(rendered).to have_css("input[required=required]", id: "checklist_item_description")
   end
 end

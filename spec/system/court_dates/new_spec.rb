@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "court_dates/new", type: :system do
+RSpec.describe "court_dates/new" do
   let(:now) { Date.new(2021, 1, 2) }
   let(:casa_org) { create(:casa_org) }
   let(:admin) { create(:casa_admin, casa_org: casa_org) }
@@ -18,10 +18,11 @@ RSpec.describe "court_dates/new", type: :system do
     visit casa_case_path(casa_case)
     click_link("Add a court date")
   end
+
   after { travel_back }
 
   context "when all fields are filled" do
-    it "is successful", js: true do
+    it "is successful", :js do
       expect(page).to have_content(casa_case.case_number)
 
       fill_in "court_date_date", with: now

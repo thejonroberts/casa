@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "placements/edit", type: :system do
+RSpec.describe "placements/edit" do
   let(:now) { Date.new(2025, 1, 2) }
   let(:casa_org) { create(:casa_org, :with_placement_types) }
   let(:admin) { create(:casa_admin, casa_org:) }
@@ -16,9 +16,10 @@ RSpec.describe "placements/edit", type: :system do
     visit casa_case_placement_path(casa_case, placement)
     click_link("Edit")
   end
+
   after { travel_back }
 
-  it "updates placement with valid form data", js: true do
+  it "updates placement with valid form data", :js do
     expect(page).to have_content("123")
 
     fill_in "Placement Started At", with: now - 5.years

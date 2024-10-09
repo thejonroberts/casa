@@ -1,11 +1,11 @@
 require "rails_helper"
 
-RSpec.describe "/imports", type: :request do
-  let(:volunteer_file) { Rails.root.join("spec", "fixtures", "volunteers.csv") }
-  let(:supervisor_file) { Rails.root.join("spec", "fixtures", "supervisors.csv") }
-  let(:case_file) { Rails.root.join("spec", "fixtures", "casa_cases.csv") }
-  let(:existing_case_file) { Rails.root.join("spec", "fixtures", "existing_casa_case.csv") }
-  let(:supervisor_volunteers_file) { Rails.root.join("spec", "fixtures", "supervisor_volunteers.csv") }
+RSpec.describe "/imports" do
+  let(:volunteer_file) { Rails.root.join("spec/fixtures/volunteers.csv") }
+  let(:supervisor_file) { Rails.root.join("spec/fixtures/supervisors.csv") }
+  let(:case_file) { Rails.root.join("spec/fixtures/casa_cases.csv") }
+  let(:existing_case_file) { Rails.root.join("spec/fixtures/existing_casa_case.csv") }
+  let(:supervisor_volunteers_file) { Rails.root.join("spec/fixtures/supervisor_volunteers.csv") }
   let(:casa_admin) { build(:casa_admin) }
 
   before do
@@ -170,7 +170,7 @@ RSpec.describe "/imports", type: :request do
             import_type: "casa_case",
             file: upload_file(existing_case_file)
           }
-      }.to change(CasaCase, :count).by(0)
+      }.not_to change(CasaCase, :count)
 
       expect(request.session[:import_error]).to include("Not all rows were imported.")
       expect(request.session[:exported_rows]).to include("Case CINA-00-0000 already exists, but is inactive. Reactivate the CASA case instead.")

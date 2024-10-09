@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/casa_cases", type: :request do
+RSpec.describe "/casa_cases" do
   let(:date_in_care) { Date.today }
   let(:organization) { build(:casa_org) }
   let(:group) { build(:contact_type_group) }
@@ -57,9 +57,9 @@ RSpec.describe "/casa_cases", type: :request do
       end
 
       it "doesn't show other organizations' cases" do
-        my_case_assignment = build(:case_assignment, casa_org: user.casa_org)
+        my_case_assignment = create(:case_assignment, casa_org: user.casa_org)
         different_org = build(:casa_org)
-        not_my_case_assignment = build_stubbed(:case_assignment, casa_org: different_org)
+        not_my_case_assignment = create(:case_assignment, casa_org: different_org)
 
         get casa_cases_url
 
@@ -225,10 +225,10 @@ RSpec.describe "/casa_cases", type: :request do
       describe "invalid request" do
         context "with invalid parameters" do
           it "does not create a new CasaCase" do
-            expect { post casa_cases_url, params: {casa_case: invalid_attributes} }.to change(
+            expect { post casa_cases_url, params: {casa_case: invalid_attributes} }.not_to change(
               CasaCase,
               :count
-            ).by(0)
+            )
           end
 
           it "renders an unprocessable entity response (i.e. to display the 'new' template)" do

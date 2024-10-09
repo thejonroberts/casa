@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "bulk_court_dates/new", type: :system do
+RSpec.describe "bulk_court_dates/new" do
   let(:now) { Date.new(2021, 1, 1) }
   let(:casa_org) { create(:casa_org) }
   let(:admin) { create(:casa_admin, casa_org: casa_org) }
@@ -12,7 +12,7 @@ RSpec.describe "bulk_court_dates/new", type: :system do
   let!(:hearing_type) { create(:hearing_type) }
   let(:court_order_text) { Faker::Lorem.paragraph(sentence_count: 2) }
 
-  it "is successful", js: true do
+  it "is successful", :js do
     case_group = build(:case_group, casa_org: casa_org)
     case_group.case_group_memberships.first.casa_case = casa_case
     case_group.save!

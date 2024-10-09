@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Index Mileage Rates", type: :view do
+RSpec.describe "Index Mileage Rates" do
   let(:admin) { build_stubbed :casa_admin }
   let(:mileage_rate) { build_stubbed :mileage_rate }
 

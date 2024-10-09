@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe EmancipationCategory, type: :model do
+RSpec.describe EmancipationCategory do
   it { is_expected.to have_many(:casa_case_emancipation_categories).dependent(:destroy) }
   it { is_expected.to have_many(:casa_cases).through(:casa_case_emancipation_categories) }
   it { is_expected.to have_many(:emancipation_options) }
@@ -17,14 +17,14 @@ RSpec.describe EmancipationCategory, type: :model do
     end
   end
 
-  context "#add_option" do
+  describe "#add_option" do
     let(:emancipation_category) { create(:emancipation_category) }
 
-    after(:each) do
+    after do
       EmancipationOption.category_options(emancipation_category.id).destroy_all
     end
 
-    it "should create an option" do
+    it "creates an option" do
       option_name = "test option"
 
       expect {
@@ -33,14 +33,14 @@ RSpec.describe EmancipationCategory, type: :model do
     end
   end
 
-  context "#delete_option" do
+  describe "#delete_option" do
     let(:emancipation_category) { create(:emancipation_category) }
 
-    after(:each) do
+    after do
       EmancipationOption.category_options(emancipation_category.id).destroy_all
     end
 
-    it "should delete an existing option" do
+    it "deletes an existing option" do
       option_name = "test option"
 
       emancipation_category.add_option(option_name)

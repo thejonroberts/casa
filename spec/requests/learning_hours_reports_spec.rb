@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "LearningHoursReports", type: :request do
+RSpec.describe "LearningHoursReports" do
   let(:organization) { create(:casa_org) }
   let(:admin) { build(:casa_admin, casa_org: organization) }
 

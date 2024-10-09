@@ -5,7 +5,7 @@ module PretenderContext
   end
 end
 
-RSpec.describe "layout/header", type: :view do
+RSpec.describe "layout/header" do
   before do
     view.class.include PretenderContext
 
@@ -74,7 +74,7 @@ RSpec.describe "layout/header", type: :view do
 
       render partial: "layouts/header"
 
-      expect(rendered).to_not have_link("Edit Organization")
+      expect(rendered).to have_no_link("Edit Organization")
     end
 
     it "renders help issue link on the header" do

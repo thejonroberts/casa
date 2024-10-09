@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "/", type: :request do
+RSpec.describe "/" do
   describe "GET /" do
     subject(:request) do
       get root_path

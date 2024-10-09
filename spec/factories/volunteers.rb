@@ -40,10 +40,11 @@ FactoryBot.define do
     end
 
     trait :with_inactive_supervisor do
-      transient { supervisor { create(:supervisor) } }
+      transient { supervisor { nil } }
 
       after(:create) do |user, evaluator|
-        create(:supervisor_volunteer, :inactive, volunteer: user, supervisor: evaluator.supervisor)
+        supervisor = evaluator.supervisor || create(:supervisor, casa_org: user.casa_org)
+        create(:supervisor_volunteer, :inactive, volunteer: user, supervisor:)
       end
     end
 

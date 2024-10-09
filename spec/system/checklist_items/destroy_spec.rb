@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "checklist_items/destroy", type: :system do
+RSpec.describe "checklist_items/destroy" do
   let(:casa_admin) { create(:casa_admin) }
   let(:checklist_item) { create(:checklist_item) }
   let(:hearing_type) { create(:hearing_type, checklist_items: [checklist_item]) }
@@ -14,8 +14,8 @@ RSpec.describe "checklist_items/destroy", type: :system do
     click_on "Delete", match: :first
 
     expect(page).to have_text("Checklist item was successfully deleted.")
-    expect(page).not_to have_text(checklist_item.category)
-    expect(page).not_to have_text(checklist_item.description)
+    expect(page).to have_no_text(checklist_item.category)
+    expect(page).to have_no_text(checklist_item.description)
 
     click_on "Submit"
     current_date = Time.new.strftime("%m/%d/%Y")

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "supervisors/index", type: :view do
+RSpec.describe "supervisors/index" do
   context "when logged in as an admin" do
     it "can access the 'New Supervisor' button" do
       user = create(:casa_admin)
@@ -175,7 +175,7 @@ RSpec.describe "supervisors/index", type: :view do
       sign_in user
       render template: "supervisors/index"
 
-      expect(rendered).to_not have_link("New Supervisor", href: new_supervisor_path)
+      expect(rendered).to have_no_link("New Supervisor", href: new_supervisor_path)
     end
   end
 end

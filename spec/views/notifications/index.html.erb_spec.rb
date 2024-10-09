@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "notifications/index", type: :view do
+RSpec.describe "notifications/index" do
   let(:base_time) { Date.new(2025, 1, 2) }
   let(:notification_1_hour_ago) { create(:notification, :followup_with_note) }
   let(:notification_1_day_ago) { create(:notification, :emancipation_checklist_reminder) }

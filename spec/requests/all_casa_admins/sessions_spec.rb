@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "AllCasaAdmin::SessionsController", type: :request do
+RSpec.describe "AllCasaAdmin::SessionsController" do
   let(:all_casa_admin) { create(:all_casa_admin) }
 
   describe "GET /new" do
@@ -14,12 +14,13 @@ RSpec.describe "AllCasaAdmin::SessionsController", type: :request do
   end
 
   describe "POST /create" do
-    let(:params) { {email: all_casa_admin.email, password: all_casa_admin.password} }
     subject(:request) do
       post all_casa_admin_session_path
 
       response
     end
+
+    let(:params) { {email: all_casa_admin.email, password: all_casa_admin.password} }
 
     it { is_expected.to be_successful }
   end

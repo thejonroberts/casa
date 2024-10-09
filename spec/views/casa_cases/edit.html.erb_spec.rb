@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_cases/edit", type: :view do
+RSpec.describe "casa_cases/edit" do
   let(:organization) { create(:casa_org) }
   let(:contact_type_group) { create(:contact_type_group, casa_org: organization) }
   let(:contact_type) { create(:contact_type, contact_type_group: contact_type_group) }
@@ -22,7 +22,7 @@ RSpec.describe "casa_cases/edit", type: :view do
       render template: "casa_cases/edit"
 
       expect(rendered).to have_link(casa_case.case_number, href: "/casa_cases/#{casa_case.case_number.parameterize}")
-      expect(rendered).to_not have_selector("input[value='#{casa_case.case_number}']")
+      expect(rendered).to have_no_css("input[value='#{casa_case.case_number}']")
     end
 
     it "does not include volunteer assignment" do
@@ -47,7 +47,7 @@ RSpec.describe "casa_cases/edit", type: :view do
       render template: "casa_cases/edit"
 
       expect(rendered).to have_link(casa_case.case_number, href: "/casa_cases/#{casa_case.case_number.parameterize}")
-      expect(rendered).to have_selector("input[value='#{casa_case.case_number}']")
+      expect(rendered).to have_css("input[value='#{casa_case.case_number}']")
     end
 
     it "includes volunteer assignment" do

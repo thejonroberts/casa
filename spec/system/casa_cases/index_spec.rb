@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_cases/index", type: :system do
+RSpec.describe "casa_cases/index" do
   let(:organization) { create(:casa_org) }
   let(:volunteer) { build(:volunteer, display_name: "Bob Loblaw", casa_org: organization) }
   let(:case_number) { "CINA-1" }

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Volunteer, type: :model do
+RSpec.describe Volunteer do
   describe ".email_court_report_reminder" do
     let!(:casa_org) { build(:casa_org) }
     let!(:casa_org_twilio_disabled) { build(:casa_org, twilio_enabled: false) }
@@ -42,7 +42,7 @@ RSpec.describe Volunteer, type: :model do
       described_class.send_court_report_reminder
     end
 
-    it "should not send reminders about unassigned cases" do
+    it "does not send reminders about unassigned cases" do
       expect(VolunteerMailer).to_not receive(:court_report_reminder).with(v4, anything)
       described_class.send_court_report_reminder
     end
@@ -54,12 +54,12 @@ RSpec.describe Volunteer, type: :model do
       described_class.send_court_report_reminder
     end
 
-    it "should not send sms about unassigned cases" do
+    it "does not send sms about unassigned cases" do
       expect(CourtReportDueSmsReminderService).to_not receive(:court_report_reminder).with(v4, anything)
       described_class.send_court_report_reminder
     end
 
-    it "should return nil when twilio is disabled" do
+    it "returns nil when twilio is disabled" do
       response = CourtReportDueSmsReminderService.court_report_reminder(v5, Date.current + 7.days)
       expect(response).to eq(nil)
     end
@@ -243,7 +243,7 @@ RSpec.describe Volunteer, type: :model do
       new_supervisor = build :supervisor
       volunteer = build :volunteer, supervisor: old_supervisor
 
-      volunteer.update supervisor: new_supervisor
+      volunteer.update! supervisor: new_supervisor
 
       expect(volunteer).to_not be_supervised_by(old_supervisor)
       expect(volunteer).to be_supervised_by(new_supervisor)
@@ -315,6 +315,7 @@ RSpec.describe Volunteer, type: :model do
 
   describe ".birthday_next_month" do
     subject { Volunteer.birthday_next_month }
+
     before do
       travel_to Date.new(2022, 10, 1)
     end
@@ -345,10 +346,10 @@ RSpec.describe Volunteer, type: :model do
   end
 
   describe "#with_assigned_cases" do
+    subject { Volunteer.with_assigned_cases }
+
     let!(:volunteers) { create_list(:volunteer, 3) }
     let!(:volunteer_with_cases) { create_list(:volunteer, 3, :with_casa_cases) }
-
-    subject { Volunteer.with_assigned_cases }
 
     it "returns only volunteers assigned to active casa cases" do
       expect(subject).to match_array(volunteer_with_cases)
@@ -356,10 +357,10 @@ RSpec.describe Volunteer, type: :model do
   end
 
   describe "#with_no_assigned_cases" do
+    subject { Volunteer.with_no_assigned_cases }
+
     let!(:volunteers) { create_list(:volunteer, 3) }
     let!(:volunteer_with_cases) { create_list(:volunteer, 3, :with_casa_cases) }
-
-    subject { Volunteer.with_no_assigned_cases }
 
     it "returns only volunteers with no assigned active casa cases" do
       expect(subject).to match_array(volunteers)
@@ -387,6 +388,7 @@ RSpec.describe Volunteer, type: :model do
     let(:one_year) { I18n.l(1.year.from_now, format: :full, default: nil) }
 
     it { expect(expiration_date).to eq one_year }
+
     it "expires invitation token after one year" do
       travel_to 1.year.from_now
 

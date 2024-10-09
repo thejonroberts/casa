@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe User, type: :model do
+RSpec.describe User do
   it { is_expected.to belong_to(:casa_org) }
 
   it { is_expected.to have_many(:case_assignments) }
@@ -221,7 +221,7 @@ RSpec.describe User, type: :model do
     end
 
     it "only returns the user's active cases with active case assignments" do
-      expect(user.actively_assigned_and_active_cases).to match_array([active_case_assignment_with_active_case.casa_case])
+      expect(user.actively_assigned_and_active_cases).to contain_exactly(active_case_assignment_with_active_case.casa_case)
     end
   end
 
@@ -288,16 +288,16 @@ RSpec.describe User, type: :model do
     let!(:new_volunteer) { create(:user, email: "firstemail@example.com") }
 
     it "instantiates with an empty old_emails attribute" do
-      expect(new_volunteer.old_emails).to match_array([])
+      expect(new_volunteer.old_emails).to be_empty
     end
 
     it "saves the old email when a volunteer changes their email" do
-      new_volunteer.update(email: "secondemail@example.com")
+      new_volunteer.update!(email: "secondemail@example.com")
       new_volunteer.confirm
 
       expect(new_volunteer.email).to eq("secondemail@example.com")
 
-      expect(new_volunteer.old_emails).to match_array(["firstemail@example.com"])
+      expect(new_volunteer.old_emails).to contain_exactly("firstemail@example.com")
     end
   end
 
@@ -305,16 +305,16 @@ RSpec.describe User, type: :model do
     let!(:new_volunteer) { create(:user, email: "firstemail@example.com") }
 
     it "correctly filters out reinstated emails from old_emails when updating" do
-      new_volunteer.update(email: "secondemail@example.com")
+      new_volunteer.update!(email: "secondemail@example.com")
       new_volunteer.confirm
       new_volunteer.filter_old_emails!(new_volunteer.email)
 
-      new_volunteer.update(email: "firstemail@example.com")
+      new_volunteer.update!(email: "firstemail@example.com")
       new_volunteer.confirm
       new_volunteer.filter_old_emails!(new_volunteer.email)
 
       expect(new_volunteer.email).to eq("firstemail@example.com")
-      expect(new_volunteer.old_emails).to match_array(["secondemail@example.com"])
+      expect(new_volunteer.old_emails).to contain_exactly("secondemail@example.com")
     end
   end
 end

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe LearningHoursMailer, type: :mailer do
+RSpec.describe LearningHoursMailer do
   describe "#learning_hours_report_email" do
     let(:user) { create(:user) }
     let(:casa_org) { create(:casa_org, users: [user]) }

@@ -10,7 +10,7 @@ require "rails_helper"
 #     end
 #   end
 # end
-RSpec.describe EmancipationsHelper, type: :helper do
+RSpec.describe EmancipationsHelper do
   let(:casa_case) { create(:casa_case) }
 
   describe "#emancipation_category_checkbox_checked" do

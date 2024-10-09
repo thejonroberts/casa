@@ -1,0 +1,100 @@
+inherit_mode:
+  merge:
+    - Exclude
+
+require:
+  - standard
+  - standard-custom
+  - standard-performance
+  - rubocop-capybara
+  - rubocop-factory_bot
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-rspec_rails
+
+inherit_gem:
+  standard: config/ruby-3.2.yml
+  standard-performance: config/base.yml
+  standard-custom: config/base.yml
+  standard-rails: config/base.yml
+
+inherit_from:
+  - .rubocop_todo.yml
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 3.2
+  TargetRailsVersion: 7.2
+  Exclude:
+    - 'db/migrate/2020*.rb'
+    - 'db/migrate/2021*.rb'
+    - 'db/migrate/2022*.rb'
+    - 'db/migrate/2023*.rb'
+    - 'db/migrate/202405*.rb'
+    - 'db/migrate/202406*.rb'
+    - 'lib/tasks/deployment/2020*'
+    - 'lib/tasks/deployment/2021*'
+    - 'lib/tasks/deployment/2022*'
+    - 'lib/tasks/deployment/2023*'
+
+# Override Todos for these rules:
+Lint/Debugger: # don't leave binding.pry or debugger
+  Enabled: true
+  Exclude: []
+
+Rails/Output: # Don't leave puts-debugging
+  Enabled: true
+  Exclude: []
+
+Rails/FindEach: # each could severely affect the performance, use find_each
+  Enabled: true
+  Exclude: []
+
+Rails/UniqBeforePluck: # uniq.pluck and not pluck.uniq
+  Enabled: true
+  Exclude: []
+
+RSpec/Focus: # run ALL tests on CI
+  Enabled: true
+  Exclude: []
+
+# Custom Rules:
+FactoryBot/AssociationStyle:
+  Enabled: false
+FactoryBot/ConsistentParenthesesStyle:
+  Enabled: false
+
+Rails/DefaultScope:
+  Enabled: true # Default scopes lead to unexpected behavior, use named scopes
+Rails/OrderById:
+  Enabled: true # No guaranteed order of ids, use timestamps instead
+Rails/SaveBang:
+  Enabled: true
+  Include:
+    - 'spec/**/*' # Specs should fail if saved record is invalid
+
+RSpec/ExampleLength:
+  CountAsOne: ['array', 'hash', 'heredoc', 'method_call']
+  Max: 15 # could be lower; default is 5
+  Exclude:
+    - 'spec/system/**/*'
+RSpec/LetSetup:
+  Enabled: false # 154 occurrences
+RSpec/MultipleExpectations:
+  Max: 10 # default is 1; failures are aggregated by default (spec_helper.rb)
+  Exclude:
+    - 'spec/system/**/*'
+RSpec/MultipleMemoizedHelpers:
+  Max: 20 # could be lower; default is 5
+RSpec/NamedSubject:
+  Enabled: false # over 500 occurrences
+RSpec/NestedGroups:
+  Max: 5 # could be lower; default is 3
+RSpec/NotToNot:
+  Enabled: false # to_not vs. not_to no difference in meaning, only for consistency
+
+# TODO: I think this was causing issues but I may be wrong
+Rails/RedundantTravelBack:
+  Enabled: false

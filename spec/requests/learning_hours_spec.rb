@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "LearningHours", type: :request do
+RSpec.describe "LearningHours" do
   let(:volunteer) { create(:volunteer) }
 
   context "as a volunteer user" do
@@ -13,13 +13,13 @@ RSpec.describe "LearningHours", type: :request do
       end
 
       it "displays the Learning Topic column if learning_topic_active is true" do
-        volunteer.casa_org.update(learning_topic_active: true)
+        volunteer.casa_org.update!(learning_topic_active: true)
         get learning_hours_path
         expect(response.body).to include("Learning Topic")
       end
 
       it "does not display the Learning Topic column if learning_topic_active is false" do
-        volunteer.casa_org.update(learning_topic_active: false)
+        volunteer.casa_org.update!(learning_topic_active: false)
         get learning_hours_path
         expect(response.body).not_to include("Learning Topic")
       end
@@ -28,6 +28,7 @@ RSpec.describe "LearningHours", type: :request do
 
   context "as a supervisor user" do
     let(:supervisor) { create(:supervisor) }
+
     before { sign_in supervisor }
 
     describe "GET /index" do
@@ -45,6 +46,7 @@ RSpec.describe "LearningHours", type: :request do
 
   context "as an admin user" do
     let(:admin) { create(:casa_admin) }
+
     before { sign_in admin }
 
     describe "GET /index" do

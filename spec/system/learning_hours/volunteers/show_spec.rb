@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "LearningHours::Volunteers #show", type: :system do
+RSpec.describe "LearningHours::Volunteers #show" do
   let!(:volunteer) { create(:volunteer) }
   let!(:supervisor) { create(:supervisor) }
   let!(:learning_hours) { create_list(:learning_hour, 5, user: volunteer) }
@@ -29,12 +29,12 @@ RSpec.describe "LearningHours::Volunteers #show", type: :system do
       expect(page).to have_content("#{volunteer.display_name}'s Learning Hours")
     end
 
-    it "displays the volunteer's first learning hours", js: true do
+    it "displays the volunteer's first learning hours", :js do
       expect(page).to have_content(learning_hours.first.name)
       expect(page).to have_content(learning_hours.first.occurred_at.strftime("%B %-d, %Y"))
     end
 
-    it "displays the volunteer's last learning hours", js: true do
+    it "displays the volunteer's last learning hours", :js do
       expect(page).to have_content(learning_hours.last.name)
       expect(page).to have_content(learning_hours.last.occurred_at.strftime("%B %-d, %Y"))
     end

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Banner, type: :model do
+RSpec.describe Banner do
   describe "#valid?" do
     let(:casa_org) { create(:casa_org) }
     let(:supervisor) { create(:supervisor, casa_org: casa_org) }

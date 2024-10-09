@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Banners", type: :request do
+RSpec.describe "Banners" do
   let!(:casa_org) { create(:casa_org) }
   let!(:active_banner) { create(:banner, casa_org: casa_org) }
   let(:volunteer) { create(:volunteer, casa_org: casa_org) }

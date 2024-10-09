@@ -1,7 +1,7 @@
 require "rails_helper"
 require "csv"
 
-RSpec.describe MissingDataReport, type: :model do
+RSpec.describe MissingDataReport do
   describe "#to_csv" do
     let!(:casa_org) { create(:casa_org) }
     let(:result) { CSV.parse(described_class.new(casa_org.id).to_csv) }

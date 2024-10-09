@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/placement_reports", type: :request do
+RSpec.describe "/placement_reports" do
   let(:admin) { create(:casa_admin) }
 
   describe "GET /index" do

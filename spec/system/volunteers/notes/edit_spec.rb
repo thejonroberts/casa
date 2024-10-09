@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "volunteers/notes/edit", type: :system do
+RSpec.describe "volunteers/notes/edit" do
   let(:organization) { create(:casa_org) }
   let(:admin) { create(:casa_admin, casa_org_id: organization.id) }
   let(:volunteer) { create(:volunteer, :with_assigned_supervisor, casa_org_id: organization.id) }
@@ -19,7 +19,7 @@ RSpec.describe "volunteers/notes/edit", type: :system do
 
       click_on("Update Note")
 
-      expect(page.current_path).to eq edit_volunteer_path(volunteer)
+      expect(page).to have_current_path edit_volunteer_path(volunteer), ignore_query: true
 
       expect(page).to have_text("Great job!")
 

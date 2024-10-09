@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "placements/index", type: :view do
+RSpec.describe "placements/index" do
   let(:casa_org) { create(:casa_org, :with_placement_types) }
   let(:casa_case) { create(:casa_case, casa_org:, case_number: "CINA-12345") }
   let(:placement_current) { create(:placement_type, name: "Reunification", casa_org:) }
@@ -23,7 +23,7 @@ RSpec.describe "placements/index", type: :view do
   end
 
   it "displays the case number in the header" do
-    expect(rendered).to have_selector("h1", text: "CINA-12345")
+    expect(rendered).to have_css("h1", text: "CINA-12345")
   end
 
   it "has a link to create a new placement" do
@@ -50,13 +50,13 @@ RSpec.describe "placements/index", type: :view do
 
   it "has delete buttons for each placement" do
     placements.each do |placement|
-      expect(rendered).to have_selector("a[data-bs-target='##{placement.id}']", text: "Delete")
+      expect(rendered).to have_css("a[data-bs-target='##{placement.id}']", text: "Delete")
     end
   end
 
   it "renders delete confirmation modals for each placement" do
     placements.each do |placement|
-      expect(rendered).to have_selector("##{placement.id}.modal")
+      expect(rendered).to have_css("##{placement.id}.modal")
       within "##{placement.id}" do
         expect(rendered).to have_content("Delete Placement?")
         expect(rendered).to have_link("Delete Placement", href: casa_case_placement_path(casa_case, placement))

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "/hearing_types", type: :request do
+RSpec.describe "/hearing_types" do
   describe "GET /hearing_types/new" do
     context "when logged in as admin user" do
       it "allows access to hearing type create page" do
@@ -131,7 +131,7 @@ RSpec.describe "/hearing_types", type: :request do
 
         put hearing_type_path(hearing_type), params: params
 
-        hearing_type.update(active: false)
+        hearing_type.update!(active: false)
         hearing_type.reload
         expect(hearing_type.name).to eq "New Name"
         expect(hearing_type.active).to be_falsey

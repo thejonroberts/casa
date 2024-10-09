@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "other_duties/new", type: :view do
+RSpec.describe "other_duties/new" do
   let(:current_time) { Time.zone.now.strftime("%Y-%m-%d") }
 
   before do

@@ -1,7 +1,7 @@
 require "rails_helper"
 require "support/stubbed_requests/webmock_helper"
 
-RSpec.describe "/casa_admins", type: :request do
+RSpec.describe "/casa_admins" do
   describe "GET /casa_admins" do
     it "is successful" do
       admins = create_pair(:casa_admin)
@@ -416,7 +416,7 @@ RSpec.describe "/casa_admins", type: :request do
     end
 
     context "when creating new admin" do
-      it "sends SMS when phone number is provided " do
+      it "sends SMS when phone number is provided" do
         org = create(:casa_org, twilio_enabled: true)
         admin = create(:casa_admin, casa_org: org)
         twilio_activation_success_stub = WebMockHelper.twilio_activation_success_stub("admin")

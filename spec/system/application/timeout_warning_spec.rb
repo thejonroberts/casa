@@ -1,11 +1,13 @@
 require "rails_helper"
 
-RSpec.describe "/*", type: :system do
+RSpec.describe "/*" do
   context "when user is signed in" do
     let(:user) { create(:volunteer) }
+
     before do
       sign_in user
     end
+
     it "renders the seconds before logout as a javascript variable" do
       visit "/"
       parsed_page = Nokogiri::HTML(page.html)

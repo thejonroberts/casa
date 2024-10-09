@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_cases/new", type: :view do
+RSpec.describe "casa_cases/new" do
   let(:casa_org) { create(:casa_org) }
   let(:user) { create(:casa_admin, casa_org: casa_org) }
   let(:contact_type_group) { create(:contact_type_group, casa_org: casa_org) }
@@ -22,7 +22,7 @@ RSpec.describe "casa_cases/new", type: :view do
   end
 
   context "when trying to assign a volunteer to a case" do
-    it "should be able to assign volunteers" do
+    it "is able to assign volunteers" do
       enable_pundit(view, user)
       allow(view).to receive(:current_user).and_return(user)
       allow(view).to receive(:current_organization).and_return(user.casa_org)

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe LearningHourType, type: :model do
+RSpec.describe LearningHourType do
   it { is_expected.to belong_to(:casa_org) }
   it { is_expected.to validate_presence_of(:name) }
 

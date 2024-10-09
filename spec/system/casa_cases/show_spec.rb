@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "casa_cases/show", type: :system do
+RSpec.describe "casa_cases/show" do
   include ActionView::Helpers::DateHelper
 
   let(:organization) { create(:casa_org) }
@@ -36,12 +36,12 @@ RSpec.describe "casa_cases/show", type: :system do
       end
 
       it "does not see a link to emancipation checklist" do
-        expect(page).not_to have_link("Emancipation 0 / #{emancipation_categories.size}")
+        expect(page).to have_no_link("Emancipation 0 / #{emancipation_categories.size}")
       end
     end
   end
 
-  describe "Report Generation", js: true do
+  describe "Report Generation", :js do
     let(:modal_selector) { '[data-bs-target="#generate-docx-report-modal"]' }
     let(:user) { volunteer }
 
@@ -50,12 +50,13 @@ RSpec.describe "casa_cases/show", type: :system do
       sign_in user
       visit casa_case_path(casa_case.id)
     end
+
     after { travel_back }
 
     context "when first arriving to 'Generate Court Report' page" do
       it "generation modal hidden" do
-        expect(page).to have_selector "#btnGenerateReport", text: "Generate Report", visible: false
-        expect(page).not_to have_selector ".select2"
+        expect(page).to have_css "#btnGenerateReport", text: "Generate Report", visible: false
+        expect(page).to have_no_css ".select2"
       end
     end
 
@@ -66,18 +67,18 @@ RSpec.describe "casa_cases/show", type: :system do
 
       # putting all this in the same system test shaves 3 seconds off the test suite
       it "modal has correct contents" do
-        start_date = page.find("#start_date").value
+        start_date = page.find_by_id("start_date").value
         expect(start_date).to eq("January 01, 2021") # default date
 
-        end_date = page.find("#end_date").value
+        end_date = page.find_by_id("end_date").value
         expect(end_date).to eq("January 01, 2021") # default date
 
-        expect(page).to have_selector "#btnGenerateReport", text: "Generate Report", visible: true
-        expect(page).to_not have_selector ".select2"
+        expect(page).to have_css "#btnGenerateReport", text: "Generate Report", visible: true
+        expect(page).to have_no_css ".select2"
 
-        expect(page).to have_selector("#btnGenerateReport .lni-download", visible: true)
-        expect(page).to_not have_selector("#btnGenerateReport[disabled]")
-        expect(page).to have_selector("#spinner", visible: :hidden)
+        expect(page).to have_css("#btnGenerateReport .lni-download", visible: true)
+        expect(page).to have_no_css("#btnGenerateReport[disabled]")
+        expect(page).to have_css("#spinner", visible: :hidden)
 
         within("#generate-docx-report-modal") do
           expect(page).to have_content(casa_case.case_number)
@@ -117,23 +118,23 @@ RSpec.describe "casa_cases/show", type: :system do
       expect(page).to have_content(casa_case.case_court_orders[0].implementation_status_symbol)
     end
 
-    it "can see next court date", js: true do
+    it "can see next court date", :js do
       expect(page).to have_content(
         "Next Court Date: #{I18n.l(future_court_date.date, format: :day_and_date)}"
       )
     end
 
-    it "can see the youth's Date In Care", js: true do
+    it "can see the youth's Date In Care", :js do
       expect(page).to have_content(
         "Youth's Date in Care: #{I18n.l(date_in_care, format: :youth_date_of_birth)}"
       )
     end
 
-    it "can see the time since the youth's Date In Care", js: true do
+    it "can see the time since the youth's Date In Care", :js do
       expect(page).to have_content("#{time_ago_in_words(date_in_care)} ago")
     end
 
-    it "can see Add to Calendar buttons", js: true do
+    it "can see Add to Calendar buttons", :js do
       expect(page).to have_content("Add to Calendar")
     end
 
@@ -143,13 +144,13 @@ RSpec.describe "casa_cases/show", type: :system do
         visit casa_case_path(casa_case.id)
       end
 
-      it "can not see Add to Calendar buttons", js: true do
-        expect(page).not_to have_content("Add to Calendar")
+      it "can not see Add to Calendar buttons", :js do
+        expect(page).to have_no_content("Add to Calendar")
       end
     end
 
     context "when old case contacts are hidden" do
-      it "should display all case contacts to admin", js: true do
+      it "displays all case contacts to admin", :js do
         casa_case = create(:casa_case, casa_org: organization)
         volunteer_1 = create(:volunteer, display_name: "Volunteer 1", casa_org: casa_case.casa_org)
         volunteer_2 = create(:volunteer, display_name: "Volunteer 2", casa_org: casa_case.casa_org)
@@ -178,6 +179,7 @@ RSpec.describe "casa_cases/show", type: :system do
     context "case contact by another supervisor" do
       let(:other_supervisor) { create(:supervisor, casa_org: organization) }
       let!(:case_contact) { create(:case_contact, creator: other_supervisor, casa_case: casa_case) }
+
       it "sees link to other supervisor" do
         expect(page).to have_link(href: "/supervisors/#{other_supervisor.id}/edit")
       end
@@ -190,7 +192,7 @@ RSpec.describe "casa_cases/show", type: :system do
     end
 
     context "when old case contacts are hidden" do
-      it "should display all case contacts to supervisor", js: true do
+      it "displays all case contacts to supervisor", :js do
         casa_case = create(:casa_case, casa_org: organization)
         volunteer_1 = create(:volunteer, display_name: "Volunteer 1", casa_org: casa_case.casa_org)
         volunteer_2 = create(:volunteer, display_name: "Volunteer 2", casa_org: casa_case.casa_org)
@@ -224,7 +226,7 @@ RSpec.describe "casa_cases/show", type: :system do
         create(:case_contact, contact_made: true, casa_case: casa_case, creator: volunteer_2, occurred_at: DateTime.now - 1)
       end
 
-      it "should display only visible cases to volunteer", js: true do
+      it "displays only visible cases to volunteer", :js do
         visit casa_case_path(casa_case.id)
         expect(page).to have_css("#case_contacts_list .card-content", count: 1)
       end
@@ -237,7 +239,7 @@ RSpec.describe "casa_cases/show", type: :system do
         create(:case_contact, contact_made: true, casa_case: casa_case, creator: volunteer_2, occurred_at: DateTime.now - 1)
       end
 
-      it "should display all cases to the volunteer" do
+      it "displays all cases to the volunteer" do
         visit casa_case_path(casa_case.id)
         expect(page).to have_css("#case_contacts_list .card-content", count: 2)
       end
@@ -248,7 +250,7 @@ RSpec.describe "casa_cases/show", type: :system do
     let(:user) { admin }
 
     it "when implemented" do
-      casa_case.case_court_orders[0].update(implementation_status: :implemented)
+      casa_case.case_court_orders[0].update!(implementation_status: :implemented)
 
       visit casa_case_path(casa_case)
 
@@ -258,7 +260,7 @@ RSpec.describe "casa_cases/show", type: :system do
     end
 
     it "when not implemented" do
-      casa_case.case_court_orders[0].update(implementation_status: :unimplemented)
+      casa_case.case_court_orders[0].update!(implementation_status: :unimplemented)
 
       visit casa_case_path(casa_case)
 
@@ -268,7 +270,7 @@ RSpec.describe "casa_cases/show", type: :system do
     end
 
     it "when partial implemented" do
-      casa_case.case_court_orders[0].update(implementation_status: :partially_implemented)
+      casa_case.case_court_orders[0].update!(implementation_status: :partially_implemented)
 
       visit casa_case_path(casa_case)
 
@@ -278,7 +280,7 @@ RSpec.describe "casa_cases/show", type: :system do
     end
 
     it "when not specified" do
-      casa_case.case_court_orders[0].update(implementation_status: nil)
+      casa_case.case_court_orders[0].update!(implementation_status: nil)
 
       visit casa_case_path(casa_case)
 

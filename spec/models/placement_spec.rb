@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Placement, type: :model do
+RSpec.describe Placement do
   let!(:object) { create(:placement) }
 
   it { is_expected.to belong_to(:placement_type) }

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "volunteers/edit", type: :system do
+RSpec.describe "volunteers/edit" do
   describe "updating volunteer personal data" do
     context "with valid data" do
       it "updates successfully" do
@@ -169,13 +169,13 @@ RSpec.describe "volunteers/edit", type: :system do
         visit edit_volunteer_path(volunteer)
 
         expect(page).to have_field("Email", with: "newemail@example.com")
-        expect(page).to_not have_field("Email", with: old_email)
+        expect(page).to have_no_field("Email", with: old_email)
         expect(volunteer.old_emails).to eq([old_email])
       end
     end
   end
 
-  it "saves the user as inactive, but only if the admin confirms", js: true do
+  it "saves the user as inactive, but only if the admin confirms", :js do
     organization = create(:casa_org)
     admin = create(:casa_admin, casa_org: organization)
     volunteer = create(:volunteer, :with_assigned_supervisor, casa_org: organization)
@@ -187,7 +187,7 @@ RSpec.describe "volunteers/edit", type: :system do
       scroll_to(".actions")
       click_on "Deactivate volunteer"
     end
-    expect(page).not_to have_text("Volunteer was deactivated on")
+    expect(page).to have_no_text("Volunteer was deactivated on")
 
     accept_confirm do
       click_on "Deactivate volunteer"
@@ -209,7 +209,7 @@ RSpec.describe "volunteers/edit", type: :system do
 
     click_on "Activate volunteer"
 
-    expect(page).not_to have_text("Volunteer was deactivated on")
+    expect(page).to have_no_text("Volunteer was deactivated on")
 
     expect(inactive_volunteer.reload).to be_active
   end
@@ -240,7 +240,7 @@ RSpec.describe "volunteers/edit", type: :system do
     sign_in admin
     visit edit_volunteer_path(volunteer)
 
-    expect(page).not_to have_select("supervisor_volunteer[supervisor_id]", with_options: [deactivated_supervisor.display_name])
+    expect(page).to have_no_select("supervisor_volunteer[supervisor_id]", with_options: [deactivated_supervisor.display_name])
     expect(page).to have_select("supervisor_volunteer[supervisor_id]", options: [active_supervisor.display_name])
     expect(page).to have_content("Select a Supervisor")
     expect(page).to have_content("Assign a Supervisor")
@@ -262,7 +262,7 @@ RSpec.describe "volunteers/edit", type: :system do
       visit edit_volunteer_path(volunteer)
 
       within "#manage_cases" do
-        expect(page).not_to have_content("Volunteer is Active")
+        expect(page).to have_no_content("Volunteer is Active")
       end
     end
 
@@ -300,8 +300,8 @@ RSpec.describe "volunteers/edit", type: :system do
 
       case_assignment_1.active = false
       case_assignment_2.active = false
-      case_assignment_1.save
-      case_assignment_2.save
+      case_assignment_1.save!
+      case_assignment_2.save!
 
       sign_in admin
       visit edit_volunteer_path(volunteer)
@@ -360,8 +360,8 @@ RSpec.describe "volunteers/edit", type: :system do
       volunteer = create(:volunteer, casa_org: casa_org, display_name: "AAA")
       casa_case_1 = build(:casa_case, casa_org: casa_org, case_number: "CINA1")
       casa_case_2 = build(:casa_case, casa_org: casa_org, case_number: "CINA2")
-      assignment1 = volunteer.case_assignments.create(casa_case: casa_case_1, active: true)
-      assignment2 = volunteer.case_assignments.create(casa_case: casa_case_2, active: false)
+      assignment1 = volunteer.case_assignments.create!(casa_case: casa_case_1, active: true)
+      assignment2 = volunteer.case_assignments.create!(casa_case: casa_case_2, active: false)
 
       sign_in supervisor
       visit edit_volunteer_path(volunteer)
@@ -373,7 +373,7 @@ RSpec.describe "volunteers/edit", type: :system do
 
       within("#case_assignment_#{assignment2.id}") do
         expect(page).to have_text(casa_case_2.case_number)
-        expect(page).not_to have_button("Unassign Case")
+        expect(page).to have_no_button("Unassign Case")
       end
 
       select casa_case_2.case_number, from: "Select a Case"
@@ -398,7 +398,7 @@ RSpec.describe "volunteers/edit", type: :system do
       visit edit_volunteer_path(volunteer)
 
       expect(page).to have_content(active_casa_case.case_number)
-      expect(page).not_to have_content(inactive_casa_case.case_number)
+      expect(page).to have_no_content(inactive_casa_case.case_number)
     end
   end
 
@@ -448,11 +448,11 @@ RSpec.describe "volunteers/edit", type: :system do
       visit edit_volunteer_path(volunteer)
 
       expect(page).to have_content("Send Reactivation Alert (SMS)")
-      expect(page).not_to have_content("Enable Twilio")
-      expect(page).to have_selector("#twilio_enabled")
+      expect(page).to have_no_content("Enable Twilio")
+      expect(page).to have_css("#twilio_enabled")
     end
 
-    context " admin's organization does not have twilio enabled" do
+    context "admin's organization does not have twilio enabled" do
       it "displays a disabed (SMS) button with appropriate message" do
         org_twilio = create(:casa_org, twilio_enabled: false)
         admin_twilio = create(:casa_admin, casa_org: org_twilio)
@@ -462,7 +462,7 @@ RSpec.describe "volunteers/edit", type: :system do
         visit edit_volunteer_path(volunteer_twilio)
 
         expect(page).to have_content("Enable Twilio To Send Reactivation Alert (SMS)")
-        expect(page).to have_selector("#twilio_disabled")
+        expect(page).to have_css("#twilio_disabled")
       end
     end
   end
@@ -597,8 +597,8 @@ RSpec.describe "volunteers/edit", type: :system do
         sign_in user
         visit edit_volunteer_path(volunteer)
 
-        expect(page).not_to have_link("Impersonate")
-        expect(current_path).not_to eq(edit_volunteer_path(volunteer))
+        expect(page).to have_no_link("Impersonate")
+        expect(page).to have_no_current_path(edit_volunteer_path(volunteer), ignore_query: true)
       end
     end
   end
@@ -608,9 +608,9 @@ RSpec.describe "volunteers/edit", type: :system do
       organization = create(:casa_org)
       admin = create(:casa_admin, casa_org_id: organization.id)
       volunteer = create(:volunteer, :with_assigned_supervisor, casa_org_id: organization.id)
-      volunteer.notes.create(creator: admin, content: "Note_1")
-      volunteer.notes.create(creator: admin, content: "Note_2")
-      volunteer.notes.create(creator: admin, content: "Note_3")
+      volunteer.notes.create!(creator: admin, content: "Note_1")
+      volunteer.notes.create!(creator: admin, content: "Note_2")
+      volunteer.notes.create!(creator: admin, content: "Note_3")
 
       sign_in admin
       visit edit_volunteer_path(volunteer)
@@ -622,7 +622,7 @@ RSpec.describe "volunteers/edit", type: :system do
           click_on("Save Note")
         end
 
-        expect(current_path).to eq(edit_volunteer_path(volunteer))
+        expect(page).to have_current_path(edit_volunteer_path(volunteer), ignore_query: true)
         within(".notes") do
           expect(page).to have_text("Great job today.")
           expect(page).to have_text(admin.display_name)
@@ -635,9 +635,9 @@ RSpec.describe "volunteers/edit", type: :system do
       organization = create(:casa_org)
       admin = create(:casa_admin, casa_org_id: organization.id)
       volunteer = create(:volunteer, :with_assigned_supervisor, casa_org_id: organization.id)
-      volunteer.notes.create(creator: admin, content: "Note_1")
-      volunteer.notes.create(creator: admin, content: "Note_2")
-      volunteer.notes.create(creator: admin, content: "Note_3")
+      volunteer.notes.create!(creator: admin, content: "Note_1")
+      volunteer.notes.create!(creator: admin, content: "Note_2")
+      volunteer.notes.create!(creator: admin, content: "Note_3")
 
       sign_in admin
       visit edit_volunteer_path(volunteer)
@@ -656,9 +656,9 @@ RSpec.describe "volunteers/edit", type: :system do
       admin = create(:casa_admin, casa_org_id: organization.id)
       volunteer = create(:volunteer, :with_assigned_supervisor, casa_org_id: organization.id)
       supervisor = volunteer.supervisor
-      volunteer.notes.create(creator: admin, content: "Note_1")
-      volunteer.notes.create(creator: admin, content: "Note_2")
-      volunteer.notes.create(creator: admin, content: "Note_3")
+      volunteer.notes.create!(creator: admin, content: "Note_1")
+      volunteer.notes.create!(creator: admin, content: "Note_2")
+      volunteer.notes.create!(creator: admin, content: "Note_3")
 
       sign_in supervisor
       visit edit_volunteer_path(volunteer)
@@ -670,7 +670,7 @@ RSpec.describe "volunteers/edit", type: :system do
           click_on("Save Note")
         end
 
-        expect(current_path).to eq(edit_volunteer_path(volunteer))
+        expect(page).to have_current_path(edit_volunteer_path(volunteer), ignore_query: true)
         within(".notes") do
           expect(page).to have_text("Great job today.")
           expect(page).to have_text(volunteer.supervisor.display_name)
@@ -684,9 +684,9 @@ RSpec.describe "volunteers/edit", type: :system do
       admin = create(:casa_admin, casa_org_id: organization.id)
       volunteer = create(:volunteer, :with_assigned_supervisor, casa_org_id: organization.id)
       supervisor = volunteer.supervisor
-      volunteer.notes.create(creator: admin, content: "Note_1")
-      volunteer.notes.create(creator: admin, content: "Note_2")
-      volunteer.notes.create(creator: admin, content: "Note_3")
+      volunteer.notes.create!(creator: admin, content: "Note_1")
+      volunteer.notes.create!(creator: admin, content: "Note_2")
+      volunteer.notes.create!(creator: admin, content: "Note_3")
 
       sign_in supervisor
       visit edit_volunteer_path(volunteer)
@@ -706,7 +706,7 @@ RSpec.describe "volunteers/edit", type: :system do
       sign_in volunteer
       visit edit_volunteer_path(volunteer)
 
-      expect(page).not_to have_selector(".notes")
+      expect(page).to have_no_css(".notes")
       expect(page).to have_content("Sorry, you are not authorized to perform this action.")
     end
   end
@@ -722,7 +722,7 @@ RSpec.describe "volunteers/edit", type: :system do
         visit edit_volunteer_path(volunteer)
 
         expect(page).to have_text "Mailing address"
-        expect(page).to have_selector "input[type=text][id=volunteer_address_attributes_content]"
+        expect(page).to have_css "input[type=text][id=volunteer_address_attributes_content]"
       end
 
       it "updates successfully" do
@@ -736,7 +736,7 @@ RSpec.describe "volunteers/edit", type: :system do
         fill_in "volunteer_address_attributes_content", with: "123 Main St"
         click_on "Submit"
         expect(page).to have_text "Volunteer was successfully updated."
-        expect(page).to have_selector("input[value='123 Main St']")
+        expect(page).to have_css("input[value='123 Main St']")
       end
     end
   end

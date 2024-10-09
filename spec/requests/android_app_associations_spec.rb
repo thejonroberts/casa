@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "AndroidAppAssociations", type: :request do
+RSpec.describe "AndroidAppAssociations" do
   describe "GET /.well-known/assetlinks.json" do
     let(:reponse_json) do
       [

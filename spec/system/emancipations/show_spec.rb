@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "emancipations/show", type: :system do
+RSpec.describe "emancipations/show" do
   let(:org) { build(:casa_org) }
   let(:volunteer) { build(:volunteer, casa_org: org) }
   let(:supervisor) { create(:supervisor, casa_org: org) }
@@ -14,7 +14,7 @@ RSpec.describe "emancipations/show", type: :system do
     expect(page).to have_link "Download Checklist", href: casa_case_emancipation_path(casa_case, format: :docx)
   end
 
-  it "expands the emancipation checklist options", js: true do
+  it "expands the emancipation checklist options", :js do
     emancipation_category = create(:emancipation_category)
     emancipation_option = create(:emancipation_option, emancipation_category: emancipation_category)
 
@@ -24,6 +24,6 @@ RSpec.describe "emancipations/show", type: :system do
     find(".category-collapse-icon").click
     expect(page).to have_content(emancipation_option.name)
     find(".category-collapse-icon").click
-    expect(page).to_not have_content(emancipation_option.name)
+    expect(page).to have_no_content(emancipation_option.name)
   end
 end

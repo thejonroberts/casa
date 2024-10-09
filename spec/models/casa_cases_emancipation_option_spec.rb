@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CasaCasesEmancipationOption, type: :model do
+RSpec.describe CasaCasesEmancipationOption do
   it { is_expected.to belong_to(:casa_case) }
   it { is_expected.to belong_to(:emancipation_option) }
 

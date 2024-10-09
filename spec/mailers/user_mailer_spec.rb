@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe UserMailer, type: :mailer do
+RSpec.describe UserMailer do
   describe "password_changed_reminder" do
     subject(:mail) { described_class.password_changed_reminder(user) }
 

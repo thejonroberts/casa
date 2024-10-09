@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ReimbursementsController, type: :request do
+RSpec.describe ReimbursementsController do
   let(:admin) { create(:casa_admin) }
   let(:casa_org) { admin.casa_org }
   let(:case_contact) { create(:case_contact) }

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "CasaOrg", type: :request do
+RSpec.describe "CasaOrg" do
   let(:casa_org) { build(:casa_org) }
   let(:casa_case) { build_stubbed(:casa_case, casa_org: casa_org) }
 
@@ -21,6 +21,12 @@ RSpec.describe "CasaOrg", type: :request do
 
   describe "PATCH /update" do
     context "with valid parameters" do
+      subject(:request) do
+        patch casa_org_url(casa_org), params: {casa_org: attributes}
+
+        response
+      end
+
       let(:attributes) do
         {
           name: "name", display_name: "display_name", address: "address",
@@ -28,12 +34,6 @@ RSpec.describe "CasaOrg", type: :request do
           twilio_api_key_secret: "open sesame", twilio_phone_number: "+12223334444",
           show_driving_reimbursement: "1", additional_expenses_enabled: "1"
         }
-      end
-
-      subject(:request) do
-        patch casa_org_url(casa_org), params: {casa_org: attributes}
-
-        response
       end
 
       it "updates the requested casa_org" do
@@ -47,13 +47,13 @@ RSpec.describe "CasaOrg", type: :request do
       end
 
       describe "on logo update" do
-        let(:logo) { upload_file("#{Rails.root}/spec/fixtures/company_logo.png") }
-
         subject(:request) do
           patch casa_org_url(casa_org), params: params
 
           response
         end
+
+        let(:logo) { upload_file("#{Rails.root.join("spec/fixtures/company_logo.png")}") }
 
         context "with a new logo" do
           let(:params) { {casa_org: {logo: logo}} }
@@ -67,7 +67,7 @@ RSpec.describe "CasaOrg", type: :request do
           let(:params) { {casa_org: {name: "name"}} }
 
           it "does not revert logo to default" do
-            casa_org.update(logo: logo)
+            casa_org.update!(logo: logo)
 
             expect { request }.not_to change(ActiveStorage::Attachment, :count)
           end
@@ -100,13 +100,13 @@ RSpec.describe "CasaOrg", type: :request do
     end
 
     context "with invalid parameters" do
-      let(:params) { {casa_org: {name: nil}} }
-
       subject(:request) do
         patch casa_org_url(casa_org), params: params
 
         response
       end
+
+      let(:params) { {casa_org: {name: nil}} }
 
       it "does not update the requested casa_org" do
         expect { request }.not_to change { casa_org.reload.name }

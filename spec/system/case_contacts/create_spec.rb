@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "case_contacts/create", type: :system, js: true do
+RSpec.describe "case_contacts/create", :js do
   let(:contact_topics) { [build(:contact_topic, question: "q1"), build(:contact_topic, question: "q2")] }
   let(:org) { create(:casa_org, contact_topics: contact_topics) }
   let(:volunteer) { create(:volunteer, :with_cases_and_contacts, :with_assigned_supervisor, casa_org: org) }
@@ -48,8 +48,8 @@ RSpec.describe "case_contacts/create", type: :system, js: true do
     end
   end
 
-  describe "notes page", js: true do
-    before(:each) do
+  describe "notes page", :js do
+    before do
       sign_in volunteer
       visit case_contacts_path
       click_on "New Case Contact"
@@ -69,57 +69,57 @@ RSpec.describe "case_contacts/create", type: :system, js: true do
       topic_two_id = contact_topics.last.question.parameterize.underscore
 
       expect(page).to have_text contact_topics.first.question
-      expect(page).to_not have_text contact_topics.first.details
+      expect(page).to have_no_text contact_topics.first.details
 
       within("##{topic_one_id}") do
         expect(page).to have_text("read more")
-        expect(page).to have_selector("##{topic_one_id} textarea")
+        expect(page).to have_css("##{topic_one_id} textarea")
       end
 
       expect(page).to have_text contact_topics.last.question
-      expect(page).to_not have_text contact_topics.last.details
-      expect(page).to_not have_selector("##{topic_two_id}")
+      expect(page).to have_no_text contact_topics.last.details
+      expect(page).to have_no_css("##{topic_two_id}")
     end
 
-    it "expands to show and hide the text field and details", js: true do
+    it "expands to show and hide the text field and details", :js do
       click_on "read more"
       topic_id = contact_topics.first.question.parameterize.underscore
 
       expect(page).to have_text(contact_topics.first.question)
       expect(page).to have_text(contact_topics.first.details)
-      expect(page).to have_selector("##{topic_id} textarea")
+      expect(page).to have_css("##{topic_id} textarea")
 
       find("##{topic_id}_button").click
 
       expect(page).to have_text(contact_topics.first.question)
-      expect(page).to_not have_text(contact_topics.first.details)
-      expect(page).to_not have_selector("##{topic_id} textarea")
+      expect(page).to have_no_text(contact_topics.first.details)
+      expect(page).to have_no_css("##{topic_id} textarea")
 
       find("##{topic_id}_button").click
 
       expect(page).to have_text(contact_topics.first.question)
       expect(page).to have_text(contact_topics.first.details)
-      expect(page).to have_selector("##{topic_id} textarea")
+      expect(page).to have_css("##{topic_id} textarea")
     end
 
-    it "expands to show/hide details", js: true do
+    it "expands to show/hide details", :js do
       topic_id = contact_topics.first.question.parameterize.underscore
 
       expect(page).to have_text(contact_topics.first.question)
 
       within("##{topic_id}") do
-        expect(page).to_not have_text(contact_topics.first.details)
-        expect(page).to have_selector("##{topic_id} textarea")
+        expect(page).to have_no_text(contact_topics.first.details)
+        expect(page).to have_css("##{topic_id} textarea")
 
         click_on "read more"
 
         expect(page).to have_text(contact_topics.first.details)
-        expect(page).to have_selector("##{topic_id} textarea")
+        expect(page).to have_css("##{topic_id} textarea")
 
         click_on "read less"
 
-        expect(page).to_not have_text(contact_topics.first.details)
-        expect(page).to have_selector("##{topic_id} textarea")
+        expect(page).to have_no_text(contact_topics.first.details)
+        expect(page).to have_css("##{topic_id} textarea")
       end
     end
   end
@@ -131,7 +131,7 @@ RSpec.describe "case_contacts/create", type: :system, js: true do
       sign_in volunteer
     end
 
-    it "should skip expenses step and create a case contact" do
+    it "skips expenses step and create a case contact" do
       visit case_contacts_path
 
       click_on "New Case Contact"

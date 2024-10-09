@@ -4,8 +4,9 @@ class MockController < ApplicationController
   include Users::TimeZone
 end
 
-RSpec.describe MockController, type: :controller do
+RSpec.describe MockController do
   let(:browser_time_zone) { "America/Los_Angeles" }
+
   before do
     allow(controller).to receive(:cookies).and_return(browser_time_zone: browser_time_zone)
   end

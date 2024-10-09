@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CasaAdmin, type: :model do
+RSpec.describe CasaAdmin do
   let(:casa_admin) { build(:casa_admin) }
 
   describe "#deactivate" do
@@ -13,7 +13,7 @@ RSpec.describe CasaAdmin, type: :model do
 
     it "activates the casa admin" do
       casa_admin.active = false
-      casa_admin.save
+      casa_admin.save!
       casa_admin.activate
 
       casa_admin.reload
@@ -33,6 +33,7 @@ RSpec.describe CasaAdmin, type: :model do
     let(:two_weeks) { I18n.l(2.weeks.from_now, format: :full, default: nil) }
 
     it { expect(expiration_date).to eq two_weeks }
+
     it "expires invitation token after two weeks" do
       travel_to 2.weeks.from_now
 

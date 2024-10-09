@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe AllCasaAdmins::PatchNotesController, type: :routing do
+RSpec.describe AllCasaAdmins::PatchNotesController do
   describe "routing" do
     it "routes to #index" do
       expect(get: "/all_casa_admins/patch_notes").to route_to("all_casa_admins/patch_notes#index")
