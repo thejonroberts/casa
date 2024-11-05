@@ -1,11 +1,25 @@
 require "rails_helper"
 
 RSpec.describe "case_court_reports/index", type: :system do
-  let(:volunteer) { create(:volunteer, :with_cases_and_contacts, :with_assigned_supervisor, display_name: "Name Last") }
-  let(:supervisor) { volunteer.supervisor }
-  let(:casa_cases) { CasaCase.actively_assigned_to(volunteer) }
-  let(:younger_than_transition_age) { volunteer.casa_cases.reject(&:in_transition_age?).first }
-  let(:at_least_transition_age) { volunteer.casa_cases.find(&:in_transition_age?) }
+  let(:casa_org) { create :casa_org }
+  let(:supervisor) { create :supervisor, casa_org: }
+  let(:pre_transition_case) { create :casa_case, :pre_transition, casa_org: }
+  let(:ten_year_olds_case) { create :casa_case, casa_org:, birth_month_year_youth: 10.years.ago }
+  let(:fifteen_year_olds_case) { create :casa_case, casa_org:, birth_month_year_youth: 15.years.ago }
+
+  let(:volunteer) do
+    create(
+      :volunteer, display_name: "Name Last", supervisor:,
+      casa_cases: [pre_transition_case, ten_year_olds_case, fifteen_year_olds_case]
+    )
+  end
+  let(:casa_cases) { volunteer.casa_cases }
+  let(:contact_types) { create_list :contact_type, 3, contact_type_group: create(:contact_type_group, casa_org:) }
+  let(:pre_transition_contact) { create :case_contact, creator: volunteer, casa_case: pre_transition_case, contact_types: }
+
+  let(:younger_than_transition_age) { pre_transition_case }
+  let(:at_least_transition_age) { fifteen_year_olds_case }
+
   let(:modal_selector) { '[data-bs-target="#generate-docx-report-modal"]' }
 
   before do

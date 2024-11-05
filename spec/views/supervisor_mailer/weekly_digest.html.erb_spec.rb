@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "supervisor_mailer/weekly_digest", type: :view do
   let(:organization) { create(:casa_org) }
   let(:supervisor) { create(:supervisor, casa_org: organization) }
-  let(:volunteer) { create(:volunteer, casa_org: organization) }
+  let(:volunteer) { create(:volunteer, supervisor:, casa_org: organization) }
   let(:casa_case) { create(:casa_case, casa_org: organization) }
   let(:inactive_volunteer) { create(:volunteer, :with_casa_cases, casa_org: organization) }
   let(:supervisor_mailer) { SupervisorMailer.new }
@@ -14,9 +14,8 @@ RSpec.describe "supervisor_mailer/weekly_digest", type: :view do
   let(:contact_topic_answer_2) { create(:contact_topic_answer, contact_topic: contact_topic_2, value: "") }
 
   context "when there are successful and unsuccessful contacts" do
-    before(:each) do
-      supervisor.volunteers << volunteer
-      inactive_volunteer.update active: false
+    before do
+      inactive_volunteer.update! active: false
       supervisor.volunteers_ever_assigned << inactive_volunteer
       volunteer.casa_cases << casa_case
       create_list :case_contact, 2, creator: volunteer, casa_case: casa_case, contact_made: false, occurred_at: Time.current - 6.days
@@ -58,9 +57,8 @@ RSpec.describe "supervisor_mailer/weekly_digest", type: :view do
   end
 
   context "when there are volunteers but no contacts" do
-    before(:each) do
-      supervisor.volunteers << volunteer
-      inactive_volunteer.update active: false
+    before do
+      inactive_volunteer.update! active: false
       supervisor.volunteers_ever_assigned << inactive_volunteer
       volunteer.casa_cases << casa_case
       sign_in supervisor
@@ -74,8 +72,7 @@ RSpec.describe "supervisor_mailer/weekly_digest", type: :view do
   end
 
   context "when a volunteer has been reassigned to a new supervisor" do
-    before(:each) do
-      supervisor.volunteers << volunteer
+    before do
       volunteer.casa_cases << casa_case
 
       # reassign volunteer
@@ -95,8 +92,7 @@ RSpec.describe "supervisor_mailer/weekly_digest", type: :view do
   end
 
   context "when a volunteer has been unassigned" do
-    before(:each) do
-      supervisor.volunteers << volunteer
+    before do
       sign_in supervisor
       volunteer.supervisor_volunteer.update(is_active: false)
 
@@ -115,8 +111,7 @@ RSpec.describe "supervisor_mailer/weekly_digest", type: :view do
   end
 
   context "when a volunteer unassigned and has not been assigned to a new supervisor" do
-    before(:each) do
-      supervisor.volunteers << volunteer
+    before do
       sign_in supervisor
       assign :supervisor, supervisor
       assign :inactive_volunteers, []
@@ -131,9 +126,10 @@ RSpec.describe "supervisor_mailer/weekly_digest", type: :view do
   end
 
   context "when a volunteer has not recently signed in, within 30 days" do
-    let(:volunteer) { create(:volunteer, casa_org: organization, last_sign_in_at: 39.days.ago) }
-    before(:each) do
-      supervisor.volunteers << volunteer
+    let(:volunteer) { create(:volunteer, supervisor:, casa_org: organization, last_sign_in_at: 39.days.ago) }
+
+    before do
+      volunteer
       sign_in supervisor
       assign :supervisor, supervisor
       assign :inactive_volunteers, supervisor.inactive_volunteers

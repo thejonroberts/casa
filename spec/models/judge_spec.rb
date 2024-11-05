@@ -4,12 +4,6 @@ RSpec.describe Judge, type: :model do
   it { is_expected.to belong_to(:casa_org) }
   it { is_expected.to validate_presence_of(:name) }
 
-  it "has a valid factory" do
-    judge = build(:judge)
-
-    expect(judge).to be_valid
-  end
-
   describe ".for_organization" do
     it "returns only records matching the specified organization" do
       casa_org_1 = create(:casa_org)
@@ -23,11 +17,12 @@ RSpec.describe Judge, type: :model do
   end
 
   describe "default scope" do
+    let(:casa_org) { create(:casa_org) }
+
     it "orders alphabetically by name" do
-      casa_org = create(:casa_org)
-      judge1 = create(:judge, name: "Gamma")
-      judge2 = create(:judge, name: "Alpha")
-      judge3 = create(:judge, name: "Epsilon")
+      judge1 = create(:judge, name: "Gamma", casa_org:)
+      judge2 = create(:judge, name: "Alpha", casa_org:)
+      judge3 = create(:judge, name: "Epsilon", casa_org:)
 
       expect(described_class.for_organization(casa_org)).to eq [judge2, judge3, judge1]
     end

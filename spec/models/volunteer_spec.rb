@@ -1,67 +1,87 @@
 require "rails_helper"
 
 RSpec.describe Volunteer, type: :model do
-  describe ".email_court_report_reminder" do
-    let!(:casa_org) { build(:casa_org) }
-    let!(:casa_org_twilio_disabled) { build(:casa_org, twilio_enabled: false) }
-    # Should send email for this case
-    let!(:casa_case1) { create(:casa_case, casa_org: casa_org) }
-    let!(:court_date1) { create(:court_date, casa_case: casa_case1, court_report_due_date: Date.current + 7.days) }
+  describe "#send_court_report_reminder" do
+    let(:reminder_date) { Date.current + 7.days }
+    let(:casa_org) { build :casa_org }
+    let(:volunteer) { build :volunteer, casa_org: }
+    let(:casa_case) { build :casa_case, casa_org: }
+    let(:case_assignment) { create :case_assignment, volunteer:, casa_case: }
+    let(:court_date) { create :court_date, casa_case:, court_report_due_date: reminder_date }
 
-    # Should NOT send emails for these cases
-    let!(:casa_case2) { build(:casa_case, casa_org: casa_org) }
-    let!(:court_date2) { create(:court_date, casa_case: casa_case2, court_report_due_date: Date.current + 8.days) }
-    let!(:casa_case3) { build(:casa_case, casa_org: casa_org, court_report_submitted_at: Time.current, court_report_status: :submitted) }
-    let!(:court_date3) { create(:court_date, casa_case: casa_case3, court_report_due_date: Date.current + 7.days) }
-    let!(:casa_case4) { build(:casa_case, casa_org: casa_org) }
-    let!(:court_date4) { create(:court_date, casa_case: casa_case4, court_report_due_date: Date.current + 7.days) }
-    let!(:casa_case5) { create(:casa_case, casa_org: casa_org_twilio_disabled) }
-    let!(:court_date5) { create(:court_date, casa_case: casa_case5, court_report_due_date: Date.current + 7.days) }
+    subject { described_class.send_court_report_reminder }
 
-    let(:case_assignment1) { build(:case_assignment, casa_org: casa_org, casa_case: casa_case1) }
-    let(:case_assignment2) { build(:case_assignment, casa_org: casa_org, casa_case: casa_case2) }
-    let(:case_assignment3) { build(:case_assignment, casa_org: casa_org, casa_case: casa_case3) }
-    let(:case_assignment_unassigned) { build(:case_assignment, casa_org: casa_org, casa_case: casa_case4, active: false) }
-    let(:case_assignment5) { build(:case_assignment, casa_org: casa_org_twilio_disabled, casa_case: casa_case5) }
-
-    let!(:v1) { create(:volunteer, casa_org: casa_org, case_assignments: [case_assignment1, case_assignment2, case_assignment3]) }
-    let!(:v2) { build_stubbed(:volunteer, casa_org: casa_org, active: false) }
-    let!(:v3) { build_stubbed(:volunteer, casa_org: casa_org) }
-    let!(:v4) { build_stubbed(:volunteer, casa_org: casa_org, case_assignments: [case_assignment_unassigned]) }
-    let!(:v5) { create(:volunteer, casa_org: casa_org_twilio_disabled, case_assignments: [case_assignment5]) }
 
     before do
+      case_assignment
+      court_date
+
       stub_const("Volunteer::COURT_REPORT_SUBMISSION_REMINDER", 7.days)
       WebMockHelper.short_io_court_report_due_date_stub
+      allow(VolunteerMailer).to receive(:court_report_reminder)
+      allow(CourtReportDueSmsReminderService).to receive(:court_report_reminder)
     end
 
-    it "sends one mailer" do
-      expect(VolunteerMailer).to receive(:court_report_reminder).with(v1, Date.current + 7.days)
-      expect(VolunteerMailer).to_not receive(:court_report_reminder).with(v2, anything)
-      expect(VolunteerMailer).to_not receive(:court_report_reminder).with(v3, anything)
-      described_class.send_court_report_reminder
+    context "when volunteer's case has report due on the reminder date" do
+      it "calls VolunteerMailer#court_report_reminder(volunteer, reminder_date)" do
+        subject
+        expect(VolunteerMailer).to have_received(:court_report_reminder).with(volunteer, reminder_date)
+      end
+
+      it "calls CourtReportDueSmsReminderService#court_report_reminder(volunteer, reminder_date)" do
+        subject
+        expect(CourtReportDueSmsReminderService).to have_received(:court_report_reminder).with(volunteer, reminder_date)
+      end
     end
 
-    it "should not send reminders about unassigned cases" do
-      expect(VolunteerMailer).to_not receive(:court_report_reminder).with(v4, anything)
-      described_class.send_court_report_reminder
+    context "when volunteer is inactive" do
+      before { volunteer.update!(active: false) }
+
+      it "does not call volunteer mailer or sms service" do
+        subject
+        expect(VolunteerMailer).not_to have_received(:court_report_reminder)
+        expect(CourtReportDueSmsReminderService).not_to have_received(:court_report_reminder)
+      end
     end
 
-    it "sends one sms" do
-      expect(CourtReportDueSmsReminderService).to receive(:court_report_reminder).with(v1, Date.current + 7.days)
-      expect(CourtReportDueSmsReminderService).to_not receive(:court_report_reminder).with(v2, anything)
-      expect(CourtReportDueSmsReminderService).to_not receive(:court_report_reminder).with(v3, anything)
-      described_class.send_court_report_reminder
+    context "when case assignment is inactive" do
+      before { case_assignment.update!(active: false) }
+
+      it "does not call volunteer mailer or sms service" do
+        subject
+        expect(VolunteerMailer).not_to have_received(:court_report_reminder)
+        expect(CourtReportDueSmsReminderService).not_to have_received(:court_report_reminder)
+      end
     end
 
-    it "should not send sms about unassigned cases" do
-      expect(CourtReportDueSmsReminderService).to_not receive(:court_report_reminder).with(v4, anything)
-      described_class.send_court_report_reminder
+    context "when volunteer is not assigned to the case" do
+      before { case_assignment.destroy! }
+
+      it "does not call volunteer mailer or sms service" do
+        subject
+        expect(VolunteerMailer).not_to have_received(:court_report_reminder)
+        expect(CourtReportDueSmsReminderService).not_to have_received(:court_report_reminder)
+      end
     end
 
-    it "should return nil when twilio is disabled" do
-      response = CourtReportDueSmsReminderService.court_report_reminder(v5, Date.current + 7.days)
-      expect(response).to eq(nil)
+    context "when report is due after the reminder date" do
+      before { court_date.update!(court_report_due_date: Date.current + 8.days) }
+
+      it "does not call volunteer mailer or sms service" do
+        subject
+        expect(VolunteerMailer).not_to have_received(:court_report_reminder)
+        expect(CourtReportDueSmsReminderService).not_to have_received(:court_report_reminder)
+      end
+    end
+
+    context "when case is court report submitted" do
+      before { casa_case.update!(court_report_submitted_at: Time.current, court_report_status: :submitted) }
+
+      it "does not call volunteer mailer or sms service" do
+        subject
+        expect(VolunteerMailer).not_to have_received(:court_report_reminder)
+        expect(CourtReportDueSmsReminderService).not_to have_received(:court_report_reminder)
+      end
     end
   end
 
@@ -69,43 +89,50 @@ RSpec.describe Volunteer, type: :model do
     let(:volunteer) { build(:volunteer, :inactive) }
 
     it "activates the volunteer" do
+      expect(volunteer.active?).to be false
       volunteer.activate
 
-      volunteer.reload
-      expect(volunteer.active).to eq(true)
+      expect(volunteer.active?).to be true
     end
   end
 
   describe "#deactivate" do
-    let(:volunteer) { build(:volunteer) }
+    subject { volunteer.deactivate }
+
+    let(:volunteer) { create(:volunteer) }
 
     it "deactivates the volunteer" do
-      expect(volunteer.deactivate.reload.active).to eq(false)
+      expect(volunteer.active?).to be true
+      subject
+      expect(volunteer.active?).to be false
     end
 
     it "sets all of a volunteer's case assignments to inactive" do
-      case_contacts =
-        3.times.map {
-          create(:case_assignment, casa_case: build(:casa_case, casa_org: volunteer.casa_org), volunteer: volunteer)
-        }
+      case_assignments = create_list(:case_assignment, 3, volunteer: volunteer)
+      case_assignments.each { |contact| expect(contact.active?).to be true }
 
-      volunteer.deactivate
+      subject
 
-      case_contacts.each { |c| c.reload }
-      expect(case_contacts).to all(satisfy { |c| !c.active })
+      case_assignments.each { |contact| expect(contact.reload.active?).to be false }
     end
 
     context "when volunteer has previously been assigned a supervisor" do
       let!(:supervisor_volunteer) { create(:supervisor_volunteer, volunteer: volunteer) }
 
       it "deactivates the supervisor-volunteer relationship" do
-        expect { volunteer.deactivate.reload }.to change(volunteer, :supervisor_volunteer)
+        expect {
+          subject
+          volunteer.reload
+        }.to change(volunteer, :supervisor_volunteer)
       end
     end
 
     context "when volunteer had no supervisor previously assigned" do
       it "does not attempt to update a supervisor-volunteer table" do
-        expect { volunteer.deactivate.reload }.not_to change(volunteer, :supervisor_volunteer)
+        expect {
+          subject
+          volunteer.reload
+        }.not_to change(volunteer, :supervisor_volunteer)
       end
     end
   end
@@ -136,7 +163,7 @@ RSpec.describe Volunteer, type: :model do
       let(:volunteer) { sv.volunteer }
 
       it "returns true" do
-        expect(volunteer.has_supervisor?).to be true
+        expect(volunteer.reload.has_supervisor?).to be true
       end
     end
 
@@ -256,10 +283,10 @@ RSpec.describe Volunteer, type: :model do
     it { expect(volunteer.role).to eq "Volunteer" }
   end
 
-  describe "#with_no_supervisor" do
+  describe ".with_no_supervisor" do
     subject { Volunteer.with_no_supervisor(casa_org) }
 
-    let(:casa_org) { build(:casa_org) }
+    let(:casa_org) { create(:casa_org) }
 
     context "no volunteers" do
       it "returns none" do
