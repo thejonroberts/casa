@@ -29,8 +29,6 @@ RSpec.configure do |config|
   config.include Organizational, type: :helper
   config.include Organizational, type: :view
   config.include PunditHelper, type: :view
-  config.include SessionHelper, type: :view
-  config.include SessionHelper, type: :request
   config.include TemplateHelper
   config.include Warden::Test::Helpers
   config.include ViewComponent::TestHelpers, type: :component

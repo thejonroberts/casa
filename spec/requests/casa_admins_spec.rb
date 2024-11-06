@@ -365,8 +365,6 @@ RSpec.describe "/casa_admins", type: :request do
   describe "POST /casa_admins" do
     context "when successfully" do
       it "creates a new casa_admin" do
-        org = create(:casa_org, twilio_enabled: true)
-        admin = create(:casa_admin, casa_org: org)
         params = attributes_for(:casa_admin, casa_org:)
 
         sign_in casa_admin
@@ -379,8 +377,6 @@ RSpec.describe "/casa_admins", type: :request do
       end
 
       it "also respond to json", :aggregate_failures do
-        org = create(:casa_org, twilio_enabled: true)
-        admin = create(:casa_admin, casa_org: org)
         params = attributes_for(:casa_admin, casa_org:)
 
         sign_in casa_admin
@@ -412,8 +408,6 @@ RSpec.describe "/casa_admins", type: :request do
       end
 
       it "does not send SMS when phone number not given" do
-        org = create(:casa_org, twilio_enabled: true)
-        admin = create(:casa_admin, casa_org: org)
         twilio_activation_success_stub = WebMockHelper.twilio_activation_success_stub("admin")
         twilio_activation_error_stub = WebMockHelper.twilio_activation_error_stub("admin")
         short_io_stub = WebMockHelper.short_io_stub_sms
@@ -449,8 +443,6 @@ RSpec.describe "/casa_admins", type: :request do
       end
 
       it "does not send SMS when Twilio is not enabled" do
-        org = create(:casa_org, twilio_enabled: false)
-        admin = build(:casa_admin, casa_org: org)
         params = attributes_for(:casa_admin, casa_org:)
         params[:phone_number] = "+12222222222"
         short_io_stub = WebMockHelper.short_io_stub_sms
@@ -467,8 +459,6 @@ RSpec.describe "/casa_admins", type: :request do
 
     context "when failure" do
       it "does not create a new casa_admin" do
-        org = create(:casa_org, twilio_enabled: true)
-        admin = create(:casa_admin, casa_org: org)
         allow_any_instance_of(CreateCasaAdminService).to receive(:create!).and_raise(ActiveRecord::RecordInvalid)
         params = attributes_for(:casa_admin, casa_org:)
 
@@ -481,9 +471,6 @@ RSpec.describe "/casa_admins", type: :request do
       end
 
       it "also responds to json", :aggregate_failures do
-        org = create(:casa_org, twilio_enabled: true)
-        admin = create(:casa_admin, casa_org: org)
-
         sign_in casa_admin
         casa_admin = instance_spy(CasaAdmin)
         allow(casa_admin).to receive_message_chain(:errors, :full_messages).and_return(["Some error message"])

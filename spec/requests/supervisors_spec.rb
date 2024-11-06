@@ -4,6 +4,11 @@ require "rails_helper"
 require "support/stubbed_requests/webmock_helper"
 
 RSpec.describe "/supervisors", type: :request do
+  let(:casa_org) { create(:casa_org) }
+  let(:casa_admin) { create(:casa_admin, casa_org:) }
+  let(:admin) { casa_admin }
+  let(:volunteer) { create(:volunteer, casa_org:) }
+
   let(:org) { create(:casa_org) }
   let(:admin) { build(:casa_admin, casa_org: org) }
   let(:supervisor) { create(:supervisor, casa_org: org) }
@@ -115,7 +120,7 @@ RSpec.describe "/supervisors", type: :request do
       let(:supervisor_diff_org) { create(:supervisor, casa_org: diff_org) }
 
       it "admin cannot view the edit supervisor page" do
-        sign_in_as_admin
+        sign_in admin
 
         get edit_supervisor_url(supervisor_diff_org)
 
@@ -124,7 +129,7 @@ RSpec.describe "/supervisors", type: :request do
       end
 
       it "supervisor cannot view the edit supervisor page" do
-        sign_in_as_supervisor
+        sign_in supervisor
 
         get edit_supervisor_url(supervisor_diff_org)
 

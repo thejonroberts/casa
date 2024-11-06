@@ -12,7 +12,6 @@ RSpec.describe Volunteer, type: :model do
 
     subject { described_class.send_court_report_reminder }
 
-
     before do
       case_assignment
       court_date

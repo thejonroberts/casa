@@ -1,10 +1,15 @@
 require "rails_helper"
 
 RSpec.describe "/judges", type: :request do
+  let(:casa_org) { create(:casa_org) }
+  let(:casa_admin) { create(:casa_admin, casa_org:) }
+  let(:admin) { casa_admin }
+  let(:volunteer) { create(:volunteer, casa_org:) }
+
   describe "GET /judges/new" do
     context "logged in as admin user" do
       it "can successfully access a judge create page" do
-        sign_in_as_admin
+        sign_in admin
 
         get new_judge_path
 
@@ -14,7 +19,7 @@ RSpec.describe "/judges", type: :request do
 
     context "logged in as a non-admin user" do
       it "cannot access a judge create page" do
-        sign_in_as_volunteer
+        sign_in volunteer
 
         get new_judge_path
 
@@ -56,7 +61,7 @@ RSpec.describe "/judges", type: :request do
 
     context "logged in as a non-admin user" do
       it "cannot create a judge" do
-        sign_in_as_volunteer
+        sign_in volunteer
 
         post judges_path, params: params
 
@@ -79,7 +84,7 @@ RSpec.describe "/judges", type: :request do
 
     context "logged in as admin user" do
       it "can successfully access a judge edit page" do
-        sign_in_as_admin
+        sign_in admin
 
         get edit_judge_path(judge)
 
@@ -89,7 +94,7 @@ RSpec.describe "/judges", type: :request do
 
     context "logged in as a non-admin user" do
       it "cannot access a judge edit page" do
-        sign_in_as_volunteer
+        sign_in volunteer
 
         get edit_judge_path(judge)
 
@@ -129,7 +134,7 @@ RSpec.describe "/judges", type: :request do
 
     context "logged in as a non-admin user" do
       it "cannot update a judge" do
-        sign_in_as_volunteer
+        sign_in volunteer
 
         put judge_path(judge), params: params
 

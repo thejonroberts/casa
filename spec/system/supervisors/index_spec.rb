@@ -55,7 +55,6 @@ RSpec.describe "supervisors/index", type: :system do
       }
 
       before do
-
         active_volunteers_for_first_supervisor.map { |av|
           casa_case = create(:casa_case, casa_org: av.casa_org)
           create(:case_contact, contact_made: false, occurred_at: 1.week.ago, casa_case:, creator: av)

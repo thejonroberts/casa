@@ -1,6 +1,7 @@
 require "rails_helper"
 
-RSpec.describe "volunteers/new", type: :view do
+RSpec.describe "volunteers/new", type: :view,
+  skip: "add specs or remove file" do
   subject { render template: "volunteers/new" }
 
   before do
@@ -9,7 +10,7 @@ RSpec.describe "volunteers/new", type: :view do
 
   context "while signed in as admin" do
     before do
-      sign_in_as_admin
+      sign_in admin
     end
   end
 end
