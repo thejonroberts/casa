@@ -1,9 +1,10 @@
 require "rails_helper"
 
 RSpec.describe "checklist_items/destroy", type: :system do
-  let(:casa_admin) { create(:casa_admin) }
-  let(:checklist_item) { create(:checklist_item) }
-  let(:hearing_type) { create(:hearing_type, checklist_items: [checklist_item]) }
+  let(:casa_org) { create(:casa_org) }
+  let(:casa_admin) { create(:casa_admin, casa_org:) }
+  let(:hearing_type) { create(:hearing_type, :with_checklist_items, casa_org:) }
+  let(:checklist_item) { hearing_type.checklist_items.first }
 
   before do
     sign_in casa_admin
@@ -11,7 +12,10 @@ RSpec.describe "checklist_items/destroy", type: :system do
   end
 
   it "deletes checklist items", :aggregate_failures do
-    click_on "Delete", match: :first
+    expect(page).to have_text(checklist_item.category)
+    expect(page).to have_text(checklist_item.description)
+
+    expect { click_on "Delete", match: :first }.to change(ChecklistItem, :count).by(-1)
 
     expect(page).to have_text("Checklist item was successfully deleted.")
     expect(page).not_to have_text(checklist_item.category)

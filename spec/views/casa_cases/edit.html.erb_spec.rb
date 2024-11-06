@@ -69,9 +69,9 @@ RSpec.describe "casa_cases/edit", type: :view do
       casa_case = create(:casa_case, casa_org: organization)
       assign :casa_case, casa_case
       assign :contact_types, organization.contact_types
-      assigned_volunteer = build_stubbed(:volunteer)
+      assigned_volunteer = build_stubbed(:volunteer, casa_org: organization)
       build_stubbed(:case_assignment, volunteer: assigned_volunteer, casa_case: casa_case)
-      unassigned_volunteer = create(:volunteer)
+      unassigned_volunteer = create(:volunteer, casa_org: organization)
 
       render template: "casa_cases/edit"
 

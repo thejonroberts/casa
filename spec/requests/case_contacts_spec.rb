@@ -1,14 +1,14 @@
 require "rails_helper"
 
 RSpec.describe "/case_contacts", type: :request do
-  let(:organization) { build(:casa_org) }
-  let(:admin) { create(:casa_admin, casa_org: organization) }
-  let(:volunteer) { create(:volunteer, casa_org: organization) }
+  let(:casa_org) { build(:casa_org) }
+  let(:admin) { create(:casa_admin, casa_org:) }
+  let(:volunteer) { create(:volunteer, casa_org:) }
 
   before { sign_in admin }
 
   describe "GET /index" do
-    let!(:casa_case) { create(:casa_case, casa_org: organization) }
+    let!(:casa_case) { create(:casa_case, casa_org:) }
     let!(:past_contact) { create(:case_contact, casa_case: casa_case, occurred_at: 3.weeks.ago) }
     let!(:recent_contact) { create(:case_contact, casa_case: casa_case, occurred_at: 3.days.ago) }
     let(:filterrific) { {} }
@@ -70,7 +70,8 @@ RSpec.describe "/case_contacts", type: :request do
   end
 
   describe "GET /edit" do
-    let(:case_contact) { create(:case_contact, casa_case: create(:casa_case, :with_case_assignments), notes: "Notes") }
+    let(:casa_case) { create(:casa_case, :with_case_assignments, casa_org:) }
+    let(:case_contact) { create(:case_contact, casa_case:, notes: "Notes") }
 
     subject(:request) do
       get edit_case_contact_url(case_contact)
@@ -103,7 +104,7 @@ RSpec.describe "/case_contacts", type: :request do
   end
 
   describe "DELETE /destroy" do
-    let(:case_contact) { create(:case_contact) }
+    let(:case_contact) { create(:case_contact, casa_org:) }
 
     subject(:request) do
       delete case_contact_path(case_contact), headers: {HTTP_REFERER: case_contacts_path}
@@ -124,7 +125,7 @@ RSpec.describe "/case_contacts", type: :request do
   end
 
   describe "GET /restore" do
-    let(:case_contact) { create(:case_contact) }
+    let(:case_contact) { create(:case_contact, casa_org:) }
 
     subject(:request) do
       post restore_case_contact_path(case_contact), headers: {HTTP_REFERER: case_contacts_path}

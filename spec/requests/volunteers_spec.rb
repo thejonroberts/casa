@@ -254,10 +254,10 @@ RSpec.describe "/volunteers", type: :request do
     end
 
     context "with invalid params" do
-      let!(:other_volunteer) { create(:volunteer) }
+      let!(:other_volunteer) { create(:volunteer, casa_org: organization) }
 
       it "does not update the volunteer" do
-        volunteer.supervisor = build(:supervisor)
+        volunteer.supervisor = build(:supervisor, casa_org: organization)
 
         patch volunteer_path(volunteer), params: {
           volunteer: {email: other_volunteer.email, display_name: "New Name", phone_number: "+15463457898"}

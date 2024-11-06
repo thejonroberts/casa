@@ -2,9 +2,9 @@ require "rails_helper"
 
 RSpec.describe "/casa_cases", type: :request do
   let(:date_in_care) { Date.today }
-  let(:organization) { build(:casa_org) }
+  let(:organization) { create(:casa_org) }
   let(:group) { build(:contact_type_group) }
-  let(:volunteer) { create(:volunteer) }
+  let(:volunteer) { create(:volunteer, casa_org: organization) }
   let(:type1) { create(:contact_type, contact_type_group: group) }
   let(:valid_attributes) do
     {

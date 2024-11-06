@@ -1,8 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "followups/create", type: :system, js: true do
-  let(:admin) { create(:casa_admin) }
-  let(:case_contact) { create(:case_contact) }
+  let(:casa_org) { create(:casa_org) }
+  let(:admin) { create(:casa_admin, casa_org:) }
+  let(:case_contact) { create(:case_contact, casa_org:) }
   let(:note) { "Lorem ipsum dolor sit amet." }
 
   describe "Creating a followup" do

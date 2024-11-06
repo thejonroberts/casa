@@ -3,9 +3,10 @@
 require "rails_helper"
 
 RSpec.describe "reimbursements", type: :system do
-  let(:admin) { create(:casa_admin) }
-  let!(:contact1) { create(:case_contact, :wants_reimbursement) }
-  let!(:contact2) { create(:case_contact, :wants_reimbursement) }
+  let(:casa_org) { create(:casa_org) }
+  let(:admin) { create(:casa_admin, casa_org:) }
+  let!(:contact1) { create(:case_contact, :wants_reimbursement, casa_org:) }
+  let!(:contact2) { create(:case_contact, :wants_reimbursement, casa_org:) }
 
   before do
     sign_in admin

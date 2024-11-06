@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe CaseImporter do
   subject(:case_importer) { CaseImporter.new(import_file_path, casa_org_id) }
 
-  let(:casa_org_id) { import_user.casa_org.id }
-  let!(:import_user) { build(:casa_admin) }
+  let(:casa_org) { create :casa_org }
+  let(:casa_org_id) { casa_org.id }
   let(:import_file_path) { Rails.root.join("spec", "fixtures", "casa_cases.csv") }
 
   before do
@@ -41,7 +41,7 @@ RSpec.describe CaseImporter do
     end
 
     context "when updating records" do
-      let!(:existing_case) { create(:casa_case, case_number: "CINA-01-4348") }
+      let!(:existing_case) { create(:casa_case, case_number: "CINA-01-4348", casa_org:) }
 
       it "assigns new volunteers to the case" do
         expect { case_importer.import_cases }.to change(existing_case.volunteers, :count).by(2)

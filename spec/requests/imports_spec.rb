@@ -6,8 +6,8 @@ RSpec.describe "/imports", type: :request do
   let(:case_file) { Rails.root.join("spec", "fixtures", "casa_cases.csv") }
   let(:existing_case_file) { Rails.root.join("spec", "fixtures", "existing_casa_case.csv") }
   let(:supervisor_volunteers_file) { Rails.root.join("spec", "fixtures", "supervisor_volunteers.csv") }
-  let(:casa_admin) { build(:casa_admin) }
-
+  let(:casa_org) { create(:casa_org) }
+  let(:casa_admin) { build(:casa_admin, casa_org:) }
   before do
     # next_court_date in casa_cases.csv needs to be a future date
     travel_to Date.parse("Sept 15 2022")
@@ -160,7 +160,7 @@ RSpec.describe "/imports", type: :request do
     it "produces an error when a deactivated case already exists in cases CSV imports" do
       sign_in casa_admin
 
-      create(:casa_case, case_number: "CINA-00-0000", birth_month_year_youth: pre_transition_aged_youth_age, active: "false")
+      create(:casa_case, case_number: "CINA-00-0000", birth_month_year_youth: pre_transition_aged_youth_age, active: "false", casa_org:)
 
       expect(CasaCase.count).to eq(1)
 

@@ -25,7 +25,7 @@ RSpec.describe "/case_assignments", type: :request do
       end
 
       it "reassigns the volunteer to the casa_case" do
-        expect { request }.to change { casa_case.case_assignments.first.active }.from(false).to(true)
+        expect { request }.to change { casa_case.reload.case_assignments.first.active }.from(false).to(true)
       end
 
       it { is_expected.to redirect_to edit_casa_case_path(casa_case) }

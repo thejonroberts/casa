@@ -74,9 +74,10 @@ RSpec.describe "Banners", type: :system, js: true do
   end
 
   describe "when an organization has an active banner" do
-    let(:admin) { create(:casa_admin) }
-    let(:organization) { create(:casa_org) }
-    let(:active_banner) { create(:banner, casa_org: organization) }
+    let(:admin) { create(:casa_admin, casa_org:) }
+    let(:casa_org) { create(:casa_org) }
+    let(:organization) { casa_org }
+    let(:active_banner) { create(:banner, casa_org:) }
 
     context "when a banner is submitted as active" do
       it "deactivates and replaces the current active banner" do

@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe VolunteerImporter do
-  let!(:import_user) { build(:casa_admin) }
-  let(:casa_org_id) { import_user.casa_org.id }
+  let(:casa_org) { create :casa_org }
+  let(:casa_org_id) { casa_org.id }
 
   # Use of the static method VolunteerImporter.import_volunteers functions identically to VolunteerImporter.new(...).import_volunteers
   # but is preferred.

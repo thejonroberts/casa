@@ -6,7 +6,8 @@ require "sablon"
 A_TIMEZONE = "America/New_York"
 
 RSpec.describe CaseCourtReportContext, type: :model do
-  let(:volunteer) { create(:volunteer, :with_casa_cases) }
+  let(:casa_org) { create(:casa_org) }
+  let(:volunteer) { create(:volunteer, :with_casa_cases, casa_org:) }
   let(:path_to_template) { Rails.root.join("app", "documents", "templates", "default_report_template.docx").to_s }
   let(:path_to_report) { Rails.root.join("tmp", "test_report.docx").to_s }
 
@@ -18,8 +19,8 @@ RSpec.describe CaseCourtReportContext, type: :model do
   describe "#context" do
     it "has the right shape" do
       date = 1.day.ago
-      court_date = build(:court_date, :with_hearing_type, date: date)
-      context = create(:case_court_report_context, court_date: court_date)
+      court_date = build(:court_date, :with_hearing_type, date: date, casa_org:)
+      context = create(:case_court_report_context, court_date: court_date, casa_org:)
 
       allow(context).to receive(:case_details).and_return({})
       allow(context).to receive(:case_contacts).and_return([])
@@ -56,14 +57,14 @@ RSpec.describe CaseCourtReportContext, type: :model do
         {order: "Court order 1", status: "Unimplemented"},
         {order: "Court order 2", status: "Implemented"}
       ]
-      context = build_stubbed(:case_court_report_context)
+      context = create(:case_court_report_context, casa_org:)
 
       expect(context.case_orders(court_orders)).to match_array(expected)
     end
   end
 
   describe "org_address" do
-    let(:volunteer) { create(:volunteer) }
+    let(:volunteer) { create(:volunteer, casa_org:) }
     let(:context) { build(:case_court_report_context, volunteer: volunteer) }
 
     context "when volunteer and default template are provided" do
@@ -95,8 +96,8 @@ RSpec.describe CaseCourtReportContext, type: :model do
 
   describe "#latest_hearing_date" do
     context "when casa_case has court_dates" do
-      let(:court_date) { build(:court_date, date: 2.day.ago) }
-      let(:casa_case) { create(:casa_case, court_dates: [court_date]) }
+      let(:court_date) { build(:court_date, date: 2.day.ago, casa_org:) }
+      let(:casa_case) { create(:casa_case, court_dates: [court_date], casa_org:) }
       let(:instance) { build(:case_court_report_context, casa_case: casa_case) }
 
       it "returns the formatted date" do
@@ -114,7 +115,7 @@ RSpec.describe CaseCourtReportContext, type: :model do
 
     context "when there are multiple hearing dates" do
       let(:casa_case_with_court_dates) {
-        casa_case = create(:casa_case)
+        casa_case = create(:casa_case, casa_org:)
 
         casa_case.court_dates << build(:court_date, date: 9.months.ago)
         casa_case.court_dates << build(:court_date, date: 3.months.ago)

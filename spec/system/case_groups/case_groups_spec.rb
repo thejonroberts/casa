@@ -2,11 +2,11 @@ require "rails_helper"
 
 RSpec.describe "Case Groups", type: :system, js: true do
   let(:admin) { create(:casa_admin) }
-  let(:organization) { admin.casa_org }
+  let(:casa_org) { admin.casa_org }
 
   it "create a case group" do
-    casa_case1 = create(:casa_case)
-    casa_case2 = create(:casa_case)
+    casa_case1 = create(:casa_case, casa_org:)
+    casa_case2 = create(:casa_case, casa_org:)
 
     sign_in admin
 
@@ -34,8 +34,8 @@ RSpec.describe "Case Groups", type: :system, js: true do
   end
 
   it "remove from a case group" do
-    casa_case1 = create(:casa_case)
-    casa_case2 = create(:casa_case)
+    casa_case1 = create(:casa_case, casa_org:)
+    casa_case2 = create(:casa_case, casa_org:)
 
     sign_in admin
 
@@ -67,8 +67,8 @@ RSpec.describe "Case Groups", type: :system, js: true do
     expect(page).to_not have_text(casa_case2.case_number)
   end
 
-  it "will not create a case group if the name is not unique" do
-    casa_case = create(:casa_case)
+  it "does not create a case group if the name is not unique" do
+    casa_case = create(:casa_case, casa_org: admin.casa_org)
 
     sign_in admin
 

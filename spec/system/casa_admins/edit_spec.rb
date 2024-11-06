@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "casa_admins/edit", type: :system do
-  let(:admin) { create :casa_admin, monthly_learning_hours_report: false }
+  let(:casa_org) { create(:casa_org) }
+  let(:admin) { create :casa_admin, monthly_learning_hours_report: false, casa_org: }
 
   before { sign_in admin }
 
@@ -91,7 +92,7 @@ RSpec.describe "casa_admins/edit", type: :system do
   end
 
   it "can successfully deactivate", js: true do
-    another = create(:casa_admin)
+    another = create(:casa_admin, casa_org:)
     visit edit_casa_admin_path(another)
 
     dismiss_confirm do
@@ -109,7 +110,7 @@ RSpec.describe "casa_admins/edit", type: :system do
   end
 
   it "can resend invitation to a another admin", js: true do
-    another = create(:casa_admin)
+    another = create(:casa_admin, casa_org:)
     visit edit_casa_admin_path(another)
 
     click_on "Resend Invitation"

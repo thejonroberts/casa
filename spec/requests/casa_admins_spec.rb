@@ -2,11 +2,16 @@ require "rails_helper"
 require "support/stubbed_requests/webmock_helper"
 
 RSpec.describe "/casa_admins", type: :request do
+  let(:casa_org) { create(:casa_org) }
+  let(:volunteer) { create(:volunteer, casa_org:) }
+  let(:casa_admin) { create(:casa_admin, casa_org:) }
+  let(:supervisor) { create(:supervisor, casa_org:) }
+
   describe "GET /casa_admins" do
     it "is successful" do
-      admins = create_pair(:casa_admin)
+      create(:casa_admin, casa_org:)
 
-      sign_in admins.first
+      sign_in casa_admin
       get casa_admins_path
 
       expect(response).to be_successful
@@ -29,7 +34,6 @@ RSpec.describe "/casa_admins", type: :request do
 
       context "different org" do
         it "cannot access a casa admin edit page" do
-          casa_admin = create(:casa_admin)
           diff_org = create(:casa_org)
           casa_admin_diff_org = create(:casa_admin, casa_org: diff_org)
 
@@ -44,10 +48,9 @@ RSpec.describe "/casa_admins", type: :request do
 
     context "logged in as a non-admin user" do
       it "cannot access a casa admin edit page" do
-        sign_in_as_volunteer
-        admin = create(:casa_admin)
+        sign_in volunteer
 
-        get edit_casa_admin_path(admin)
+        get edit_casa_admin_path(casa_admin)
 
         expect(response).to redirect_to root_path
         expect(response.request.flash[:notice]).to eq "Sorry, you are not authorized to perform this action."
@@ -56,9 +59,7 @@ RSpec.describe "/casa_admins", type: :request do
 
     context "unauthenticated request" do
       it "cannot access a casa admin edit page" do
-        admin = create(:casa_admin)
-
-        get edit_casa_admin_path(admin)
+        get edit_casa_admin_path(casa_admin)
 
         expect(response).to redirect_to new_user_session_path
       end
@@ -68,7 +69,6 @@ RSpec.describe "/casa_admins", type: :request do
   describe "PUT /casa_admins/:id" do
     context "logged in as admin user" do
       it "can successfully update a casa admin user", :aggregate_failures do
-        casa_admin = create(:casa_admin)
         expected_display_name = "Admin 2"
         expected_phone_number = "+14163218092"
 
@@ -89,7 +89,6 @@ RSpec.describe "/casa_admins", type: :request do
       end
 
       it "can update a casa admin user's email and send them a confirmation email", :aggregate_failures do
-        casa_admin = create(:casa_admin)
         expected_email = "admin2@casa.com"
 
         sign_in casa_admin
@@ -110,7 +109,6 @@ RSpec.describe "/casa_admins", type: :request do
       end
 
       it "also respond as json", :aggregate_failures do
-        casa_admin = create(:casa_admin)
         expected_display_name = "Admin 2"
 
         sign_in casa_admin
@@ -128,8 +126,6 @@ RSpec.describe "/casa_admins", type: :request do
 
     context "when logged in as admin, but invalid data" do
       it "cannot update the casa admin", :aggregate_failures do
-        casa_admin = create(:casa_admin)
-
         sign_in casa_admin
         put casa_admin_path(casa_admin), params: {
           casa_admin: {email: nil},
@@ -143,8 +139,6 @@ RSpec.describe "/casa_admins", type: :request do
       end
 
       it "also respond as json", :aggregate_failures do
-        casa_admin = create(:casa_admin)
-
         sign_in casa_admin
         put casa_admin_path(casa_admin, format: :json), params: {
           casa_admin: {email: nil}
@@ -158,8 +152,8 @@ RSpec.describe "/casa_admins", type: :request do
 
     context "logged in as a non-admin user" do
       it "cannot update a casa admin user" do
-        sign_in_as_volunteer
-        admin = create(:casa_admin)
+        sign_in volunteer
+        admin = create(:casa_admin, casa_org:)
 
         put casa_admin_path(admin), params: {
           casa_admin: {
@@ -175,9 +169,7 @@ RSpec.describe "/casa_admins", type: :request do
 
     context "unauthenticated request" do
       it "cannot update a casa admin user" do
-        admin = create(:casa_admin)
-
-        put casa_admin_path(admin), params: {
+        put casa_admin_path(casa_admin), params: {
           casa_admin: {
             email: "admin@casa.com",
             display_name: "The admin"
@@ -192,7 +184,6 @@ RSpec.describe "/casa_admins", type: :request do
   describe "PATCH /activate" do
     context "when successfully" do
       it "activates an inactive casa_admin" do
-        casa_admin = create(:casa_admin)
         casa_admin_other = create(:casa_admin, active: false)
 
         sign_in casa_admin
@@ -203,7 +194,6 @@ RSpec.describe "/casa_admins", type: :request do
       end
 
       it "sends an activation email" do
-        casa_admin = create(:casa_admin)
         casa_admin_inactive = create(:casa_admin, active: false)
 
         sign_in casa_admin
@@ -213,7 +203,6 @@ RSpec.describe "/casa_admins", type: :request do
       end
 
       it "also respond as json", :aggregate_failures do
-        casa_admin = create(:casa_admin)
         casa_admin_inactive = create(:casa_admin, active: false)
 
         sign_in casa_admin
@@ -227,7 +216,6 @@ RSpec.describe "/casa_admins", type: :request do
 
     context "when occurs send errors" do
       it "redirects to admin edition page" do
-        casa_admin = create(:casa_admin)
         casa_admin_inactive = create(:casa_admin, active: false)
         allow(CasaAdminMailer).to receive_message_chain(:account_setup, :deliver) { raise Errno::ECONNREFUSED }
 
@@ -238,7 +226,6 @@ RSpec.describe "/casa_admins", type: :request do
       end
 
       it "shows error message" do
-        casa_admin = create(:casa_admin)
         casa_admin_inactive = create(:casa_admin, active: false)
         allow(CasaAdminMailer).to receive_message_chain(:account_setup, :deliver) { raise Errno::ECONNREFUSED }
 
@@ -249,7 +236,7 @@ RSpec.describe "/casa_admins", type: :request do
       end
 
       it "also respond as json", :aggregate_failures do
-        casa_admin = create(:casa_admin)
+        casa_admin
         casa_admin_inactive = create(:casa_admin, active: false)
         allow_any_instance_of(CasaAdmin).to receive(:activate).and_return(false)
         allow_any_instance_of(CasaAdmin).to receive_message_chain(:errors, :full_messages)
@@ -269,8 +256,7 @@ RSpec.describe "/casa_admins", type: :request do
     context "logged in as admin user" do
       context "when successfully" do
         it "can successfully deactivate a casa admin user" do
-          casa_admin = create(:casa_admin)
-          casa_admin_other = create(:casa_admin, active: true)
+          casa_admin_other = create(:casa_admin, active: true, casa_org:)
 
           sign_in casa_admin
           patch deactivate_casa_admin_path(casa_admin_other)
@@ -283,8 +269,7 @@ RSpec.describe "/casa_admins", type: :request do
         end
 
         it "sends a deactivation email" do
-          casa_admin = create(:casa_admin)
-          casa_admin_active = create(:casa_admin, active: true)
+          casa_admin_active = create(:casa_admin, active: true, casa_org:)
 
           sign_in casa_admin
           expect { patch deactivate_casa_admin_path(casa_admin_active) }
@@ -293,8 +278,7 @@ RSpec.describe "/casa_admins", type: :request do
         end
 
         it "also respond as json", :aggregate_failures do
-          casa_admin = create(:casa_admin)
-          casa_admin_active = create(:casa_admin, active: true)
+          casa_admin_active = create(:casa_admin, active: true, casa_org:)
 
           sign_in casa_admin
           patch deactivate_casa_admin_path(casa_admin_active, format: :json)
@@ -307,8 +291,7 @@ RSpec.describe "/casa_admins", type: :request do
 
       context "when occurs send errors" do
         it "redirects to admin edit page" do
-          casa_admin = create(:casa_admin)
-          casa_admin_active = create(:casa_admin, active: true)
+          casa_admin_active = create(:casa_admin, active: true, casa_org:)
           allow(CasaAdminMailer).to receive_message_chain(:deactivation, :deliver) { raise Errno::ECONNREFUSED }
 
           sign_in casa_admin
@@ -318,8 +301,8 @@ RSpec.describe "/casa_admins", type: :request do
         end
 
         it "shows error message" do
-          casa_admin = create(:casa_admin)
-          casa_admin_active = create(:casa_admin, active: true)
+          casa_admin = create(:casa_admin, casa_org:)
+          casa_admin_active = create(:casa_admin, active: true, casa_org:)
           allow(CasaAdminMailer).to receive_message_chain(:deactivation, :deliver) { raise Errno::ECONNREFUSED }
 
           sign_in casa_admin
@@ -329,8 +312,8 @@ RSpec.describe "/casa_admins", type: :request do
         end
 
         it "also respond as json", :aggregate_failures do
-          casa_admin = create(:casa_admin)
-          casa_admin_active = create(:casa_admin, active: true)
+          casa_admin = create(:casa_admin, casa_org:)
+          casa_admin_active = create(:casa_admin, active: true, casa_org:)
           allow_any_instance_of(CasaAdmin).to receive(:deactivate).and_return(false)
           allow_any_instance_of(CasaAdmin).to receive_message_chain(:errors, :full_messages)
             .and_return ["Error message test"]
@@ -347,10 +330,8 @@ RSpec.describe "/casa_admins", type: :request do
 
     context "logged in as a non-admin user" do
       it "cannot update a casa admin user" do
-        admin = create(:casa_admin)
-
-        sign_in_as_volunteer
-        patch deactivate_casa_admin_path(admin)
+        sign_in volunteer
+        patch deactivate_casa_admin_path(casa_admin)
 
         expect(response).to redirect_to root_path
         expect(response.request.flash[:notice]).to eq "Sorry, you are not authorized to perform this action."
@@ -359,9 +340,7 @@ RSpec.describe "/casa_admins", type: :request do
 
     context "unauthenticated request" do
       it "cannot update a casa admin user" do
-        admin = create(:casa_admin)
-
-        patch deactivate_casa_admin_path(admin)
+        patch deactivate_casa_admin_path(casa_admin)
 
         expect(response).to redirect_to new_user_session_path
       end
@@ -370,8 +349,6 @@ RSpec.describe "/casa_admins", type: :request do
 
   describe "PATCH /resend_invitation" do
     it "resends an invitation email" do
-      casa_admin = create(:casa_admin, active: true)
-
       sign_in casa_admin
       expect(casa_admin.invitation_created_at.present?).to eq(false)
 
@@ -390,9 +367,9 @@ RSpec.describe "/casa_admins", type: :request do
       it "creates a new casa_admin" do
         org = create(:casa_org, twilio_enabled: true)
         admin = create(:casa_admin, casa_org: org)
-        params = attributes_for(:casa_admin)
+        params = attributes_for(:casa_admin, casa_org:)
 
-        sign_in admin
+        sign_in casa_admin
 
         expect {
           post casa_admins_path, params: {casa_admin: params}
@@ -404,9 +381,9 @@ RSpec.describe "/casa_admins", type: :request do
       it "also respond to json", :aggregate_failures do
         org = create(:casa_org, twilio_enabled: true)
         admin = create(:casa_admin, casa_org: org)
-        params = attributes_for(:casa_admin)
+        params = attributes_for(:casa_admin, casa_org:)
 
-        sign_in admin
+        sign_in casa_admin
         post casa_admins_path(format: :json), params: {casa_admin: params}
 
         expect(response.content_type).to eq("application/json; charset=utf-8")
@@ -421,7 +398,7 @@ RSpec.describe "/casa_admins", type: :request do
         admin = create(:casa_admin, casa_org: org)
         twilio_activation_success_stub = WebMockHelper.twilio_activation_success_stub("admin")
         short_io_stub = WebMockHelper.short_io_stub_sms
-        params = attributes_for(:casa_admin)
+        params = attributes_for(:casa_admin, casa_org:)
         params[:phone_number] = "+12222222222"
 
         sign_in admin
@@ -440,9 +417,9 @@ RSpec.describe "/casa_admins", type: :request do
         twilio_activation_success_stub = WebMockHelper.twilio_activation_success_stub("admin")
         twilio_activation_error_stub = WebMockHelper.twilio_activation_error_stub("admin")
         short_io_stub = WebMockHelper.short_io_stub_sms
-        params = attributes_for(:casa_admin)
+        params = attributes_for(:casa_admin, casa_org:)
 
-        sign_in admin
+        sign_in casa_admin
         post casa_admins_path, params: {casa_admin: params}
 
         expect(short_io_stub).to have_been_requested.times(0)
@@ -458,7 +435,7 @@ RSpec.describe "/casa_admins", type: :request do
         admin = build(:casa_admin, casa_org: org)
         short_io_stub = WebMockHelper.short_io_stub_sms
         twilio_activation_error_stub = WebMockHelper.twilio_activation_error_stub("admin")
-        params = attributes_for(:casa_admin)
+        params = attributes_for(:casa_admin, casa_org:)
         params[:phone_number] = "+12222222222"
 
         sign_in admin
@@ -474,11 +451,11 @@ RSpec.describe "/casa_admins", type: :request do
       it "does not send SMS when Twilio is not enabled" do
         org = create(:casa_org, twilio_enabled: false)
         admin = build(:casa_admin, casa_org: org)
-        params = attributes_for(:casa_admin)
+        params = attributes_for(:casa_admin, casa_org:)
         params[:phone_number] = "+12222222222"
         short_io_stub = WebMockHelper.short_io_stub_sms
 
-        sign_in admin
+        sign_in casa_admin
         post casa_admins_path, params: {casa_admin: params}
 
         expect(short_io_stub).to have_been_requested.times(2) # TODO: why is this called at all?
@@ -493,9 +470,9 @@ RSpec.describe "/casa_admins", type: :request do
         org = create(:casa_org, twilio_enabled: true)
         admin = create(:casa_admin, casa_org: org)
         allow_any_instance_of(CreateCasaAdminService).to receive(:create!).and_raise(ActiveRecord::RecordInvalid)
-        params = attributes_for(:casa_admin)
+        params = attributes_for(:casa_admin, casa_org:)
 
-        sign_in admin
+        sign_in casa_admin
 
         expect {
           post casa_admins_path, params: {casa_admin: params}
@@ -507,13 +484,13 @@ RSpec.describe "/casa_admins", type: :request do
         org = create(:casa_org, twilio_enabled: true)
         admin = create(:casa_admin, casa_org: org)
 
-        sign_in admin
+        sign_in casa_admin
         casa_admin = instance_spy(CasaAdmin)
         allow(casa_admin).to receive_message_chain(:errors, :full_messages).and_return(["Some error message"])
         allow_any_instance_of(CreateCasaAdminService).to receive(:casa_admin).and_return(casa_admin)
         allow_any_instance_of(CreateCasaAdminService).to receive(:create!)
           .and_raise(ActiveRecord::RecordInvalid)
-        params = attributes_for(:casa_admin)
+        params = attributes_for(:casa_admin, casa_org:)
 
         post casa_admins_path(format: :json), params: {casa_admin: params}
 
@@ -527,9 +504,7 @@ RSpec.describe "/casa_admins", type: :request do
   describe "PATCH /change_to_supervisor" do
     context "when signed in as an admin" do
       it "changes the admin to a supervisor" do
-        casa_admin = create(:casa_admin)
-
-        sign_in_as_admin
+        sign_in casa_admin
         patch change_to_supervisor_casa_admin_path(casa_admin)
 
         expect(response).to redirect_to(edit_supervisor_path(casa_admin))
@@ -543,9 +518,6 @@ RSpec.describe "/casa_admins", type: :request do
 
     context "when signed in as a supervisor" do
       it "does not change the admin to a supervisor" do
-        casa_admin = create(:casa_admin)
-        supervisor = create(:supervisor)
-
         sign_in supervisor
         patch change_to_supervisor_casa_admin_path(casa_admin)
 

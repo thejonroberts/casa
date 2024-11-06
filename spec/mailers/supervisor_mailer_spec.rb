@@ -1,8 +1,10 @@
 require "rails_helper"
 
 RSpec.describe SupervisorMailer, type: :mailer do
+  let(:casa_org) { create(:casa_org) }
+
   describe ".weekly_digest" do
-    let(:supervisor) { build(:supervisor, :receive_reimbursement_attachment) }
+    let(:supervisor) { build(:supervisor, :receive_reimbursement_attachment, casa_org:) }
     let(:volunteer) { build(:volunteer, casa_org: supervisor.casa_org, supervisor: supervisor) }
     let(:casa_case) { create(:casa_case, casa_org: supervisor.casa_org) }
 
@@ -111,9 +113,8 @@ RSpec.describe SupervisorMailer, type: :mailer do
 
     context "when supervisor has a volunteer that has not been active for the last 30 days" do
       let!(:volunteer) do
-        create(:volunteer, casa_org: supervisor.casa_org, supervisor: supervisor, last_sign_in_at: 31.days.ago)
+        create(:volunteer, casa_org:, supervisor: supervisor, last_sign_in_at: 31.days.ago)
       end
-      let(:casa_org) { volunteer.casa_org }
       let(:other_org) { create(:casa_org) }
       let!(:volunteer_for_other_supervisor_same_org) { create(:volunteer, last_sign_in_at: 31.days.ago, casa_org: casa_org, supervisor: create(:supervisor, casa_org: casa_org)) }
       let!(:volunteer_for_other_org) { create(:volunteer, last_sign_in_at: 31.days.ago, casa_org: other_org, supervisor: create(:supervisor, casa_org: other_org)) }
@@ -138,7 +139,7 @@ RSpec.describe SupervisorMailer, type: :mailer do
   end
 
   describe ".invitation_instructions for a supervisor" do
-    let(:supervisor) { create(:supervisor) }
+    let(:supervisor) { create(:supervisor, casa_org:) }
     let(:mail) { supervisor.invite! }
     let(:expiration_date) { I18n.l(supervisor.invitation_due_at, format: :full, default: nil) }
 
@@ -149,9 +150,8 @@ RSpec.describe SupervisorMailer, type: :mailer do
   end
 
   describe ".reimbursement_request_email" do
-    let(:supervisor) { create(:supervisor, receive_reimbursement_email: true) }
-    let(:volunteer) { create(:volunteer, supervisor: supervisor) }
-    let(:casa_organization) { volunteer.casa_org }
+    let(:supervisor) { create(:supervisor, receive_reimbursement_email: true, casa_org:) }
+    let(:volunteer) { create(:volunteer, supervisor: supervisor, casa_org:) }
 
     let(:mail) { SupervisorMailer.reimbursement_request_email(volunteer, supervisor) }
 

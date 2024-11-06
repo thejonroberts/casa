@@ -171,8 +171,8 @@ RSpec.describe "/supervisors", type: :request do
       end
 
       context "when the email exists already and the supervisor has volunteers assigned" do
-        let(:other_supervisor) { create(:supervisor) }
-        let(:supervisor) { create(:supervisor, :with_volunteers) }
+        let(:other_supervisor) { create(:supervisor, casa_org: org) }
+        let(:supervisor) { create(:supervisor, :with_volunteers, casa_org: org) }
 
         it "gracefully fails" do
           patch supervisor_path(supervisor), params: {supervisor: {email: other_supervisor.email}}
@@ -331,7 +331,7 @@ RSpec.describe "/supervisors", type: :request do
   end
 
   describe "PATCH /activate" do
-    let(:inactive_supervisor) { create(:supervisor, :inactive) }
+    let(:inactive_supervisor) { create(:supervisor, :inactive, casa_org: org) }
 
     before { sign_in admin }
 

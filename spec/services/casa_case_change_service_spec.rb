@@ -12,8 +12,10 @@ RSpec.describe CasaCaseChangeService do
   end
 
   context "with different original and changed" do
-    let(:original) { create(:casa_case).full_attributes_hash }
-    let(:changed) { create(:casa_case, :with_case_assignments, :with_one_court_order, :active, :with_case_contacts).full_attributes_hash }
+    let(:casa_org) { create(:casa_org) }
+    let(:original) { create(:casa_case, casa_org:).full_attributes_hash }
+    let(:changed) { create(:casa_case, :with_case_assignments, :with_one_court_order, :active, :with_case_contacts, casa_org:).full_attributes_hash }
+
     it "shows useful diff" do
       expect(subject).to match_array([
         "Changed Id",

@@ -1,8 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "checklist_items/new", type: :system do
-  let(:casa_admin) { create(:casa_admin) }
-  let(:hearing_type) { create(:hearing_type) }
+  let(:casa_org) { create(:casa_org) }
+  let(:casa_admin) { create(:casa_admin, casa_org:) }
+  let(:hearing_type) { create(:hearing_type, casa_org:) }
 
   before do
     sign_in casa_admin

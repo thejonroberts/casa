@@ -3,8 +3,9 @@ require "rails_helper"
 RSpec.describe "volunteers", type: :view do
   subject { render template: "volunteers/index" }
 
-  let(:user) { build_stubbed :volunteer }
-  let(:volunteer) { create :volunteer }
+  let(:casa_org) { create :casa_org }
+  let(:user) { build_stubbed :volunteer, casa_org: }
+  let(:volunteer) { create :volunteer, casa_org: }
 
   before do
     enable_pundit(view, user)
@@ -19,7 +20,7 @@ RSpec.describe "volunteers", type: :view do
   end
 
   context "when signed in as an admin" do
-    let(:user) { build_stubbed :casa_admin }
+    let(:user) { build_stubbed :casa_admin, casa_org: }
 
     it { is_expected.to have_selector("a", text: "New Volunteer") }
   end
@@ -28,7 +29,7 @@ RSpec.describe "volunteers", type: :view do
     let!(:supervisor_volunteer) { create(:supervisor_volunteer, volunteer: volunteer, supervisor: supervisor) }
 
     context "when the supervisor is active" do
-      let(:supervisor) { build(:supervisor) }
+      let(:supervisor) { build(:supervisor, casa_org:) }
 
       it "shows up in the supervisor dropdown" do
         expect(subject).to include(CGI.escapeHTML(supervisor.display_name))
@@ -36,7 +37,7 @@ RSpec.describe "volunteers", type: :view do
     end
 
     context "when the supervisor is not active" do
-      let(:supervisor) { build(:supervisor, active: false) }
+      let(:supervisor) { build(:supervisor, active: false, casa_org:) }
 
       it "doesn't show up in the dropdown" do
         expect(subject).not_to include(supervisor.display_name)

@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
+  let(:casa_org) { create :casa_org }
+
   it { is_expected.to belong_to(:casa_org) }
 
   it { is_expected.to have_many(:case_assignments) }
@@ -134,7 +136,7 @@ RSpec.describe User, type: :model do
     end
 
     describe "#no_attempt_for_two_weeks" do
-      let(:supervisor) { create(:supervisor) }
+      let(:supervisor) { create(:supervisor, casa_org:) }
 
       it "returns zero for a volunteer that has attempted contact in at least one contact_case within the last 2 weeks" do
         volunteer_1 = create(:volunteer, :with_casa_cases, supervisor: supervisor)

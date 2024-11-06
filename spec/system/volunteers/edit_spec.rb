@@ -502,7 +502,7 @@ RSpec.describe "volunteers/edit", type: :system do
 
     it "emails the volunteer without a supervisor" do
       organization = create(:casa_org)
-      volunteer_without_supervisor = create(:volunteer)
+      volunteer_without_supervisor = create(:volunteer, casa_org: organization, supervisor: nil)
       supervisor = create(:supervisor, casa_org: organization)
 
       sign_in supervisor
