@@ -5,7 +5,7 @@ FactoryBot.define do
     strategy { "database_authenticatable" }
     identity { user.email }
     success { true }
-    context { "session" }
+    add_attribute(:context) { "session" } # disambiguate from RSpec#context
     ip { "127.0.0.1" }
     user_agent { "Mozilla/5.0 (Macintosh; Intel Mac OS X)" }
   end

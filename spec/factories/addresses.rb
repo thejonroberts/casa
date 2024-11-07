@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :address do
     content { Faker::Address.full_address }
-    association :user
+    user { association :user }
   end
 end

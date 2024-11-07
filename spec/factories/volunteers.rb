@@ -81,17 +81,6 @@ FactoryBot.define do
       contacts_per_case { 1 }
     end
 
-    trait :with_case_contact_wants_driving_reimbursement do
-      case_count { 1 }
-      contacts_per_case { 1 }
-
-      case_contacts do
-        case_assignments.map { |assignment|
-          Array.new(contacts_per_case) { association(:case_contact, :wants_reimbursement, creator: instance, casa_case: assignment.casa_case) }
-        }.flatten
-      end
-    end
-
     trait :with_disallow_reimbursement do
       case_count { 1 }
 

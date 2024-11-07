@@ -65,7 +65,7 @@ RSpec.describe CaseContactTypesReminder do
 
   context "volunteer with uncontacted contact types, sms notifications on, and reminder in last quarter" do
     it "should not send sms reminder" do
-      create(:user_reminder_time, :case_contact_types)
+      create(:user_reminder_time, :case_contact_types, user: volunteer)
       Volunteer.update_all(receive_sms_notifications: true)
       responses = CaseContactTypesReminder.new.send!
       expect(responses.count).to match 0
@@ -76,7 +76,7 @@ RSpec.describe CaseContactTypesReminder do
     it "should send sms reminder" do
       UserReminderTime.destroy_all
       Volunteer.all do |v|
-        create(:user_case_contact_types_reminder, user_id: v.id, reminder_sent: 4.months.ago)
+        create(:user_case_contact_types_reminder, user: v, reminder_sent: 4.months.ago)
       end
       responses = CaseContactTypesReminder.new.send!
       expect(responses.count).to match 1
