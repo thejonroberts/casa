@@ -8,6 +8,8 @@ RSpec.describe "/imports", type: :request do
   let(:supervisor_volunteers_file) { Rails.root.join("spec", "fixtures", "supervisor_volunteers.csv") }
   let(:casa_org) { create(:casa_org) }
   let(:casa_admin) { build(:casa_admin, casa_org:) }
+  let(:pre_transition_aged_youth_age) { Date.current - 14.years }
+
   before do
     # next_court_date in casa_cases.csv needs to be a future date
     travel_to Date.parse("Sept 15 2022")

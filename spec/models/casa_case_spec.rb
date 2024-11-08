@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe CasaCase, type: :model do
   let(:casa_org) { build(:casa_org) }
+  let(:pre_transition_aged_youth_age) { Date.current - 14.years }
 
   subject { build(:casa_case, casa_org:) }
 
