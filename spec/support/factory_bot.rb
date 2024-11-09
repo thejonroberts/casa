@@ -3,6 +3,8 @@
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
+  return unless ENV.fetch("SPEC_OUTPUT_FACTORY_BOT_OBJECT_CREATION_STATS", false)
+
   # Any factory that takes more than .5 seconds to create will show in the
   # console when running the tests.
   config.before(:suite) do
@@ -40,9 +42,7 @@ RSpec.configure do |config|
   end
 
   config.after(:suite) do
-    if ENV.fetch("SPEC_OUTPUT_FACTORY_BOT_OBJECT_CREATION_STATS", "false") == "true"
-      puts "How many objects did factory_bot create? (probably too many- let's tune some factories...)"
-      pp factory_bot_results
-    end
+    puts "How many objects did factory_bot create? (probably too many- let's tune some factories...)"
+    pp factory_bot_results
   end
 end
