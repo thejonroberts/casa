@@ -349,7 +349,7 @@ RSpec.describe "view all volunteers", type: :system, js: true do
       active_volunteers = create_list(:volunteer, 3, :with_assigned_supervisor, casa_org: organization)
       active_volunteers[2].supervisor = supervisor
 
-      inactive_volunteers = create_list(:volunteer, 2, :with_assigned_supervisor, :inactive, casa_org: organization)
+      inactive_volunteers = create_list(:volunteer, 2, :inactive, supervisor:, casa_org: organization)
       inactive_volunteers[0].supervisor = supervisor
       inactive_volunteers[1].supervisor = supervisor
 

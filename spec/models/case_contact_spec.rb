@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CaseContact, type: :model do
+RSpec.describe CaseContact, type: :model, slow: :create do
   let(:casa_org) { build(:casa_org) }
 
   it { is_expected.to have_many(:contact_topic_answers).dependent(:destroy) }

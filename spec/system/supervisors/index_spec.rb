@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "supervisors/index", type: :system do
+RSpec.describe "supervisors/index", type: :system, slow: :create do
   let(:organization) { build(:casa_org) }
   let(:supervisor_user) { create(:supervisor, casa_org: organization, display_name: "Logged Supervisor") }
   let(:organization_two) { build(:casa_org) }

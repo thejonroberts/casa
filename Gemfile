@@ -74,6 +74,12 @@ group :development, :test do
   gem "rswag-specs"
   gem "shoulda-matchers"
   gem "standard", "~> 1.40.0"
+
+  # gem "ruby-prof", require: false
+  gem "stackprof", require: false
+  # gem "memory_profiler", require: false
+  gem "vernier", require: false
+  gem "test-prof"
 end
 
 group :development do

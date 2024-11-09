@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "ReimbursementDatatable" do
+RSpec.describe 'ReimbursementDatatable', slow: :create do
   let(:org) { CasaOrg.first }
   let(:case_contacts) { CaseContact.joins(:casa_case) }
   let(:instance) { described_class.new(case_contacts, params) }

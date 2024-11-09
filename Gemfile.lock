@@ -514,6 +514,7 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
+    stackprof (0.2.26)
     standard (1.40.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -531,6 +532,7 @@ GEM
     stringio (3.1.1)
     strong_migrations (2.0.0)
       activerecord (>= 6.1)
+    test-prof (1.4.2)
     thor (1.3.2)
     timeout (0.4.1)
     traceroute (0.8.1)
@@ -548,6 +550,7 @@ GEM
     unicode-display_width (2.5.0)
     uniform_notifier (1.16.0)
     useragent (0.16.10)
+    vernier (1.3.0)
     view_component (3.13.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
@@ -656,13 +659,16 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   sprockets-rails
+  stackprof
   standard (~> 1.40.0)
   stimulus-rails
   strong_migrations
+  test-prof
   traceroute
   turbo-rails (~> 2.0)
   twilio-ruby
   tzinfo-data
+  vernier
   view_component
   web-console (>= 3.3.0)
   webmock
@@ -672,4 +678,4 @@ RUBY VERSION
    ruby 3.2.4p170
 
 BUNDLED WITH
-   2.5.22
+   2.5.23

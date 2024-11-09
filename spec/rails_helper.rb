@@ -17,6 +17,7 @@ require "pundit/rspec"
 require "view_component/test_helpers"
 require "capybara/rspec"
 require "action_text/system_test_helper"
+require "test-prof"
 require "webmock/rspec"
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -43,6 +44,10 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 
 ci_environment = (ENV["GITHUB_ACTIONS"] || ENV["CI"]).present?
+
+require "test_prof/recipes/rspec/sample"
+require "test_prof/factory_prof/nate_heckler"
+
 
 RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
@@ -145,3 +150,33 @@ WebMock.disable_net_connect!(
   allow_localhost: true,
   allow: "selenium_chrome:4444"
 )
+
+# if !ci_environment
+  # profiling tools not used in CI
+
+
+TestProf.configure do |config|
+  # the directory to put artifacts (reports) in ('tmp/test_prof' by default)
+  config.output_dir = "tmp/test_prof"
+  # use unique filenames for reports (by simply appending current timestamp)
+  config.timestamps = false
+  # color output
+  config.color = true
+  # where to write logs (defaults)
+  config.output = $stdout
+  # alternatively, you can specify a custom logger instance
+  # config.logger = MyLogger.new
+end
+
+TestProf::StackProf.configure do |config|
+  config.format = "json"
+end
+
+# TestProf::EventProf.configure do |config|
+#   config.per_example = true
+# end
+
+TestProf::FactoryProf.configure do |config|
+  config.include_variations = true
+end
+# end

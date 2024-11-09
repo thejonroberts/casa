@@ -5,22 +5,22 @@ require "active_support/core_ext/integer/time"
 # your test database is "scratch space" for the test suite and is wiped
 # and recreated between test runs. Don't rely on the data there!
 
+ci_environment = (ENV.fetch("CI", false) || ENV.fetch("GITHUB_ACTIONS", false)).present?
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.action_mailer.default_url_options = {host: "localhost", port: 3000} # for devise authentication
+
   # While tests run files are not watched, reloading is not necessary.
-  # Turn false under Spring and add config.action_view.cache_template_loading = true.
-  config.action_view.cache_template_loading = true
+  # config.enable_reloading = false
+  config.enable_reloading = !ci_environment # enable for local bin/rspec w/ spring
 
   # Eager loading loads your entire application. When running a single test locally,
   # this is usually not necessary, and can slow down your test suite. However, it's
   # recommended that you enable it in continuous integration systems to ensure eager
   # loading is working properly before deploying your code.
-  config.eager_load = ENV["CI"].present?
-  # cache classes on CI, but enable reloading for local work (bin/rspec)
-  config.enable_reloading = ENV["CI"].blank?
+  config.eager_load = ci_environment # !config.enable_reloading is default
+
   # Configure public file server for tests with Cache-Control for performance.
-  config.public_file_server.enabled = true
   config.public_file_server.headers = {
     "Cache-Control" => "public, max-age=#{1.hour.to_i}"
   }
@@ -29,8 +29,10 @@ Rails.application.configure do
   config.consider_all_requests_local = true
   config.action_controller.perform_caching = false
   # config.cache_store = :null_store
+  config.cache_store = :file_store, Rails.root.join("tmp/cache/").to_s # default (when not set)
 
-  # Raise exceptions instead of rendering exception templates.
+  # Render exception templates for rescuable exceptions and raise for other exceptions.
+  # config.action_dispatch.show_exceptions = :rescuable
   config.action_dispatch.show_exceptions = :none
 
   # Disable request forgery protection in test environment.
@@ -39,6 +41,8 @@ Rails.application.configure do
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 
+  # Disable caching for Action Mailer templates even if Action Controller
+  # caching is enabled.
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.
@@ -46,13 +50,12 @@ Rails.application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
 
+  # Unlike controllers, the mailer instance doesn't have any context about the
+  # incoming request so you'll need to provide the :host parameter yourself.
+  config.action_mailer.default_url_options = {host: "localhost", port: 3000}
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
-
-  # Rack Attack configuration
-  # Set IP_BLOCKLIST for testing. Can't stub in spec since environment variable
-  # gets read during application initialization.
-  ENV["IP_BLOCKLIST"] = "4.5.6.7, 9.8.7.6,100.101.102.103"
 
   # Raise exceptions for disallowed deprecations.
   config.active_support.disallowed_deprecation = :raise
@@ -63,22 +66,45 @@ Rails.application.configure do
   # Raises error for missing translations.
   config.i18n.raise_on_missing_translations = true
 
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.console = true
-    Bullet.bullet_logger = true
-    Bullet.rails_logger = true
-    # Bullet.raise = true # TODO https://github.com/rubyforgood/casa/issues/2441
-  end
-
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = false
+  # shared hooks like pundit's :verify_authorized will raise if true (default)
+
+  # Rails-generated options above (7.2)
+  #-----------------------------------#
+  # Custom options below
+
+  # Rack Attack configuration
+  # Set IP_BLOCKLIST for testing. Can't stub in spec since environment variable
+  # gets read during application initialization.
+  ENV["IP_BLOCKLIST"] = "4.5.6.7, 9.8.7.6,100.101.102.103"
+
+  config.after_initialize do
+    # https://github.com/flyerhzm/bullet#configuration
+    Bullet.enable = false # disable until we are actually raising to affect specs
+    Bullet.skip_user_in_notification = true
+    Bullet.console = false
+    Bullet.bullet_logger = false
+    Bullet.rails_logger = true
+    # Bullet.raise = true # TODO https://github.com/rubyforgood/casa/issues/2441
+    # Bullet.unused_eager_loading_enable = false
+    Bullet.skip_html_injection = true
+    Bullet.skip_http_headers = ci_environment
+  end
 
   # https://github.com/rails/rails/issues/48468
   config.active_job.queue_adapter = :test
 
   config.secret_key_base = ENV["SECRET_KEY_BASE"] || "dummy_test_secret_key"
+
+  if ci_environment
+    config.logger = ActiveSupport::TaggedLogging.new(Logger.new(nil))
+    # config.logger = Logger.new(nil)
+    config.log_level = :fatal
+  else
+    config.log_level = ENV.fetch("LOG_LEVEL", "warn")
+  end
 end
