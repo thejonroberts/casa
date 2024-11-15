@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   before_action :set_current_organization
   before_action :set_active_banner
   after_action :verify_authorized, except: :index, unless: :devise_controller?
-  # after_action :verify_policy_scoped, only: :index
+  after_action :verify_policy_scoped, only: :index
 
   KNOWN_ERRORS = [Pundit::NotAuthorizedError, Organizational::UnknownOrganization]
   rescue_from StandardError, with: :log_and_reraise

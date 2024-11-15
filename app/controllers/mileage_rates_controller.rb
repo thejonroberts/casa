@@ -3,8 +3,8 @@ class MileageRatesController < ApplicationController
   before_action :set_mileage_rate, only: %i[edit update]
 
   def index
-    authorize :application, :see_mileage_rate?
-    @mileage_rates = MileageRate.where(casa_org: current_organization).order(effective_date: :asc)
+    authorize :mileage_rate
+    @mileage_rates = policy_scope(MileageRate).order(effective_date: :asc)
   end
 
   def new

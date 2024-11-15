@@ -1,15 +1,17 @@
 class ApplicationPolicy
   class Scope
-    attr_reader :user, :scope
-
     def initialize(user, scope)
       @user = user
       @scope = scope
     end
 
     def resolve
-      raise NotImplementedError
+      raise NotImplementedError, "You must define #resolve in #{self.class}"
     end
+
+    private
+
+    attr_reader :user, :scope
   end
 
   attr_reader :user, :record
@@ -24,10 +26,12 @@ class ApplicationPolicy
   end
 
   def show?
+    # is_admin_same_org? # TODO
     is_admin?
   end
 
   def create?
+    # is_admin_same_org? # TODO
     is_admin?
   end
 
@@ -36,16 +40,20 @@ class ApplicationPolicy
   end
 
   def update?
+    # is_admin_same_org? # TODO
     is_admin?
   end
 
   def edit?
-    is_admin?
+    update?
   end
 
   def destroy?
+    # is_admin_same_org? # TODO
     is_admin?
   end
+
+  # private # TODO
 
   def is_admin?
     user&.casa_admin?
@@ -73,6 +81,7 @@ class ApplicationPolicy
   end
 
   def is_volunteer? # deprecated in favor of is_volunteer_same_org?
+    # user&.volunteer?
     user.volunteer?
   end
 
@@ -109,13 +118,13 @@ class ApplicationPolicy
     is_volunteer? || is_supervisor? || is_admin?
   end
 
-  def see_mileage_rate?
-    is_admin? && reimbursement_enabled? # && matches_casa_org? # TODO do this *in* is_admin - what might that break?
-  end
+  # def see_mileage_rate?
+  #   is_admin? && reimbursement_enabled? # && matches_casa_org? # TODO do this *in* is_admin - what might that break?
+  # end
 
-  def matches_casa_org?
-    @record&.casa_org == @user&.casa_org && !@record.casa_org.nil?
-  end
+  # def matches_casa_org?
+  #   @record&.casa_org == @user&.casa_org && !@record.casa_org.nil?
+  # end
 
   def reimbursement_enabled?
     current_organization&.show_driving_reimbursement

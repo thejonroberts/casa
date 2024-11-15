@@ -31,10 +31,8 @@ RSpec.describe "/casa_cases/:casa_case_id/court_dates/:id", type: :request do
   end
 
   before do
-    travel_to Date.new(2021, 1, 1)
     sign_in admin
   end
-  after { travel_back }
 
   describe "GET /show" do
     subject(:show) { get casa_case_court_date_path(casa_case, court_date) }
@@ -70,7 +68,8 @@ RSpec.describe "/casa_cases/:casa_case_id/court_dates/:id", type: :request do
 
         docx_response = Docx::Document.open(StringIO.new(response.body))
 
-        expect(docx_response.paragraphs.map(&:to_s)).to include(/December 25, 2020/)
+        formatted_court_date =  court_date.date.strftime("%B %-d, %Y")
+        expect(docx_response.paragraphs.map(&:to_s)).to include("Court Date:#{formatted_court_date}")
       end
 
       context "when a judge is attached" do
